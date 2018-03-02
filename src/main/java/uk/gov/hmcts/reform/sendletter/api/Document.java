@@ -2,12 +2,9 @@ package uk.gov.hmcts.reform.sendletter.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.Serializable;
 import java.util.Map;
 
-public class Document implements Serializable {
-
-    private static final long serialVersionUID = -2374030102074056382L;
+public class Document {
 
     public final String template;
 
