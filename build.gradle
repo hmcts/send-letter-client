@@ -1,0 +1,139 @@
+plugins {
+    id 'checkstyle'
+    id 'io.spring.dependency-management' version '1.0.4.RELEASE'
+    id 'org.springframework.boot' version '1.5.9.RELEASE'
+    id 'com.jfrog.bintray' version '1.8.0'
+    id 'java-library'
+    id 'maven'
+    id 'maven-publish'
+    id 'com.github.ben-manes.versions' version '0.17.0'
+}
+
+group 'uk.gov.hmcts.reform'
+version '0.0.1'
+
+checkstyle {
+    maxWarnings = 0
+    toolVersion = '8.7'
+}
+
+dependencyUpdates.resolutionStrategy = {
+    componentSelection { rules ->
+        rules.all { ComponentSelection selection ->
+            boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
+                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+            }
+            if (rejected) {
+                selection.reject('Release candidate')
+            }
+        }
+    }
+}
+
+sourceCompatibility = 1.8
+
+compileJava {
+    options.compilerArgs << '-parameters' << '-Xlint:deprecation'
+}
+
+compileTestJava {
+    options.compilerArgs << '-Xlint:deprecation'
+}
+
+repositories {
+    jcenter()
+    mavenLocal()
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': project.name, 'Implementation-Version': project.version
+    }
+}
+
+def pomConfig = {
+    licenses {
+        license {
+            name "MIT License"
+            url "http://www.opensource.org/licenses/mit-license.php"
+            distribution "repo"
+        }
+    }
+
+    scm {
+        url "https://github.com/hmcts/send-letter-client"
+    }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+publishing {
+    publications {
+        Main(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            groupId project.group
+            artifactId 'send-letter-client'
+            version project.version
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'client for send-letter producer')
+                root.appendNode('name', 'Send letter client')
+                root.appendNode('url', 'https://github.com/hmcts/send-letter-client')
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    publications = ['Main']
+    publish = true
+    pkg {
+        repo = 'hmcts-maven'
+        name = 'send-letter-client'
+        userOrg = 'hmcts'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/hmcts/send-letter-client'
+        version {
+            name = project.version
+        }
+    }
+}
+
+ext {
+    springCloudVersion = 'Edgware.SR2'
+}
+
+dependencies {
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-feign'
+    compile group: 'com.netflix.feign', name: 'feign-jackson', version: '8.18.0'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+bootRepackage {
+    enabled = false
+}
