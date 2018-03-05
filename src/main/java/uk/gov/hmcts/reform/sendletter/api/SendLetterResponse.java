@@ -6,10 +6,9 @@ import java.util.UUID;
 
 public class SendLetterResponse {
 
-    @JsonProperty("letter_id")
     public final UUID letterId;
 
-    public SendLetterResponse(UUID letterId) {
+    public SendLetterResponse(@JsonProperty("letter_id") UUID letterId) {
         this.letterId = letterId;
     }
 }
