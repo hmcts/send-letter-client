@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Letter {
 
@@ -22,5 +23,24 @@ public class Letter {
         this.documents = documents;
         this.type = type;
         this.additionalData = additionalData;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Letter letter = (Letter) obj;
+        return Objects.equals(documents, letter.documents)
+                && Objects.equals(type, letter.type)
+                && Objects.equals(additionalData, letter.additionalData);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(documents, type, additionalData);
     }
 }
