@@ -1,3 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  uk.gov.hmcts.reform.sendletter.SendLetterAutoConfiguration,\
-  uk.gov.hmcts.reform.sendletter.SendLetterConfiguration
+  uk.gov.hmcts.reform.sendletter.SendLetterAutoConfiguration
