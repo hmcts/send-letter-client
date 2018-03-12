@@ -1,5 +1,4 @@
 plugins {
-    id 'net.ltgt.apt' version '0.14'
     id 'checkstyle'
     id 'io.spring.dependency-management' version '1.0.4.RELEASE'
     id 'org.springframework.boot' version '1.5.9.RELEASE'
