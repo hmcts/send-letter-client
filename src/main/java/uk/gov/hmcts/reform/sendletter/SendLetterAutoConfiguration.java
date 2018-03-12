@@ -16,5 +16,4 @@ public class SendLetterAutoConfiguration {
     public SendLetterHealthIndicator sendLetterHealthIndicator(SendLetterHealthApi sendLetterHealthApi) {
         return new SendLetterHealthIndicator(sendLetterHealthApi);
     }
-
 }

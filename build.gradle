@@ -1,4 +1,5 @@
 plugins {
+    id 'net.ltgt.apt' version '0.14'
     id 'checkstyle'
     id 'io.spring.dependency-management' version '1.0.4.RELEASE'
     id 'org.springframework.boot' version '1.5.9.RELEASE'
@@ -10,7 +11,7 @@ plugins {
 }
 
 group 'uk.gov.hmcts.reform'
-version '0.0.2'
+version '0.0.3'
 
 checkstyle {
     maxWarnings = 0
@@ -126,6 +127,10 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-feign'
     compile group: 'com.netflix.feign', name: 'feign-jackson', version: '8.18.0'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.16.20'
+    apt group: 'org.projectlombok', name: 'lombok', version: '1.16.20'
+
 }
 
 dependencyManagement {
