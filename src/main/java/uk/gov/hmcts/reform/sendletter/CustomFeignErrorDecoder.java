@@ -6,7 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,11 +35,11 @@ public class CustomFeignErrorDecoder implements ErrorDecoder {
         }
 
         if (response.status() >= 400 && response.status() <= 499) {
-            return new SendLetterException(statusText);
+            return new HttpClientErrorException(statusCode, statusText, responseHeaders, responseBody, null);
         }
 
         if (response.status() >= 500 && response.status() <= 599) {
-            return new RestClientException(statusText);
+            return new HttpServerErrorException(statusCode, statusText, responseHeaders, responseBody, null);
         }
 
         return delegate.decode(methodKey, response);
