@@ -128,9 +128,6 @@ dependencies {
     compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-feign'
     compile group: 'com.netflix.feign', name: 'feign-jackson', version: '8.18.0'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.16.20'
-    apt group: 'org.projectlombok', name: 'lombok', version: '1.16.20'
-
 }
 
 dependencyManagement {

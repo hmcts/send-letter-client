@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.sendletter;
 
 import feign.Response;
 import feign.codec.ErrorDecoder;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,9 +11,8 @@ import org.springframework.web.client.HttpServerErrorException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@Slf4j
-public class CustomFeignErrorDecoder implements ErrorDecoder {
 
+public class CustomFeignErrorDecoder implements ErrorDecoder {
     private ErrorDecoder delegate = new ErrorDecoder.Default();
 
     @Override
