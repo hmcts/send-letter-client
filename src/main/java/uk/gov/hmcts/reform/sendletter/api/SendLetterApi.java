@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import uk.gov.hmcts.reform.sendletter.SendLetterConfiguration;
 
-@FeignClient(name = "send-letter-api", url = "${send-letter.url}",
-        configuration = SendLetterConfiguration.class)
+@FeignClient(name = "send-letter-api", url = "${send-letter.url}", configuration = SendLetterConfiguration.class)
 public interface SendLetterApi {
 
     @PostMapping(
