@@ -12,7 +12,7 @@ public class SendLetterConfiguration {
     @Bean
     @Primary
     Decoder feignDecoder(ObjectMapper objectMapper) {
-        return new JacksonDecoder();
+        return new JacksonDecoder(objectMapper);
     }
 
     @Bean
