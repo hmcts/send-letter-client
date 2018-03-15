@@ -120,7 +120,6 @@ bintray {
 
 ext {
     springCloudVersion = 'Edgware.SR2'
-    jacksonVersion = '2.8.10'
 }
 
 dependencies {
@@ -128,11 +127,6 @@ dependencies {
     compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-feign'
     compile group: 'com.netflix.feign', name: 'feign-jackson', version: '8.18.0'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
-
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonVersion
-    compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-parameter-names', version: jacksonVersion
-    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jdk8', version: jacksonVersion
-    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: jacksonVersion
 }
 
 dependencyManagement {
