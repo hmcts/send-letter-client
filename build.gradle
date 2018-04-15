@@ -1,7 +1,7 @@
 plugins {
     id 'checkstyle'
-    id 'io.spring.dependency-management' version '1.0.4.RELEASE'
-    id 'org.springframework.boot' version '1.5.9.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.5.RELEASE'
+    id 'org.springframework.boot' version '2.0.1.RELEASE'
     id 'com.jfrog.bintray' version '1.8.0'
     id 'java-library'
     id 'maven'
@@ -10,7 +10,7 @@ plugins {
 }
 
 group 'uk.gov.hmcts.reform'
-version '1.0.2'
+version '2.0.0'
 
 checkstyle {
     maxWarnings = 0
@@ -42,6 +42,9 @@ compileTestJava {
 
 repositories {
     jcenter()
+    maven {
+        url 'https://repo.spring.io/libs-milestone'
+    }
     mavenLocal()
 }
 
@@ -119,13 +122,15 @@ bintray {
 }
 
 ext {
-    springCloudVersion = 'Edgware.SR2'
+    springCloudVersion = 'Finchley.M9'
 }
 
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-feign'
-    compile group: 'com.netflix.feign', name: 'feign-jackson', version: '8.18.0'
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
+
+    compile group: 'io.github.openfeign', name: 'feign-jackson'
+
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
 }
 
@@ -135,6 +140,10 @@ dependencyManagement {
     }
 }
 
-bootRepackage {
+bootJar {
     enabled = false
+}
+
+jar {
+   enabled = true
 }
