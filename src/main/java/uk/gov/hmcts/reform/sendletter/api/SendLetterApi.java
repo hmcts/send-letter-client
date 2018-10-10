@@ -20,9 +20,20 @@ public interface SendLetterApi {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+
     SendLetterResponse sendLetter(
             @RequestHeader(name = "ServiceAuthorization", required = false) String serviceAuthHeader,
             @RequestBody Letter letter
+    );
+
+    @PostMapping(
+        path = "/letters",
+        consumes = "application/vnd.uk.gov.hmcts.letter-service.in.letter.v2+json",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    SendLetterResponse sendLetter(
+        @RequestHeader(name = "ServiceAuthorization", required = false) String serviceAuthHeader,
+        @RequestBody LetterWithPdfsRequest letter
     );
 
     class SendLetterConfiguration {
