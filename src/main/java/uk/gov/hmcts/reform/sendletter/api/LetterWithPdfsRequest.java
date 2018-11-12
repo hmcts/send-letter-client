@@ -27,4 +27,8 @@ public class LetterWithPdfsRequest {
     public Map<String, Object> getAdditionalData() {
         return this.additionalData;
     }
+
+    public List<String> getDocuments() {
+        return documents;
+    }
 }
