@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.1.xsd">
+    <suppress>
+        <notes><![CDATA[Newer version not available.]]></notes>
+        <gav regex="true">^io\.micrometer\:micrometer-core:1\.0\.7$</gav>
+        <cve>CVE-2006-0477</cve>
+        <cve>CVE-2008-5516</cve>
+        <cve>CVE-2010-2542</cve>
+        <cve>CVE-2010-3906</cve>
+        <cve>CVE-2013-0308</cve>
+        <cve>CVE-2014-9938</cve>
+        <cve>CVE-2015-7082</cve>
+        <cve>CVE-2015-7545</cve>
+        <cve>CVE-2017-14867</cve>
+    </suppress>
+</suppressions>
