@@ -1,12 +1,13 @@
 plugins {
     id 'checkstyle'
-    id 'io.spring.dependency-management' version '1.0.5.RELEASE'
-    id 'org.springframework.boot' version '2.0.1.RELEASE'
-    id 'com.jfrog.bintray' version '1.8.0'
+    id 'io.spring.dependency-management' version '1.0.6.RELEASE'
+    id 'org.springframework.boot' version '2.0.6.RELEASE'
+    id 'org.owasp.dependencycheck' version '4.0.0'
+    id 'com.jfrog.bintray' version '1.8.4'
     id 'java-library'
     id 'maven'
     id 'maven-publish'
-    id 'com.github.ben-manes.versions' version '0.17.0'
+    id 'com.github.ben-manes.versions' version '0.20.0'
 }
 
 group 'uk.gov.hmcts.reform'
@@ -14,7 +15,7 @@ version '2.1.1'
 
 checkstyle {
     maxWarnings = 0
-    toolVersion = '8.7'
+    toolVersion = '8.14'
 }
 
 dependencyUpdates.resolutionStrategy = {
@@ -28,6 +29,14 @@ dependencyUpdates.resolutionStrategy = {
             }
         }
     }
+}
+
+// https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
+dependencyCheck {
+    // Specifies if the build should be failed if a CVSS score above a specified level is identified.
+    // range of 0-10 fails the build, anything greater and it doesn't fail the build
+    failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
+    suppressionFile = 'config/owasp/suppressions.xml'
 }
 
 sourceCompatibility = 1.8
@@ -122,22 +131,38 @@ bintray {
 }
 
 ext {
-    springCloudVersion = 'Finchley.M9'
+    githubFeignVersion = '9.5.1'
+}
+
+dependencyManagement {
+    dependencies {
+        // align with selected version
+        dependencySet(group: 'io.github.openfeign', version: githubFeignVersion) {
+            entry 'feign-hystrix'
+            entry 'feign-java8'
+            entry 'feign-slf4j'
+        }
+        // version jump from 3.3.0
+        dependencySet(group: 'io.github.openfeign.form', version: '3.4.1') {
+            entry 'feign-form-spring'
+        }
+        dependencySet(group: 'com.google.guava', version: '27.0.1-jre') {
+            entry 'guava'
+        }
+        // version jump from 0.6.6
+        dependencySet(group: 'com.netflix.archaius', version: '0.7.6') {
+            entry 'archaius-core'
+        }
+    }
 }
 
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.0.2.RELEASE'
 
-    compile group: 'io.github.openfeign', name: 'feign-jackson'
+    compile group: 'io.github.openfeign', name: 'feign-jackson', version: githubFeignVersion
 
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
 }
 
 bootJar {
