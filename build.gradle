@@ -130,23 +130,13 @@ bintray {
     }
 }
 
-ext {
-    springCloudVersion = 'Finchley.M9'
-}
-
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.0.2.RELEASE'
 
-    compile group: 'io.github.openfeign', name: 'feign-jackson'
+    compile group: 'io.github.openfeign', name: 'feign-jackson', version: '9.5.1'
 
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
 }
 
 bootJar {
