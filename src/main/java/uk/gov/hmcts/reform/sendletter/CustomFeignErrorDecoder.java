@@ -19,8 +19,8 @@ public class CustomFeignErrorDecoder implements ErrorDecoder {
     public Exception decode(String methodKey, Response response) {
 
         HttpHeaders responseHeaders = new HttpHeaders();
-        response.headers().entrySet().stream()
-                .forEach(entry -> responseHeaders.put(entry.getKey(), new ArrayList<>(entry.getValue())));
+        response.headers()
+                .forEach((key, value) -> responseHeaders.put(key, new ArrayList<>(value)));
 
         HttpStatus statusCode = HttpStatus.valueOf(response.status());
         String statusText = response.reason();
