@@ -24,7 +24,7 @@ public class CustomFeignErrorDecoderTest {
     @Test
     public void testClientException() {
         Response response = Response.builder()
-                .headers(Collections.emptyMap())
+                .headers(Collections.singletonMap("AcceptTest", Collections.singletonList("Yes")))
                 .status(HttpStatus.NOT_FOUND.value())
                 .reason("Could not find")
                 .body("some body".getBytes())
