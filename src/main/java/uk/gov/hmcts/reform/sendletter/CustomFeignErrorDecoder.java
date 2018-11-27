@@ -9,15 +9,14 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
-
 
 public class CustomFeignErrorDecoder implements ErrorDecoder {
     private ErrorDecoder delegate = new ErrorDecoder.Default();
 
     @Override
     public Exception decode(String methodKey, Response response) {
-
         HttpHeaders responseHeaders = new HttpHeaders();
         response.headers()
                 .forEach((key, value) -> responseHeaders.put(key, new ArrayList<>(value)));
@@ -26,8 +25,9 @@ public class CustomFeignErrorDecoder implements ErrorDecoder {
         String statusText = response.reason();
 
         byte[] responseBody;
-        try {
-            responseBody = IOUtils.toByteArray(response.body().asInputStream());
+
+        try (InputStream body = response.body().asInputStream()) {
+            responseBody = IOUtils.toByteArray(body);
         } catch (IOException e) {
             throw new RuntimeException("Failed to process response body.", e);
         }
@@ -42,5 +42,4 @@ public class CustomFeignErrorDecoder implements ErrorDecoder {
 
         return delegate.decode(methodKey, response);
     }
-
 }
