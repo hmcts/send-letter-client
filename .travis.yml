@@ -1,27 +1,31 @@
 language: java
+
 before_cache:
-- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
 cache:
   directories:
-  - "$HOME/.gradle/caches/"
-  - "$HOME/.gradle/wrapper/"
+    - "$HOME/.gradle/caches/"
+    - "$HOME/.gradle/wrapper/"
+
 env:
   global:
-  - secure: bnHekbdr1Xpmo6NIRkEYRMwpPQrKdVwHpOdDnNUcOcHeh2L6ifecIveSBM/RDCDcsa8yG53tH/3z7JSTLmBan2cSx5ufyDw2xlE2p3Ynl2+ZvV8BSPfOhALkV3QOIKOTfDv6EkKu4Zv0Ia5Un6Y/yIz1ejCzNp6T9buxHtFYMpZGAJ/Iqn9LDoxbWvVcpB2o5KgLBbQr9//ILfa9cIoLy4ALKsVIyYoI+mVYFsqN4tUBh/cxCYAvTMVi0nrhJf7OfhmbYR7lcsh08tWoRaJM+JIpHo65MxOAc4jrdcLkjQaSpWZXBK341VuLojxEmGybqiMCTQtUWR1nhxBmpPjnD3yL1ERnQIqjnEgn15hYrkaotDfhevw/qSTJ0wAM0mWR7RA3U5mO7gzFQ0m9SIe0W1GL2eLxRRQvbjZuCTpKh3NZ7KnQ0wA2lu1WawvZX2Pbi7yqZNuVeU1sKQDvvh6QxqolnuYavgnL9HyWPlvhEZIkO923bcxnNRF5Wu3trAQCMA0EmfIka4ofmuSrHTpuu/EML41A5hKOqkjzWQebaj92gv+L1it2rUa7zJUxEtwjsOtdgwOhgZLaQejDA+8K9vQMlHypRR8FS8SBkH3Gu9eL+HzAbBFFEn6eifsZNMoUvohb+E/3NJxqvPErAPq8DvbLtGfI5r0HMyf2JIq3/W4=
-  - secure: XW3LVKAqdyRdl7jxJDYT3OAgvIfeP3AHlA1YmI1BTV63aeLJ9Ee2DqPSkhIfbKyMG8c4LnnY02L1UZs2m9N4yHjF/BaG13XLJWNaYwtXvWaW/qxB1YhUlskgDnyXZjuD9hM29SdZBy5KA/ev5vVQ92bTyh2NShWhKxcTfCzXfDOclZkTe7OmMwAhAMA4ELcCrA/7YqFuj8aXGvOcXywj/wMdwFMOdPz9pqAOn3fyt+8XE+qyQZKuOCQmCK1tZrreMC9Elww2hsXdtit8L8TG62Jl+KMIAHNKFJFHyPkdOupGUkdm/xCuMc64XiuVwiLrCXAH5qX03sIZzs4+LtA2qnWy6NeN0Tfz8Nbzwc9R0oi3WZPX03cDSViFLmRPvi7MG/NFo5Po6RkDRdSrbdAReKaW5tatTHMM82AaBMIhbmwrTV53z12HFvzIPrQJG0vX+qPlwsJDBAX4ItPojIjpUGC6GkzdFe9iqxGwstlAsfsKThHDtTeY25Y6/8F9rDyAGXpJjAgz32ACsV25zzdLbem53qxu34X6Avj87yxiHanxWq4Z6q2q9L4a6MiQxRCDNZY9AqYybRfdXMIZJh+PW/0IXb//OUy3shVJ0P1uUk1ui41u3a+3DPQQQFrGJMyxjTXOKo1BL5IcUzyX3/e2w/PaC/Xbu/QqkFk9Fu4Yw2E=
+    - secure: bnHekbdr1Xpmo6NIRkEYRMwpPQrKdVwHpOdDnNUcOcHeh2L6ifecIveSBM/RDCDcsa8yG53tH/3z7JSTLmBan2cSx5ufyDw2xlE2p3Ynl2+ZvV8BSPfOhALkV3QOIKOTfDv6EkKu4Zv0Ia5Un6Y/yIz1ejCzNp6T9buxHtFYMpZGAJ/Iqn9LDoxbWvVcpB2o5KgLBbQr9//ILfa9cIoLy4ALKsVIyYoI+mVYFsqN4tUBh/cxCYAvTMVi0nrhJf7OfhmbYR7lcsh08tWoRaJM+JIpHo65MxOAc4jrdcLkjQaSpWZXBK341VuLojxEmGybqiMCTQtUWR1nhxBmpPjnD3yL1ERnQIqjnEgn15hYrkaotDfhevw/qSTJ0wAM0mWR7RA3U5mO7gzFQ0m9SIe0W1GL2eLxRRQvbjZuCTpKh3NZ7KnQ0wA2lu1WawvZX2Pbi7yqZNuVeU1sKQDvvh6QxqolnuYavgnL9HyWPlvhEZIkO923bcxnNRF5Wu3trAQCMA0EmfIka4ofmuSrHTpuu/EML41A5hKOqkjzWQebaj92gv+L1it2rUa7zJUxEtwjsOtdgwOhgZLaQejDA+8K9vQMlHypRR8FS8SBkH3Gu9eL+HzAbBFFEn6eifsZNMoUvohb+E/3NJxqvPErAPq8DvbLtGfI5r0HMyf2JIq3/W4=
+    - secure: XW3LVKAqdyRdl7jxJDYT3OAgvIfeP3AHlA1YmI1BTV63aeLJ9Ee2DqPSkhIfbKyMG8c4LnnY02L1UZs2m9N4yHjF/BaG13XLJWNaYwtXvWaW/qxB1YhUlskgDnyXZjuD9hM29SdZBy5KA/ev5vVQ92bTyh2NShWhKxcTfCzXfDOclZkTe7OmMwAhAMA4ELcCrA/7YqFuj8aXGvOcXywj/wMdwFMOdPz9pqAOn3fyt+8XE+qyQZKuOCQmCK1tZrreMC9Elww2hsXdtit8L8TG62Jl+KMIAHNKFJFHyPkdOupGUkdm/xCuMc64XiuVwiLrCXAH5qX03sIZzs4+LtA2qnWy6NeN0Tfz8Nbzwc9R0oi3WZPX03cDSViFLmRPvi7MG/NFo5Po6RkDRdSrbdAReKaW5tatTHMM82AaBMIhbmwrTV53z12HFvzIPrQJG0vX+qPlwsJDBAX4ItPojIjpUGC6GkzdFe9iqxGwstlAsfsKThHDtTeY25Y6/8F9rDyAGXpJjAgz32ACsV25zzdLbem53qxu34X6Avj87yxiHanxWq4Z6q2q9L4a6MiQxRCDNZY9AqYybRfdXMIZJh+PW/0IXb//OUy3shVJ0P1uUk1ui41u3a+3DPQQQFrGJMyxjTXOKo1BL5IcUzyX3/e2w/PaC/Xbu/QqkFk9Fu4Yw2E=
+
 deploy:
-- provider: script
-  script: "./gradlew bintrayUpload --info"
-  skip_cleanup: true
-  on:
-    tags: true
-- provider: releases
-  api_key:
-    secure: HQBmUNGeBqH0gcFeEojBOV60r4S6pCrPcu9dEDkY2MokHv34oyhnX/IB2Sb0xqCZIL59llcC05oirRtloOYjMcMBxbOrVEA3AiM/3YVZXgrsVPXnbX0e7w6zoEaLHcsIYxWe9SiiZs7kxPz949Tmrc0EAeHvln0Inm95eDiZPbI7eimxOzAcr84TRrVLSFnHjIYBjfTdkX6A552Oy3LLsqCFBnpPj2IfPV1AZ3gHrYfNiZ5LLECuuFYItygqyvUCPyTBVVU42gVaTBXatz8+/nZ9ETRYiiVTZ8g2jH72pHdQwoMZHK3w9WLX6UmcJBU1lRmKgHFO9zXuTMG+rWLmLebnildQx+nNJyDlGeGN2FZJogoAugfQdmHOktEvlNghFaUe7H9/irZ/8M+EXD1BQj+hQHGrijphqiyVZECB9oFXX2YHjRri9My791cQ8ojqI9Md2QUTG/9qTIC9Rju4ulJ7mIcfMDCVTmQiz73Z2R6lXlFRcoNwnY7LoYzZEOdFTm9Pp7LwUgzBDAr5fFfox0e1ynytemjulbdzbc88C0DZNt7MKFHsMn9dUgLQA/582y6K2Jdwpy7rRlFzCBFv6VCFHDi8EuwjpcirN/oguNPEjaLpe1QauD7FgUoEcx02aYP0C2bnE1GIBlQgsswogEbHvdFMWJiR/hg78cbJ98k=
-  file_glob: true
-  file: build/libs/send-letter-client-*.jar
-  skip_cleanup: true
-  on:
-    repo: hmcts/send-letter-client
-    tags: true
+  - provider: script
+    script: "./gradlew bintrayUpload --info"
+    skip_cleanup: true
+    on:
+      tags: true
+  - provider: releases
+    api_key:
+      secure: HQBmUNGeBqH0gcFeEojBOV60r4S6pCrPcu9dEDkY2MokHv34oyhnX/IB2Sb0xqCZIL59llcC05oirRtloOYjMcMBxbOrVEA3AiM/3YVZXgrsVPXnbX0e7w6zoEaLHcsIYxWe9SiiZs7kxPz949Tmrc0EAeHvln0Inm95eDiZPbI7eimxOzAcr84TRrVLSFnHjIYBjfTdkX6A552Oy3LLsqCFBnpPj2IfPV1AZ3gHrYfNiZ5LLECuuFYItygqyvUCPyTBVVU42gVaTBXatz8+/nZ9ETRYiiVTZ8g2jH72pHdQwoMZHK3w9WLX6UmcJBU1lRmKgHFO9zXuTMG+rWLmLebnildQx+nNJyDlGeGN2FZJogoAugfQdmHOktEvlNghFaUe7H9/irZ/8M+EXD1BQj+hQHGrijphqiyVZECB9oFXX2YHjRri9My791cQ8ojqI9Md2QUTG/9qTIC9Rju4ulJ7mIcfMDCVTmQiz73Z2R6lXlFRcoNwnY7LoYzZEOdFTm9Pp7LwUgzBDAr5fFfox0e1ynytemjulbdzbc88C0DZNt7MKFHsMn9dUgLQA/582y6K2Jdwpy7rRlFzCBFv6VCFHDi8EuwjpcirN/oguNPEjaLpe1QauD7FgUoEcx02aYP0C2bnE1GIBlQgsswogEbHvdFMWJiR/hg78cbJ98k=
+    file_glob: true
+    file: build/libs/send-letter-client-*.jar
+    skip_cleanup: true
+    on:
+      repo: hmcts/send-letter-client
+      tags: true
