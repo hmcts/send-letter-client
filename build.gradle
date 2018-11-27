@@ -1,5 +1,6 @@
 plugins {
     id 'checkstyle'
+    id 'jacoco'
     id 'io.spring.dependency-management' version '1.0.6.RELEASE'
     id 'org.springframework.boot' version '2.0.6.RELEASE'
     id 'org.owasp.dependencycheck' version '4.0.0'
@@ -59,6 +60,15 @@ tasks.withType(JavaCompile) {
 task integration(type: Test, description: 'Runs the integration tests.', group: 'Verification') {
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
+}
+
+jacocoTestReport {
+    executionData(test, integration)
+    reports {
+        xml.enabled = true
+        csv.enabled = false
+        xml.destination = file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+    }
 }
 
 repositories {
