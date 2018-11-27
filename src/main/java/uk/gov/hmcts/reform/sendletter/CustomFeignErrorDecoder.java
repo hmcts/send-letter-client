@@ -32,11 +32,11 @@ public class CustomFeignErrorDecoder implements ErrorDecoder {
             throw new RuntimeException("Failed to process response body.", e);
         }
 
-        if (response.status() >= 400 && response.status() <= 499) {
+        if (statusCode.is4xxClientError()) {
             return new HttpClientErrorException(statusCode, statusText, responseHeaders, responseBody, null);
         }
 
-        if (response.status() >= 500 && response.status() <= 599) {
+        if (statusCode.is5xxServerError()) {
             return new HttpServerErrorException(statusCode, statusText, responseHeaders, responseBody, null);
         }
 
