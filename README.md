@@ -1,6 +1,6 @@
 # send-letter-client
 
-This is the client library for the [send-letter-producer](https://github.com/hmcts/send-letter-producer-service) microservice.
+This is the client library for the [send-letter-service](https://github.com/hmcts/send-letter-service) microservice.
 
 
 ## Getting started
