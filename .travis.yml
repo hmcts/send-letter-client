@@ -29,3 +29,10 @@ deploy:
     on:
       repo: hmcts/send-letter-client
       tags: true
+
+script:
+  - ./gradlew test
+  - ./gradlew integration
+
+after_success:
+  - ./gradlew jacocoTestReport
