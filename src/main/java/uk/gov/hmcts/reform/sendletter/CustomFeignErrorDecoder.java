@@ -28,7 +28,7 @@ public class CustomFeignErrorDecoder implements ErrorDecoder {
 
         try (InputStream body = response.body().asInputStream()) {
             responseBody = IOUtils.toByteArray(body);
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             throw new RuntimeException("Failed to process response body.", e);
         }
 

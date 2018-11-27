@@ -131,6 +131,7 @@ bintray {
 }
 
 ext {
+    junitVersion = '5.3.1'
     githubFeignVersion = '9.5.1'
 }
 
@@ -163,6 +164,18 @@ dependencies {
     compile group: 'io.github.openfeign', name: 'feign-jackson', version: githubFeignVersion
 
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
+
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junitVersion
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: junitVersion
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: junitVersion
+
+    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.11.1'
+    testCompile group: 'org.mockito', name: 'junit-jupiter', version: '2.20.0'
+}
+
+test {
+    useJUnitPlatform()
+    failFast = true
 }
 
 bootJar {
