@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.sendletter;
 
+import feign.FeignException;
 import feign.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -81,6 +82,21 @@ public class CustomFeignErrorDecoderTest {
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("Failed to process response body.")
                 .hasCauseInstanceOf(IOException.class);
+    }
+
+    @DisplayName("Should decode valid response in case somehow it got in the process")
+    @Test
+    public void testOtherResponse() {
+        Response response = Response.builder()
+                .headers(Collections.emptyMap())
+                .status(HttpStatus.TEMPORARY_REDIRECT.value())
+                .reason("nope")
+                .body("grumps".getBytes())
+                .build();
+
+        assertThat(decode(response))
+                .isInstanceOf(FeignException.class)
+                .hasMessage("status " + HttpStatus.TEMPORARY_REDIRECT.value() + " reading methodKey; content:\ngrumps");
     }
 
     private Exception decode(Response response) {
