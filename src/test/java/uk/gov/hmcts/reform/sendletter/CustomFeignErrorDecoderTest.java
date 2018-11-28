@@ -52,21 +52,6 @@ public class CustomFeignErrorDecoderTest {
 
     @DisplayName("Should fail to parse body and throw RuntimeException instead")
     @Test
-    public void testEmptyBodyParsing() {
-        Response response = Response.builder()
-                .headers(Collections.emptyMap())
-                .status(HttpStatus.BAD_REQUEST.value())
-                .reason("bad")
-                .build();
-
-        assertThatCode(() -> decode(response))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("Failed to process response body.")
-                .hasCauseInstanceOf(NullPointerException.class);
-    }
-
-    @DisplayName("Should fail to parse body and throw RuntimeException instead")
-    @Test
     public void testFailingBodyParsing() throws IOException {
         Response.Body body = mock(Response.Body.class);
         Response response = Response.builder()

@@ -24,12 +24,14 @@ public class CustomFeignErrorDecoder implements ErrorDecoder {
         HttpStatus statusCode = HttpStatus.valueOf(response.status());
         String statusText = response.reason();
 
-        byte[] responseBody;
+        byte[] responseBody = null;
 
-        try (InputStream body = response.body().asInputStream()) {
-            responseBody = IOUtils.toByteArray(body);
-        } catch (IOException | NullPointerException e) {
-            throw new RuntimeException("Failed to process response body.", e);
+        if (response.body() != null) {
+            try (InputStream body = response.body().asInputStream()) {
+                responseBody = IOUtils.toByteArray(body);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to process response body.", e);
+            }
         }
 
         if (statusCode.is4xxClientError()) {
