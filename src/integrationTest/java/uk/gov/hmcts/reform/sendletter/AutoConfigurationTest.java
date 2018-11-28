@@ -22,13 +22,13 @@ public class AutoConfigurationTest {
 
     @DisplayName("Should have HealthApi configured")
     @Test
-    public void noHealthCheck() {
+    public void haveHealthCheck() {
         assertThat(context.containsBeanDefinition(SendLetterHealthApi.class.getCanonicalName())).isTrue();
     }
 
     @DisplayName("Should have Api configured")
     @Test
-    public void noApi() {
+    public void haveApi() {
         assertThat(context.containsBeanDefinition(SendLetterApi.class.getCanonicalName())).isTrue();
         assertThat(context.containsBeanDefinition(SendLetterAutoConfiguration.class.getCanonicalName())).isTrue();
     }
