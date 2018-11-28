@@ -9,38 +9,39 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
-
 
 public class CustomFeignErrorDecoder implements ErrorDecoder {
     private ErrorDecoder delegate = new ErrorDecoder.Default();
 
     @Override
     public Exception decode(String methodKey, Response response) {
-
         HttpHeaders responseHeaders = new HttpHeaders();
-        response.headers().entrySet().stream()
-                .forEach(entry -> responseHeaders.put(entry.getKey(), new ArrayList<>(entry.getValue())));
+        response.headers()
+                .forEach((key, value) -> responseHeaders.put(key, new ArrayList<>(value)));
 
         HttpStatus statusCode = HttpStatus.valueOf(response.status());
         String statusText = response.reason();
 
-        byte[] responseBody;
-        try {
-            responseBody = IOUtils.toByteArray(response.body().asInputStream());
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to process response body.", e);
+        byte[] responseBody = null;
+
+        if (response.body() != null) {
+            try (InputStream body = response.body().asInputStream()) {
+                responseBody = IOUtils.toByteArray(body);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to process response body.", e);
+            }
         }
 
-        if (response.status() >= 400 && response.status() <= 499) {
+        if (statusCode.is4xxClientError()) {
             return new HttpClientErrorException(statusCode, statusText, responseHeaders, responseBody, null);
         }
 
-        if (response.status() >= 500 && response.status() <= 599) {
+        if (statusCode.is5xxServerError()) {
             return new HttpServerErrorException(statusCode, statusText, responseHeaders, responseBody, null);
         }
 
         return delegate.decode(methodKey, response);
     }
-
 }

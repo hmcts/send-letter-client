@@ -1,5 +1,6 @@
 plugins {
     id 'checkstyle'
+    id 'jacoco'
     id 'io.spring.dependency-management' version '1.0.6.RELEASE'
     id 'org.springframework.boot' version '2.0.6.RELEASE'
     id 'org.owasp.dependencycheck' version '4.0.0'
@@ -41,12 +42,33 @@ dependencyCheck {
 
 sourceCompatibility = 1.8
 
-compileJava {
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/integrationTest/java')
+        }
+        resources.srcDir file('src/integrationTest/resources')
+    }
+}
+
+tasks.withType(JavaCompile) {
     options.compilerArgs << '-parameters' << '-Xlint:deprecation'
 }
 
-compileTestJava {
-    options.compilerArgs << '-Xlint:deprecation'
+task integration(type: Test, description: 'Runs the integration tests.', group: 'Verification') {
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+}
+
+jacocoTestReport {
+    executionData(test, integration)
+    reports {
+        xml.enabled = true
+        csv.enabled = false
+        xml.destination = file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+    }
 }
 
 repositories {
@@ -131,6 +153,7 @@ bintray {
 }
 
 ext {
+    junitVersion = '5.3.1'
     githubFeignVersion = '9.5.1'
 }
 
@@ -163,6 +186,27 @@ dependencies {
     compile group: 'io.github.openfeign', name: 'feign-jackson', version: githubFeignVersion
 
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
+
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junitVersion
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: junitVersion
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: junitVersion
+
+    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.11.1'
+    testCompile group: 'org.mockito', name: 'junit-jupiter', version: '2.20.0'
+
+    integrationTestCompile sourceSets.main.runtimeClasspath
+    integrationTestCompile sourceSets.test.runtimeClasspath
+    integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+    failFast = true
+}
+
+integration {
+    useJUnitPlatform()
+    failFast = true
 }
 
 bootJar {
