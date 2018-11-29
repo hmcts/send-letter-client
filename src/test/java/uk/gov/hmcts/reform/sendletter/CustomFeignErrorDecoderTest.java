@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.sendletter;
 
 import feign.FeignException;
+import feign.Request;
 import feign.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,10 +21,18 @@ public class CustomFeignErrorDecoderTest {
 
     private static final CustomFeignErrorDecoder DECODER = new CustomFeignErrorDecoder();
 
+    private static final Request REQUEST = Request.create(
+            Request.HttpMethod.GET,
+            "localhost",
+            Collections.emptyMap(),
+            null
+    );
+
     @DisplayName("Should parse response and return Client specific exception")
     @Test
     public void testClientException() {
         Response response = Response.builder()
+                .request(REQUEST)
                 .headers(Collections.singletonMap("AcceptTest", Collections.singletonList("Yes")))
                 .status(HttpStatus.NOT_FOUND.value())
                 .reason("Could not find")
@@ -39,6 +48,7 @@ public class CustomFeignErrorDecoderTest {
     @Test
     public void testServerException() {
         Response response = Response.builder()
+                .request(REQUEST)
                 .headers(Collections.emptyMap())
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .reason("oh no")
@@ -55,6 +65,7 @@ public class CustomFeignErrorDecoderTest {
     public void testFailingBodyParsing() throws IOException {
         Response.Body body = mock(Response.Body.class);
         Response response = Response.builder()
+                .request(REQUEST)
                 .headers(Collections.emptyMap())
                 .status(HttpStatus.BAD_REQUEST.value())
                 .reason("bad")
@@ -73,6 +84,7 @@ public class CustomFeignErrorDecoderTest {
     @Test
     public void testOtherResponse() {
         Response response = Response.builder()
+                .request(REQUEST)
                 .headers(Collections.emptyMap())
                 .status(HttpStatus.TEMPORARY_REDIRECT.value())
                 .reason("nope")
@@ -81,7 +93,7 @@ public class CustomFeignErrorDecoderTest {
 
         assertThat(decode(response))
                 .isInstanceOf(FeignException.class)
-                .hasMessage("status " + HttpStatus.TEMPORARY_REDIRECT.value() + " reading methodKey; content:\ngrumps");
+                .hasMessage("status " + HttpStatus.TEMPORARY_REDIRECT.value() + " reading methodKey");
     }
 
     private Exception decode(Response response) {

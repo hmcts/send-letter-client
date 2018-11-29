@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.1.xsd">
     <suppress>
-        <notes><![CDATA[Newer version not available.]]></notes>
-        <gav regex="true">^io\.micrometer\:micrometer-core:1\.0\.7$</gav>
-        <cve>CVE-2006-0477</cve>
-        <cve>CVE-2008-5516</cve>
-        <cve>CVE-2010-2542</cve>
-        <cve>CVE-2010-3906</cve>
-        <cve>CVE-2013-0308</cve>
-        <cve>CVE-2014-9938</cve>
-        <cve>CVE-2015-7082</cve>
-        <cve>CVE-2015-7545</cve>
-        <cve>CVE-2017-14867</cve>
+        <notes><![CDATA[Newer version also consists of same errors. Keeping align with Spring declaration]]></notes>
+        <gav regex="true">^org\.springframework\.security:spring-security-rsa:1\.0\.7\.RELEASE$</gav>
+        <cve>CVE-2011-2731</cve>
+        <cve>CVE-2011-2732</cve>
+        <cve>CVE-2012-5055</cve>
+        <cve>CVE-2018-1260</cve>
     </suppress>
 </suppressions>
