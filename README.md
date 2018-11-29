@@ -1,19 +1,23 @@
-# send-letter-client
+[![Build Status](https://travis-ci.org/hmcts/send-letter-client.svg?branch=master)](https://travis-ci.org/hmcts/send-letter-client)
+[![Download](https://api.bintray.com/packages/hmcts/hmcts-maven/send-letter-client/images/download.svg) ](https://bintray.com/hmcts/hmcts-maven/send-letter-client/_latestVersion)
 
-This is the client library for the [send-letter-service](https://github.com/hmcts/send-letter-service) microservice.
+# Send Letter Client
 
+This is the client library for the [send-letter-service](https://github.com/hmcts/send-letter-service) aka Bulk Printing microservice.
 
 ## Getting started
 
 ### Prerequisites
 
 - [JDK 8](https://www.oracle.com/java)
+- Project requires Spring Boot v2.0 to be present
 
 ## Usage
 
 Just include the library as your dependency and you will be to use the client class. Health check for send-letter-producer is provided as well.
 
 Components provided by this library will get automatically configured in a Spring context if `send-letter.url` configuration property is defined and does not equal `false`.
+False would disable the auto configuration of the API.
 
 ### Building
 
@@ -43,4 +47,4 @@ For the versions available, see the tags on this repository.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details.
