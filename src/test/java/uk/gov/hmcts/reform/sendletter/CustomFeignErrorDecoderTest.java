@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 public class CustomFeignErrorDecoderTest {
 
@@ -50,14 +51,13 @@ public class CustomFeignErrorDecoderTest {
         Response response = Response.builder()
                 .request(REQUEST)
                 .headers(Collections.emptyMap())
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .reason("oh no")
+                .status(INTERNAL_SERVER_ERROR.value())
                 .body("some body".getBytes())
                 .build();
 
         assertThat(decode(response))
                 .isInstanceOf(HttpServerErrorException.class)
-                .hasMessage(HttpStatus.INTERNAL_SERVER_ERROR.value() + " oh no");
+                .hasMessage(INTERNAL_SERVER_ERROR.value() + " " + INTERNAL_SERVER_ERROR.getReasonPhrase());
     }
 
     @DisplayName("Should fail to parse body and throw RuntimeException instead")

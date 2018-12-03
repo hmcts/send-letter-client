@@ -11,6 +11,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class CustomFeignErrorDecoder implements ErrorDecoder {
     private ErrorDecoder delegate = new ErrorDecoder.Default();
@@ -22,7 +23,7 @@ public class CustomFeignErrorDecoder implements ErrorDecoder {
                 .forEach((key, value) -> responseHeaders.put(key, new ArrayList<>(value)));
 
         HttpStatus statusCode = HttpStatus.valueOf(response.status());
-        String statusText = response.reason();
+        String statusText = Optional.ofNullable(response.reason()).orElse(statusCode.getReasonPhrase());
 
         byte[] responseBody = null;
 
