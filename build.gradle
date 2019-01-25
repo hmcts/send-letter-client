@@ -2,8 +2,8 @@ plugins {
     id 'checkstyle'
     id 'jacoco'
     id 'io.spring.dependency-management' version '1.0.6.RELEASE'
-    id 'org.springframework.boot' version '2.0.6.RELEASE'
-    id 'org.owasp.dependencycheck' version '4.0.0'
+    id 'org.springframework.boot' version '2.1.2.RELEASE'
+    id 'org.owasp.dependencycheck' version '4.0.2'
     id 'com.jfrog.bintray' version '1.8.4'
     id 'java-library'
     id 'maven'
@@ -12,7 +12,7 @@ plugins {
 }
 
 group 'uk.gov.hmcts.reform'
-version '2.1.2'
+version '2.2.0'
 
 checkstyle {
     maxWarnings = 0
@@ -153,35 +153,21 @@ bintray {
 }
 
 ext {
-    junitVersion = '5.3.1'
-    githubFeignVersion = '9.5.1'
+    junitVersion = '5.3.2'
+    githubFeignVersion = '10.1.0'
 }
 
 dependencyManagement {
     dependencies {
-        // align with selected version
-        dependencySet(group: 'io.github.openfeign', version: githubFeignVersion) {
-            entry 'feign-hystrix'
-            entry 'feign-java8'
-            entry 'feign-slf4j'
-        }
-        // version jump from 3.3.0
-        dependencySet(group: 'io.github.openfeign.form', version: '3.4.1') {
-            entry 'feign-form-spring'
-        }
         dependencySet(group: 'com.google.guava', version: '27.0.1-jre') {
             entry 'guava'
-        }
-        // version jump from 0.6.6
-        dependencySet(group: 'com.netflix.archaius', version: '0.7.6') {
-            entry 'archaius-core'
         }
     }
 }
 
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.0.2.RELEASE'
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.1.0.RELEASE'
 
     compile group: 'io.github.openfeign', name: 'feign-jackson', version: githubFeignVersion
 
