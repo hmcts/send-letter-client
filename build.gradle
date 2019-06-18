@@ -153,7 +153,7 @@ bintray {
 }
 
 ext {
-    junitVersion = '5.3.2'
+    junitVersion = '5.4.2'
     githubFeignVersion = '10.2.3'
 }
 
@@ -177,26 +177,27 @@ dependencies {
 
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
 
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junitVersion
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: junitVersion
-    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: junitVersion
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: junitVersion
 
     testCompile group: 'org.assertj', name: 'assertj-core', version: '3.11.1'
     testCompile group: 'org.mockito', name: 'junit-jupiter', version: '2.20.0'
 
+    integrationTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: junitVersion
+
     integrationTestCompile sourceSets.main.runtimeClasspath
     integrationTestCompile sourceSets.test.runtimeClasspath
-    integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
+        exclude group: 'junit', module: 'junit'
+    }
 }
 
-test {
+tasks.withType(Test) {
     useJUnitPlatform()
     failFast = true
-}
 
-integration {
-    useJUnitPlatform()
-    failFast = true
+    testLogging {
+        exceptionFormat = 'full'
+    }
 }
 
 bootJar {
