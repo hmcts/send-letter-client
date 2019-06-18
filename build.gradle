@@ -3,7 +3,7 @@ plugins {
     id 'jacoco'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'org.springframework.boot' version '2.1.5.RELEASE'
-    id 'org.owasp.dependencycheck' version '4.0.2'
+    id 'org.owasp.dependencycheck' version '5.0.0'
     id 'com.jfrog.bintray' version '1.8.4'
     id 'java-library'
     id 'maven'
@@ -100,12 +100,12 @@ def pomConfig = {
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
+    archiveClassifier.set('sources')
     from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    archiveClassifier.set('javadoc')
     from javadoc.destinationDir
 }
 
@@ -153,7 +153,6 @@ bintray {
 }
 
 ext {
-    junitVersion = '5.3.2'
     githubFeignVersion = '10.2.3'
 }
 
@@ -170,33 +169,31 @@ dependencyManagement {
 }
 
 dependencies {
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.1.1.RELEASE'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.1.1.RELEASE'
 
-    compile group: 'io.github.openfeign', name: 'feign-jackson', version: githubFeignVersion
+    implementation group: 'io.github.openfeign', name: 'feign-jackson', version: githubFeignVersion
 
-    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
 
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junitVersion
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: junitVersion
-    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: junitVersion
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.4.2'
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.12.2'
+    testImplementation group: 'org.mockito', name: 'junit-jupiter', version: '2.20.0'
 
-    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.11.1'
-    testCompile group: 'org.mockito', name: 'junit-jupiter', version: '2.20.0'
-
-    integrationTestCompile sourceSets.main.runtimeClasspath
-    integrationTestCompile sourceSets.test.runtimeClasspath
-    integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    integrationTestImplementation sourceSets.main.runtimeClasspath
+    integrationTestImplementation sourceSets.test.runtimeClasspath
+    integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
+        exclude group: 'junit', module: 'junit'
+    }
 }
 
-test {
+tasks.withType(Test) {
     useJUnitPlatform()
     failFast = true
-}
 
-integration {
-    useJUnitPlatform()
-    failFast = true
+    testLogging {
+        exceptionFormat = 'full'
+    }
 }
 
 bootJar {
