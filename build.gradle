@@ -16,7 +16,7 @@ version '2.2.0'
 
 checkstyle {
     maxWarnings = 0
-    toolVersion = '8.14'
+    toolVersion = '8.21'
 }
 
 dependencyUpdates.resolutionStrategy = {
