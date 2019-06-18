@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/hmcts/send-letter-client.svg?branch=master)](https://travis-ci.org/hmcts/send-letter-client)
+[![codecov](https://codecov.io/gh/hmcts/send-letter-client/branch/master/graph/badge.svg)](https://codecov.io/gh/hmcts/send-letter-client)
 [![Download](https://api.bintray.com/packages/hmcts/hmcts-maven/send-letter-client/images/download.svg) ](https://bintray.com/hmcts/hmcts-maven/send-letter-client/_latestVersion)
 
 # Send Letter Client
