@@ -179,7 +179,7 @@ dependencies {
 
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: junitVersion
 
-    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.11.1'
+    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.12.2'
     testCompile group: 'org.mockito', name: 'junit-jupiter', version: '2.20.0'
 
     integrationTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: junitVersion
