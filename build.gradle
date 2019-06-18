@@ -153,7 +153,6 @@ bintray {
 }
 
 ext {
-    junitVersion = '5.4.2'
     githubFeignVersion = '10.2.3'
 }
 
@@ -170,23 +169,20 @@ dependencyManagement {
 }
 
 dependencies {
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.1.1.RELEASE'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.1.1.RELEASE'
 
-    compile group: 'io.github.openfeign', name: 'feign-jackson', version: githubFeignVersion
+    implementation group: 'io.github.openfeign', name: 'feign-jackson', version: githubFeignVersion
 
-    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
 
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: junitVersion
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.4.2'
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.12.2'
+    testImplementation group: 'org.mockito', name: 'junit-jupiter', version: '2.20.0'
 
-    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.12.2'
-    testCompile group: 'org.mockito', name: 'junit-jupiter', version: '2.20.0'
-
-    integrationTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: junitVersion
-
-    integrationTestCompile sourceSets.main.runtimeClasspath
-    integrationTestCompile sourceSets.test.runtimeClasspath
-    integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
+    integrationTestImplementation sourceSets.main.runtimeClasspath
+    integrationTestImplementation sourceSets.test.runtimeClasspath
+    integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
         exclude group: 'junit', module: 'junit'
     }
 }
