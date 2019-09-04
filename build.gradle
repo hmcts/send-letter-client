@@ -163,6 +163,10 @@ dependencyManagement {
         dependencySet(group: 'com.fasterxml.jackson.core', version: '2.9.9.3') {
             entry 'jackson-databind'
         }
+        dependencySet(group: 'io.github.openfeign', version: '10.4.0') {
+            entry 'feign-hystrix'
+            entry 'feign-slf4j'
+        }
     }
 }
 
