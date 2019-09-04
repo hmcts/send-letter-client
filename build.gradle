@@ -157,7 +157,7 @@ bintray {
 
 dependencyManagement {
     dependencies {
-        dependencySet(group: 'com.google.guava', version: '27.0.1-jre') {
+        dependencySet(group: 'com.google.guava', version: '28.1-jre') {
             entry 'guava'
         }
         dependencySet(group: 'com.fasterxml.jackson.core', version: '2.9.9') {
