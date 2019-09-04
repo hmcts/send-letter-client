@@ -155,10 +155,6 @@ bintray {
     }
 }
 
-ext {
-    githubFeignVersion = '10.2.3'
-}
-
 dependencyManagement {
     dependencies {
         dependencySet(group: 'com.google.guava', version: '27.0.1-jre') {
@@ -175,7 +171,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.1.2.RELEASE'
 
-    implementation group: 'io.github.openfeign', name: 'feign-jackson', version: githubFeignVersion
+    implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '10.4.0'
 
     implementation group: 'commons-io', name: 'commons-io', version: '2.6'
 
