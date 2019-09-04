@@ -2,7 +2,7 @@ plugins {
     id 'checkstyle'
     id 'jacoco'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
-    id 'org.springframework.boot' version '2.1.5.RELEASE'
+    id 'org.springframework.boot' version '2.1.7.RELEASE'
     id 'org.owasp.dependencycheck' version '5.2.1'
     id 'com.jfrog.bintray' version '1.8.4'
     id 'java-library'
@@ -155,27 +155,26 @@ bintray {
     }
 }
 
-ext {
-    githubFeignVersion = '10.2.3'
-}
-
 dependencyManagement {
     dependencies {
-        dependencySet(group: 'com.google.guava', version: '27.0.1-jre') {
+        dependencySet(group: 'com.google.guava', version: '28.1-jre') {
             entry 'guava'
         }
-        dependencySet(group: 'com.fasterxml.jackson.core', version: '2.9.9') {
-            entry 'jackson-core'
+        dependencySet(group: 'com.fasterxml.jackson.core', version: '2.9.9.3') {
             entry 'jackson-databind'
+        }
+        dependencySet(group: 'io.github.openfeign', version: '10.4.0') {
+            entry 'feign-hystrix'
+            entry 'feign-slf4j'
         }
     }
 }
 
 dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.1.1.RELEASE'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.1.2.RELEASE'
 
-    implementation group: 'io.github.openfeign', name: 'feign-jackson', version: githubFeignVersion
+    implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '10.4.0'
 
     implementation group: 'commons-io', name: 'commons-io', version: '2.6'
 
