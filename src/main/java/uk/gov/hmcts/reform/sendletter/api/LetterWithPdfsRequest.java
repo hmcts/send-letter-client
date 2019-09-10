@@ -9,12 +9,12 @@ public class LetterWithPdfsRequest {
 
     private final String type;
 
-    private final List<String> documents;
+    public final List<byte[]> documents;
 
     @JsonProperty("additional_data")
     private final Map<String, Object> additionalData;
 
-    public LetterWithPdfsRequest(List<String> documents, String type, Map<String, Object> additionalData) {
+    public LetterWithPdfsRequest(List<byte[]> documents, String type, Map<String, Object> additionalData) {
         this.documents = documents;
         this.type = type;
         this.additionalData = additionalData;
@@ -28,7 +28,7 @@ public class LetterWithPdfsRequest {
         return this.additionalData;
     }
 
-    public List<String> getDocuments() {
+    public List<byte[]> getDocuments() {
         return documents;
     }
 }
