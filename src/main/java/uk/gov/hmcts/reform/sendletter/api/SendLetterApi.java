@@ -36,6 +36,16 @@ public interface SendLetterApi {
         @RequestBody LetterWithPdfsRequest letter
     );
 
+    @PostMapping(
+        path = "/letters",
+        consumes = "application/vnd.uk.gov.hmcts.letter-service.in.letter.v3+json",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    SendLetterResponse sendLetter(
+        @RequestHeader(name = "ServiceAuthorization", required = false) String serviceAuthHeader,
+        @RequestBody uk.gov.hmcts.reform.sendletter.api.model.v3.Letter letter
+    );
+
     class SendLetterConfiguration {
         @Bean
         Decoder feignDecoder(ObjectMapper objectMapper) {
