@@ -11,8 +11,10 @@ plugins {
     id 'com.github.ben-manes.versions' version '0.27.0'
 }
 
+def buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?: "DEV-SNAPSHOT"
+
 group 'uk.gov.hmcts.reform'
-version '2.5.0'
+version buildNumber
 
 checkstyle {
     maxWarnings = 0
