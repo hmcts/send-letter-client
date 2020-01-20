@@ -3,6 +3,10 @@
 We're happy to accept 3rd-party contributions. Please make sure you read this document before you do any work though,
 as we have some expectations related to the content and quality of change sets.
 
+## What you should know about this application
+
+This project is an client library for interfacing with the send letter service API.
+
 ## Before contributing
 
 Any ideas on the user journeys and general service experience you may have **should be first consulted
