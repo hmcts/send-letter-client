@@ -26,6 +26,7 @@ public class CustomFeignErrorDecoderTest {
             Request.HttpMethod.GET,
             "localhost",
             Collections.emptyMap(),
+            Request.Body.create(new byte[0]),
             null
     );
 
@@ -93,7 +94,8 @@ public class CustomFeignErrorDecoderTest {
 
         assertThat(decode(response))
                 .isInstanceOf(FeignException.class)
-                .hasMessage("status " + HttpStatus.TEMPORARY_REDIRECT.value() + " reading methodKey");
+                .hasMessage("[" + HttpStatus.TEMPORARY_REDIRECT.value()
+                    + " nope] during [GET] to [localhost] [methodKey]: [grumps]");
     }
 
     private Exception decode(Response response) {
