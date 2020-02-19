@@ -2,19 +2,26 @@ package uk.gov.hmcts.reform.sendletter;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
 import uk.gov.hmcts.reform.sendletter.healthcheck.SendLetterHealthApi;
+import uk.gov.hmcts.reform.sendletter.healthcheck.SendLetterHealthIndicator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(properties = {
+@EnableAutoConfiguration
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(
+    classes = SendLetterAutoConfiguration.class,
+    properties = {
         "send-letter.url=false"
-})
-@SpringJUnitConfig
+    }
+)
 public class NoAutoConfigurationTest {
 
     @Autowired
@@ -23,13 +30,14 @@ public class NoAutoConfigurationTest {
     @DisplayName("Should not have HealthApi configured")
     @Test
     public void noHealthCheck() {
-        assertThat(context.containsBeanDefinition(SendLetterHealthApi.class.getCanonicalName())).isFalse();
+        assertThat(context.getBeanNamesForType(SendLetterHealthApi.class)).hasSize(0);
+        assertThat(context.getBeanNamesForType(SendLetterHealthIndicator.class)).hasSize(0);
     }
 
     @DisplayName("Should not have Api configured")
     @Test
     public void noApi() {
-        assertThat(context.containsBeanDefinition(SendLetterApi.class.getCanonicalName())).isFalse();
-        assertThat(context.containsBeanDefinition(SendLetterAutoConfiguration.class.getCanonicalName())).isFalse();
+        assertThat(context.getBeanNamesForType(SendLetterApi.class)).hasSize(0);
+        assertThat(context.getBeanNamesForType(SendLetterAutoConfiguration.class)).hasSize(0);
     }
 }
