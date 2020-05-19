@@ -6,5 +6,6 @@
         <gav regex="true">^org\.springframework\.security:spring-security-crypto:5\.2\.1\.RELEASE$</gav>
         <cve>CVE-2018-1258</cve>
         <cve>CVE-2020-5407</cve>
+        <cve>CVE-2020-5408</cve>
     </suppress>
 </suppressions>
