@@ -1,8 +1,10 @@
-package api;
+package uk.gov.hmcts.reform.sendletter.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -13,19 +15,11 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.sendletter.SendLetterAutoConfiguration;
-import uk.gov.hmcts.reform.sendletter.api.Letter;
-import uk.gov.hmcts.reform.sendletter.api.LetterWithPdfsRequest;
-import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
-import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
 
 import java.util.Collections;
 import java.util.UUID;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @EnableAutoConfiguration
@@ -48,7 +42,7 @@ public class SendLetterApiTest {
 
     @BeforeAll
     public void spinUp() {
-        wireMockServer = new WireMockServer(options().port(6400));
+        wireMockServer = new WireMockServer(WireMockConfiguration.options().port(6400));
         wireMockServer.start();
     }
 
@@ -61,8 +55,8 @@ public class SendLetterApiTest {
     public void testSendLetter() throws JsonProcessingException {
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         String responseJson = mapper.writeValueAsString(sendLetterResponse);
-        wireMockServer.stubFor(post(urlPathMatching("/letters"))
-                .willReturn(aResponse().withStatus(200).withBody(responseJson)));
+        wireMockServer.stubFor(WireMock.post(WireMock.urlPathMatching("/letters"))
+                .willReturn(WireMock.aResponse().withStatus(200).withBody(responseJson)));
         SendLetterResponse response = sendLetterApi.sendLetter("serviceAuthHeader",
                 new Letter(Collections.emptyList(), "test", Collections.emptyMap()));
         assertThat(response.letterId).isEqualTo(sendLetterResponse.letterId);
@@ -72,8 +66,8 @@ public class SendLetterApiTest {
     public void testSendLetter_v2() throws JsonProcessingException {
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         String responseJson = mapper.writeValueAsString(sendLetterResponse);
-        wireMockServer.stubFor(post(urlPathMatching("/letters"))
-               .willReturn(aResponse().withStatus(200).withBody(responseJson)));
+        wireMockServer.stubFor(WireMock.post(WireMock.urlPathMatching("/letters"))
+               .willReturn(WireMock.aResponse().withStatus(200).withBody(responseJson)));
 
         SendLetterResponse response = sendLetterApi.sendLetter("serviceAuthHeader",
                 new LetterWithPdfsRequest(Collections.emptyList(), "test", Collections.emptyMap()));
@@ -84,8 +78,8 @@ public class SendLetterApiTest {
     public void testSendLetter_v3() throws JsonProcessingException {
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         String responseJson = mapper.writeValueAsString(sendLetterResponse);
-        wireMockServer.stubFor(post(urlPathMatching("/letters"))
-               .willReturn(aResponse().withStatus(200).withBody(responseJson)));
+        wireMockServer.stubFor(WireMock.post(WireMock.urlPathMatching("/letters"))
+               .willReturn(WireMock.aResponse().withStatus(200).withBody(responseJson)));
 
         SendLetterResponse response = sendLetterApi.sendLetter("serviceAuthHeader",
                 new LetterV3("test", Collections.emptyList(), Collections.emptyMap()));
