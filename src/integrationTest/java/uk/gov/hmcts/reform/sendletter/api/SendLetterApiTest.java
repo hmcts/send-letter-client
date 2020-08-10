@@ -7,6 +7,7 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,10 +41,20 @@ public class SendLetterApiTest {
     @Autowired
     private ObjectMapper mapper;
 
+    private SendLetterResponse sendLetterResponse;
+
     @BeforeAll
     public void spinUp() {
         wireMockServer = new WireMockServer(WireMockConfiguration.options().port(6400));
         wireMockServer.start();
+    }
+
+    @BeforeEach
+    public void beforeEach() throws JsonProcessingException {
+        sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
+        String responseJson = mapper.writeValueAsString(sendLetterResponse);
+        wireMockServer.stubFor(WireMock.post(WireMock.urlPathMatching("/letters"))
+                .willReturn(WireMock.aResponse().withStatus(200).withBody(responseJson)));
     }
 
     @AfterAll
@@ -52,35 +63,21 @@ public class SendLetterApiTest {
     }
 
     @Test
-    public void testSendLetter() throws JsonProcessingException {
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
-        String responseJson = mapper.writeValueAsString(sendLetterResponse);
-        wireMockServer.stubFor(WireMock.post(WireMock.urlPathMatching("/letters"))
-                .willReturn(WireMock.aResponse().withStatus(200).withBody(responseJson)));
+    public void testSendLetter() {
         SendLetterResponse response = sendLetterApi.sendLetter("serviceAuthHeader",
                 new Letter(Collections.emptyList(), "test", Collections.emptyMap()));
         assertThat(response.letterId).isEqualTo(sendLetterResponse.letterId);
     }
 
     @Test
-    public void testSendLetter_v2() throws JsonProcessingException {
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
-        String responseJson = mapper.writeValueAsString(sendLetterResponse);
-        wireMockServer.stubFor(WireMock.post(WireMock.urlPathMatching("/letters"))
-               .willReturn(WireMock.aResponse().withStatus(200).withBody(responseJson)));
-
+    public void testSendLetter_v2() {
         SendLetterResponse response = sendLetterApi.sendLetter("serviceAuthHeader",
                 new LetterWithPdfsRequest(Collections.emptyList(), "test", Collections.emptyMap()));
         assertThat(response.letterId).isEqualTo(sendLetterResponse.letterId);
     }
 
     @Test
-    public void testSendLetter_v3() throws JsonProcessingException {
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
-        String responseJson = mapper.writeValueAsString(sendLetterResponse);
-        wireMockServer.stubFor(WireMock.post(WireMock.urlPathMatching("/letters"))
-               .willReturn(WireMock.aResponse().withStatus(200).withBody(responseJson)));
-
+    public void testSendLetter_v3() {
         SendLetterResponse response = sendLetterApi.sendLetter("serviceAuthHeader",
                 new LetterV3("test", Collections.emptyList(), Collections.emptyMap()));
         assertThat(response.letterId).isEqualTo(sendLetterResponse.letterId);
