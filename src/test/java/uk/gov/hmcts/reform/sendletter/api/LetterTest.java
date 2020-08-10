@@ -37,7 +37,16 @@ class LetterTest {
         assertThat(letter).isNotEqualTo(documents);
     }
 
-    @DisplayName("Letter with not matching types are not same")
+    @DisplayName("Letter is not equal null")
+    @Test
+    void testLetterDoesNotMatchNullObject() {
+        List<Document> documents = getDocuments();
+        Letter letter = new Letter(documents, "test");
+        assertThat(letter).isNotEqualTo(documents.get(0));
+        assertThat(letter).isNotEqualTo(documents);
+    }
+
+    @DisplayName("Letter with non matching types are not same")
     @Test
     void testLetterTypesAreNotSame() {
         Letter letterOne = new Letter(getDocuments(), "test");

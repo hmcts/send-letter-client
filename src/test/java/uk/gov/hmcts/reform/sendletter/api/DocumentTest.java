@@ -38,6 +38,14 @@ class DocumentTest {
         assertThat(documentOne).isNotEqualTo(values);
     }
 
+    @DisplayName("Document is not equal null")
+    @Test
+    void testDocumentDoesNotMatchToNullObject() {
+        Map<String, Object> values = null;
+        Document documentOne = new Document("template_1", values);
+        assertThat(documentOne).isNotEqualTo(values);
+    }
+
     @DisplayName("Documents are not equal when templates are different")
     @Test
     void testDocumentsAreNotEqualWhenTemplatesAreDifferent() {
