@@ -16,8 +16,10 @@ class LetterTest {
     @DisplayName("Two Letters are equal")
     @Test
     void testTwoLetterAreEquals() {
-        Letter letterOne = new Letter(getDocuments(), "test");
-        Letter letterTwo = new Letter(getDocuments(), "test");
+        Map<String, Object> additionalData = new HashMap<>();
+        additionalData.put("additionalData", "value");
+        Letter letterOne = new Letter(getDocuments(), "test", additionalData);
+        Letter letterTwo = new Letter(getDocuments(), "test", additionalData);
         assertThat(letterOne).isEqualTo(letterTwo);
     }
 
@@ -42,8 +44,7 @@ class LetterTest {
     void testLetterDoesNotMatchNullObject() {
         List<Document> documents = getDocuments();
         Letter letter = new Letter(documents, "test");
-        assertThat(letter).isNotEqualTo(documents.get(0));
-        assertThat(letter).isNotEqualTo(documents);
+        assertThat(letter).isNotEqualTo(null);
     }
 
     @DisplayName("Letter with non matching types are not same")
