@@ -15,12 +15,26 @@ class LetterTest {
 
     @DisplayName("Two Letters are equal")
     @Test
-    void testTwoLetterAreEquals() {
+    void testTwoLetterAreEqual() {
         Map<String, Object> additionalData = new HashMap<>();
         additionalData.put("additionalData", "value");
         Letter letterOne = new Letter(getDocuments(), "test", additionalData);
         Letter letterTwo = new Letter(getDocuments(), "test", additionalData);
         assertThat(letterOne).isEqualTo(letterTwo);
+    }
+
+    @DisplayName("Two Letters are not equal when additional data differs")
+    @Test
+    void testTwoLetterAreNotEqualWhenAdditionDataDiffer() {
+        Map<String, Object> additionalData = new HashMap<>();
+        additionalData.put("additionalData", "value");
+        Letter letterOne = new Letter(getDocuments(), "test", additionalData);
+
+        Map<String, Object> additionalData2 = new HashMap<>();
+        additionalData2.put("additionalData", "value");
+        additionalData2.put("secondValue", "value2");
+        Letter letterTwo = new Letter(getDocuments(), "test", additionalData2);
+        assertThat(letterOne).isNotEqualTo(letterTwo);
     }
 
     @DisplayName("Same Letter object are equals")
