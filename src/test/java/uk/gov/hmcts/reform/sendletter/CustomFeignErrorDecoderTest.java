@@ -98,6 +98,22 @@ public class CustomFeignErrorDecoderTest {
                     + " nope] during [GET] to [localhost] [methodKey]: [grumps]");
     }
 
+    @DisplayName("Should decode when response body is not present")
+    @Test
+    public void testResponseBodyIsNull() {
+        Response response = Response.builder()
+                .request(REQUEST)
+                .headers(Collections.emptyMap())
+                .status(HttpStatus.TEMPORARY_REDIRECT.value())
+                .reason("nope")
+                .build();
+
+        assertThat(decode(response))
+                .isInstanceOf(FeignException.class)
+                .hasMessage("[" + HttpStatus.TEMPORARY_REDIRECT.value()
+                        + " nope] during [GET] to [localhost] [methodKey]: []");
+    }
+
     private Exception decode(Response response) {
         return DECODER.decode("methodKey", response);
     }

@@ -69,6 +69,14 @@ task integration(type: Test, description: 'Runs the integration tests.', group: 
 
 jacocoTestReport {
     executionData(test, integration)
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    'uk/gov/hmcts/reform/sendletter/api/model/v3/**',
+                    'uk/gov/hmcts/reform/sendletter/api/SendLetterResponse**',
+                    'uk/gov/hmcts/reform/sendletter/api/LetterWithPdfsRequest**',
+            ])
+        }))}
     reports {
         xml.enabled = true
         csv.enabled = false
