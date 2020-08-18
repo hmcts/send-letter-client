@@ -8,10 +8,10 @@ properties([
 @Library("Infrastructure")
 
 def type = "java"
-def product = "bsp"
+def product = "rpe"
 def component = "send-letter-client"
 
-def channel = '#bsp-build-notices'
+def channel = '#bulk-print-build-notices'
 
 withNightlyPipeline(type, product, component) {
   enableSlackNotifications(channel)
