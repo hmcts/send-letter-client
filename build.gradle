@@ -45,7 +45,7 @@ dependencyCheck {
     suppressionFile = 'config/owasp/suppressions.xml'
 }
 
-sourceCompatibility = 1.8
+sourceCompatibility = 11
 
 sourceSets {
     integrationTest {
