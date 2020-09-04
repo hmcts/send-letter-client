@@ -63,6 +63,13 @@ public class SendLetterApiTest {
     }
 
     @Test
+    public void testSendLetter() {
+        SendLetterResponse response = sendLetterApi.sendLetter("serviceAuthHeader",
+                new Letter(Collections.emptyList(), "test", Collections.emptyMap()));
+        assertThat(response.letterId).isEqualTo(sendLetterResponse.letterId);
+    }
+
+    @Test
     public void testSendLetter_v2() {
         SendLetterResponse response = sendLetterApi.sendLetter("serviceAuthHeader",
                 new LetterWithPdfsRequest(Collections.emptyList(), "test", Collections.emptyMap()));
