@@ -3,6 +3,8 @@ package uk.gov.hmcts.reform.sendletter;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class CustomFeignErrorDecoder implements ErrorDecoder {
+    private static final Logger logger = LoggerFactory.getLogger(CustomFeignErrorDecoder.class);
     private ErrorDecoder delegate = new ErrorDecoder.Default();
 
     @Override
@@ -31,7 +34,11 @@ public class CustomFeignErrorDecoder implements ErrorDecoder {
             try (InputStream body = response.body().asInputStream()) {
                 responseBody = IOUtils.toByteArray(body);
             } catch (IOException e) {
-                throw new RuntimeException("Failed to process response body.", e);
+                if (HttpStatus.NOT_FOUND == statusCode) {
+                    logger.error("Failed to process response body.", e);
+                }  else {
+                    throw new RuntimeException("Failed to process response body.", e);
+                }
             }
         }
 
