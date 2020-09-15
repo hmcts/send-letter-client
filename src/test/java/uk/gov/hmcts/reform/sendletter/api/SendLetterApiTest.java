@@ -45,7 +45,7 @@ class SendLetterApiTest {
         sendLetterResponse = new SendLetterResponse(uuid);
         letterStatus = new LetterStatus(uuid, "Created", "checksum",
                 ZonedDateTime.now(), ZonedDateTime.now().plusHours(1),
-                ZonedDateTime.now().plusHours(2), Collections.emptyMap());
+                ZonedDateTime.now().plusHours(2), Collections.emptyMap(), 2);
     }
 
     @Test
@@ -53,9 +53,11 @@ class SendLetterApiTest {
         Letter letter = new Letter(Collections.emptyList(), "html");
         when(sendLetterApiProxy.sendLetter(eq(authHeader), eq(SendLetterApi.isAsync),eq(letter)))
                 .thenReturn(sendLetterResponse);
-        when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()))).thenReturn(letterStatus);
+        when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()),
+                eq(SendLetterApi.includeAddtionaInfo))).thenReturn(letterStatus);
         sendLetterApi.sendLetter(authHeader, letter);
-        verify(sendLetterApiProxy).getLetterStatus(eq(sendLetterResponse.letterId.toString()));
+        verify(sendLetterApiProxy).getLetterStatus(eq(sendLetterResponse.letterId.toString()),
+                eq(SendLetterApi.includeAddtionaInfo));
     }
 
     @Test
@@ -63,7 +65,8 @@ class SendLetterApiTest {
         Letter letter = new Letter(Collections.emptyList(), "html");
         when(sendLetterApiProxy.sendLetter(eq(authHeader), eq(SendLetterApi.isAsync),eq(letter)))
                 .thenReturn(sendLetterResponse);
-        when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString())))
+        when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()),
+                eq(SendLetterApi.includeAddtionaInfo)))
             .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
                     .getReasonPhrase(),null, null, null))
             .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
@@ -79,7 +82,8 @@ class SendLetterApiTest {
             .thenReturn(letterStatus);
 
         sendLetterApi.sendLetter(authHeader, letter);
-        verify(sendLetterApiProxy, times(7)).getLetterStatus(eq(sendLetterResponse.letterId.toString()));
+        verify(sendLetterApiProxy, times(7)).getLetterStatus(eq(sendLetterResponse.letterId.toString()),
+                eq(SendLetterApi.includeAddtionaInfo));
     }
 
     @Test
@@ -87,12 +91,14 @@ class SendLetterApiTest {
         Letter letter = new Letter(Collections.emptyList(), "html");
         when(sendLetterApiProxy.sendLetter(eq(authHeader), eq(SendLetterApi.isAsync),eq(letter)))
                 .thenReturn(sendLetterResponse);
-        when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString())))
+        when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()),
+                eq(SendLetterApi.includeAddtionaInfo)))
                 .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
                         .getReasonPhrase(),null, null, null));
         assertThrows(HttpServerErrorException.class, () ->
             sendLetterApi.sendLetter(authHeader, letter));
-        verify(sendLetterApiProxy, times(240)).getLetterStatus(eq(sendLetterResponse.letterId.toString()));
+        verify(sendLetterApiProxy, times(240)).getLetterStatus(eq(sendLetterResponse.letterId.toString()),
+                eq(SendLetterApi.includeAddtionaInfo));
     }
 
     @Test
@@ -101,10 +107,12 @@ class SendLetterApiTest {
                 Collections.emptyMap());
         when(sendLetterApiProxy.sendLetter(eq(authHeader), eq(SendLetterApi.isAsync),eq(letter)))
                 .thenReturn(sendLetterResponse);
-        when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString())))
+        when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()),
+                eq(SendLetterApi.includeAddtionaInfo)))
                 .thenReturn(letterStatus);
         sendLetterApi.sendLetter(authHeader, letter);
-        verify(sendLetterApiProxy).getLetterStatus(eq(sendLetterResponse.letterId.toString()));
+        verify(sendLetterApiProxy).getLetterStatus(eq(sendLetterResponse.letterId.toString()),
+                eq(SendLetterApi.includeAddtionaInfo));
     }
 
     @Test
@@ -113,7 +121,8 @@ class SendLetterApiTest {
                 Collections.emptyMap());
         when(sendLetterApiProxy.sendLetter(eq(authHeader), eq(SendLetterApi.isAsync),eq(letter)))
                 .thenReturn(sendLetterResponse);
-        when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString())))
+        when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()),
+                eq(SendLetterApi.includeAddtionaInfo)))
                 .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
                         .getReasonPhrase(),null, null, null))
                 .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
@@ -129,7 +138,8 @@ class SendLetterApiTest {
                 .thenReturn(letterStatus);
 
         sendLetterApi.sendLetter(authHeader, letter);
-        verify(sendLetterApiProxy, times(7)).getLetterStatus(eq(sendLetterResponse.letterId.toString()));
+        verify(sendLetterApiProxy, times(7)).getLetterStatus(eq(sendLetterResponse.letterId.toString()),
+                eq(SendLetterApi.includeAddtionaInfo));
     }
 
     @Test
@@ -137,10 +147,12 @@ class SendLetterApiTest {
         LetterV3 letter = new LetterV3("pdf", Collections.emptyList(),  Collections.emptyMap());
         when(sendLetterApiProxy.sendLetter(eq(authHeader), eq(SendLetterApi.isAsync),eq(letter)))
                 .thenReturn(sendLetterResponse);
-        when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString())))
+        when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()),
+                eq(SendLetterApi.includeAddtionaInfo)))
                 .thenReturn(letterStatus);
         sendLetterApi.sendLetter(authHeader, letter);
-        verify(sendLetterApiProxy).getLetterStatus(eq(sendLetterResponse.letterId.toString()));
+        verify(sendLetterApiProxy).getLetterStatus(eq(sendLetterResponse.letterId.toString()),
+                eq(SendLetterApi.includeAddtionaInfo));
     }
 
     @Test
@@ -148,7 +160,8 @@ class SendLetterApiTest {
         LetterV3 letter = new LetterV3("pdf", Collections.emptyList(),  Collections.emptyMap());
         when(sendLetterApiProxy.sendLetter(eq(authHeader), eq(SendLetterApi.isAsync),eq(letter)))
                 .thenReturn(sendLetterResponse);
-        when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString())))
+        when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()),
+                eq(SendLetterApi.includeAddtionaInfo)))
                 .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
                         .getReasonPhrase(),null, null, null))
                 .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
@@ -165,6 +178,7 @@ class SendLetterApiTest {
 
         sendLetterApi.sendLetter(authHeader, letter);
         verify(sendLetterApiProxy, times(7))
-                .getLetterStatus(eq(sendLetterResponse.letterId.toString()));
+                .getLetterStatus(eq(sendLetterResponse.letterId.toString()),
+                        eq(SendLetterApi.includeAddtionaInfo));
     }
 }

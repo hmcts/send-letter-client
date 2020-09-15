@@ -30,15 +30,11 @@ public class CustomFeignErrorDecoder implements ErrorDecoder {
 
         byte[] responseBody = null;
 
-        if (response.body() != null) {
+        if (response.body() != null && response.body().length() != null) {
             try (InputStream body = response.body().asInputStream()) {
                 responseBody = IOUtils.toByteArray(body);
             } catch (IOException e) {
-                if (HttpStatus.NOT_FOUND == statusCode) {
-                    logger.error("Failed to process response body.", e);
-                }  else {
-                    throw new RuntimeException("Failed to process response body.", e);
-                }
+                throw new RuntimeException("Failed to process response body.", e);
             }
         }
 

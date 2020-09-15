@@ -16,7 +16,8 @@ import java.util.UUID;
 public class SendLetterApi {
     private static final Logger logger = LoggerFactory.getLogger(SendLetterApi.class);
 
-    public static final String isAsync = "yes";
+    public static final String isAsync = "true";
+    public static final String includeAddtionaInfo = "false";
 
     private final SendLetterApiProxy sendLetterApiProxy;
 
@@ -50,7 +51,7 @@ public class SendLetterApi {
         try {
             LetterStatus letterStatus = retryTemplate.execute(arg0 -> {
                 logger.info("Retrying for letter id {}", letterId);
-                return sendLetterApiProxy.getLetterStatus(letterId.toString());
+                return sendLetterApiProxy.getLetterStatus(letterId.toString(), includeAddtionaInfo);
             });
             logger.info("Letter id {} has status {}", letterId, letterStatus.status);
         } catch (HttpClientErrorException httpClientErrorException) {

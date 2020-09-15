@@ -3,14 +3,14 @@ package uk.gov.hmcts.reform.sendletter.api.config;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
-import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
-import org.springframework.web.client.HttpClientErrorException;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
 import uk.gov.hmcts.reform.sendletter.api.proxy.SendLetterApiProxy;
 
-import java.util.Map;
+import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @ConditionalOnProperty(prefix = "send-letter", name = "url")
@@ -25,9 +25,7 @@ public class RetryConfig {
         exponentialBackOffPolicy.setMaxInterval(500);
         retryTemplate.setBackOffPolicy(exponentialBackOffPolicy);
 
-        Map<Class<? extends Throwable>, Boolean> booleanClassMap = Map.of(HttpClientErrorException.class, true);
-        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy(240, booleanClassMap);
-        retryTemplate.setRetryPolicy(retryPolicy);
+        retryTemplate.setRetryPolicy(new RetryPolicy(240, Collections.singletonList(HttpStatus.NOT_FOUND)));
 
         return retryTemplate;
     }

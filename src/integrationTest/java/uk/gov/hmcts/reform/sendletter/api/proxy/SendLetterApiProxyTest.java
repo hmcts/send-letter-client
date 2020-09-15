@@ -56,7 +56,7 @@ public class SendLetterApiProxyTest {
     public void beforeEach() throws JsonProcessingException {
         sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         String responseJson = mapper.writeValueAsString(sendLetterResponse);
-        wireMockServer.stubFor(WireMock.post(WireMock.urlPathMatching("/letters/yes"))
+        wireMockServer.stubFor(WireMock.post(WireMock.urlEqualTo("/letters?isAsync=yes"))
                 .willReturn(WireMock.aResponse().withStatus(200).withBody(responseJson)));
     }
 

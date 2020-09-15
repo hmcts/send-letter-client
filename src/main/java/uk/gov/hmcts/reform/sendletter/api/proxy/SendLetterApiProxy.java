@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import uk.gov.hmcts.reform.sendletter.CustomFeignErrorDecoder;
 import uk.gov.hmcts.reform.sendletter.api.Letter;
 import uk.gov.hmcts.reform.sendletter.api.LetterStatus;
@@ -23,41 +24,42 @@ import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
 public interface SendLetterApiProxy {
 
     @PostMapping(
-            path = "/letters/{isAsync}",
+            path = "/letters",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     SendLetterResponse sendLetter(
             @RequestHeader(name = "ServiceAuthorization", required = false) String serviceAuthHeader,
-            @PathVariable String isAsync,
+            @RequestParam (name = "isAsync") String isAsync,
             @RequestBody Letter letter
     );
 
     @PostMapping(
-            path = "/letters/{isAsync}",
+            path = "/letters",
         consumes = "application/vnd.uk.gov.hmcts.letter-service.in.letter.v2+json",
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     SendLetterResponse sendLetter(
         @RequestHeader(name = "ServiceAuthorization", required = false) String serviceAuthHeader,
-        @PathVariable String isAsync,
+        @RequestParam (name = "isAsync") String isAsync,
         @RequestBody LetterWithPdfsRequest letter
     );
 
-    @PostMapping(path = "/letters/{isAsync}",
+    @PostMapping(path = "/letters",
         consumes = "application/vnd.uk.gov.hmcts.letter-service.in.letter.v3+json",
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     SendLetterResponse sendLetter(
         @RequestHeader(name = "ServiceAuthorization", required = false) String serviceAuthHeader,
-        @PathVariable String isAsync,
+        @RequestParam (name = "isAsync") String isAsync,
         @RequestBody LetterV3 letter
     );
 
     @GetMapping(path = "/letters/{uuid}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    LetterStatus getLetterStatus(@PathVariable String uuid);
+    LetterStatus getLetterStatus(@PathVariable String uuid,
+                                 @RequestParam(name = "include-additional-info") String includeAdditionaInfo);
 
     class SendLetterConfiguration {
         @Bean
