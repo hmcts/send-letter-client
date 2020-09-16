@@ -1,61 +1,63 @@
 package uk.gov.hmcts.reform.sendletter.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import feign.codec.Decoder;
-import feign.jackson.JacksonDecoder;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import uk.gov.hmcts.reform.sendletter.CustomFeignErrorDecoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.retry.support.RetryTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
+import uk.gov.hmcts.reform.sendletter.api.proxy.SendLetterApiProxy;
 
-@FeignClient(name = "send-letter-api", url = "${send-letter.url}",
-        configuration = SendLetterApi.SendLetterConfiguration.class)
-public interface SendLetterApi {
+import java.util.UUID;
 
-    @PostMapping(
-            path = "/letters",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+@Service
+public class SendLetterApi {
+    private static final Logger logger = LoggerFactory.getLogger(SendLetterApi.class);
 
-    SendLetterResponse sendLetter(
-            @RequestHeader(name = "ServiceAuthorization", required = false) String serviceAuthHeader,
-            @RequestBody Letter letter
-    );
+    public static final String isAsync = "true";
+    public static final String includeAddtionaInfo = "false";
 
-    @PostMapping(
-        path = "/letters",
-        consumes = "application/vnd.uk.gov.hmcts.letter-service.in.letter.v2+json",
-        produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    SendLetterResponse sendLetter(
-        @RequestHeader(name = "ServiceAuthorization", required = false) String serviceAuthHeader,
-        @RequestBody LetterWithPdfsRequest letter
-    );
+    private final SendLetterApiProxy sendLetterApiProxy;
 
-    @PostMapping(
-        path = "/letters",
-        consumes = "application/vnd.uk.gov.hmcts.letter-service.in.letter.v3+json",
-        produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    SendLetterResponse sendLetter(
-        @RequestHeader(name = "ServiceAuthorization", required = false) String serviceAuthHeader,
-        @RequestBody LetterV3 letter
-    );
+    private final RetryTemplate retryTemplate;
 
-    class SendLetterConfiguration {
-        @Bean
-        Decoder feignDecoder(ObjectMapper objectMapper) {
-            return new JacksonDecoder(objectMapper);
-        }
+    public SendLetterApi(SendLetterApiProxy sendLetterApiProxy, RetryTemplate retryTemplate) {
+        this.sendLetterApiProxy = sendLetterApiProxy;
+        this.retryTemplate = retryTemplate;
+    }
 
-        @Bean
-        public CustomFeignErrorDecoder customFeignErrorDecoder() {
-            return new CustomFeignErrorDecoder();
+    public SendLetterResponse sendLetter(String serviceAuthHeader, Letter letter) {
+        SendLetterResponse sendLetterResponse = sendLetterApiProxy.sendLetter(serviceAuthHeader, isAsync, letter);
+        confirmRequestIsCreated(sendLetterResponse.letterId);
+        return sendLetterResponse;
+    }
+
+    public SendLetterResponse sendLetter(String serviceAuthHeader, LetterWithPdfsRequest letter) {
+        SendLetterResponse sendLetterResponse = sendLetterApiProxy.sendLetter(serviceAuthHeader, isAsync, letter);
+        confirmRequestIsCreated(sendLetterResponse.letterId);
+        return sendLetterResponse;
+
+    }
+
+    public SendLetterResponse sendLetter(String serviceAuthHeader, LetterV3 letter) {
+        SendLetterResponse sendLetterResponse = sendLetterApiProxy.sendLetter(serviceAuthHeader, isAsync, letter);
+        confirmRequestIsCreated(sendLetterResponse.letterId);
+        return sendLetterResponse;
+    }
+
+    private void confirmRequestIsCreated(UUID letterId) {
+        try {
+            LetterStatus letterStatus = retryTemplate.execute(arg0 -> {
+                logger.info("Retrying for letter id {}", letterId);
+                return sendLetterApiProxy.getLetterStatus(letterId.toString(), includeAddtionaInfo);
+            });
+            logger.info("Letter id {} has status {}", letterId, letterStatus.status);
+        } catch (HttpClientErrorException httpClientErrorException) {
+            logger.error(httpClientErrorException.getMessage(), httpClientErrorException);
+            throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR,
+                   HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null, "letter not saved".getBytes(), null);
         }
     }
 }
