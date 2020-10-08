@@ -1,16 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
-
-    <suppress until="2020-10-01">
-        <notes><![CDATA[No fix is available]]></notes>
-        <gav regex="true">^org\.springframework\.security:spring-security-crypto:5\.2\.1\.RELEASE$</gav>
-        <cve>CVE-2018-1258</cve>
-        <cve>CVE-2020-5407</cve>
-        <cve>CVE-2020-5408</cve>
+    <suppress>
+        <notes><![CDATA[
+   file name: handlebars-4.0.7.jar: handlebars-v4.0.4.js
+   ]]></notes>
+        <packageUrl regex="true">^pkg:javascript/handlebars@.*$</packageUrl>
+        <vulnerabilityName>A prototype pollution vulnerability in handlebars is exploitable if an attacker can control the template</vulnerabilityName>
     </suppress>
     <suppress>
-        <notes><![CDATA[file name: spring-security-crypto-5.3.4.RELEASE.jar]]></notes>
+        <notes><![CDATA[
+   file name: handlebars-4.0.7.jar: handlebars-v4.0.4.js
+   ]]></notes>
+        <packageUrl regex="true">^pkg:javascript/handlebars@.*$</packageUrl>
+        <vulnerabilityName>Disallow calling helperMissing and blockHelperMissing directly</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: handlebars-4.0.7.jar: handlebars-v4.0.4.js
+   ]]></notes>
+        <packageUrl regex="true">^pkg:javascript/handlebars@.*$</packageUrl>
+        <vulnerabilityName>Prototype pollution</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-crypto-5.3.4.RELEASE.jar
+   ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
-        <cve>CVE-2018-1258</cve>
+        <cpe>cpe:/a:pivotal_software:spring_security</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: wiremock-2.27.1.jar: jquery-3.4.1.min.js
+   ]]></notes>
+        <packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
+        <cve>CVE-2020-11022</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: wiremock-2.27.1.jar: jquery-3.4.1.min.js
+   ]]></notes>
+        <packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
+        <cve>CVE-2020-11023</cve>
     </suppress>
 </suppressions>
