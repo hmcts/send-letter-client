@@ -167,7 +167,7 @@ bintray {
 
 dependencyManagement {
     dependencies {
-        dependencySet(group: 'com.google.guava', version: '28.1-jre') {
+        dependencySet(group: 'com.google.guava', version: '29.0-jre') {
             entry 'guava'
         }
         // CVE-2019-10086 until 1.9.3
