@@ -59,7 +59,8 @@ public interface SendLetterApiProxy {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     LetterStatus getLetterStatus(@PathVariable String uuid,
-                                 @RequestParam(name = "include-additional-info") String includeAdditionaInfo);
+                                 @RequestParam(name = "include-additional-info") String includeAdditionaInfo,
+                                 @RequestParam(name = "check-duplicate") String checkDuplicate);
 
     class SendLetterConfiguration {
         @Bean
