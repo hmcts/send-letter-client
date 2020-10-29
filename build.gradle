@@ -8,7 +8,7 @@ plugins {
     id 'java-library'
     id 'maven'
     id 'maven-publish'
-    id 'com.github.ben-manes.versions' version '0.27.0'
+    id 'com.github.ben-manes.versions' version '0.33.0'
 }
 
 def buildNumber = '3.0.2'
