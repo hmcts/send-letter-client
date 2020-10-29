@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
+import uk.gov.hmcts.reform.sendletter.api.proxy.SendLetterApiProxy;
 import uk.gov.hmcts.reform.sendletter.healthcheck.SendLetterHealthApi;
 import uk.gov.hmcts.reform.sendletter.healthcheck.SendLetterHealthIndicator;
 
@@ -37,7 +39,9 @@ public class NoAutoConfigurationTest {
     @DisplayName("Should not have Api configured")
     @Test
     public void noApi() {
-        assertThat(context.getBeanNamesForType(SendLetterApi.class)).hasSize(0);
+        assertThat(context.getBeanNamesForType(SendLetterApiProxy.class)).hasSize(0);
         assertThat(context.getBeanNamesForType(SendLetterAutoConfiguration.class)).hasSize(0);
+        assertThat(context.getBeanNamesForType(RetryTemplate.class)).hasSize(0);
+        assertThat(context.getBeanNamesForType(SendLetterApi.class)).hasSize(0);
     }
 }
