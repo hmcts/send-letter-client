@@ -9,7 +9,6 @@ import org.springframework.retry.support.RetryTemplate;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
 import uk.gov.hmcts.reform.sendletter.api.proxy.SendLetterApiProxy;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
