@@ -60,8 +60,10 @@ public class SendLetterApi {
             logger.error(httpClientErrorException.getMessage(), httpClientErrorException);
 
             Optional.ofNullable(httpClientErrorException.getMessage())
-                    .filter(value ->  value.contains("409"))
-                    .map(value -> {throw  httpClientErrorException;});
+                .filter(value ->  value.contains("409"))
+                .map(value -> {
+                    throw  httpClientErrorException;
+                });
 
             throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR,
                    HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null, "letter not saved".getBytes(), null);
