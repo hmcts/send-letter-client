@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.sendletter.api;
+package uk.gov.hmcts.reform.sendletter.api.proxy;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +16,9 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.sendletter.SendLetterAutoConfiguration;
+import uk.gov.hmcts.reform.sendletter.api.Letter;
+import uk.gov.hmcts.reform.sendletter.api.LetterWithPdfsRequest;
+import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
 
 import java.util.Collections;
@@ -32,11 +35,11 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
         }
 )
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class SendLetterApiTest {
+public class SendLetterApiProxyTest {
     private static WireMockServer wireMockServer;
 
     @Autowired
-    private SendLetterApi sendLetterApi;
+    private SendLetterApiProxy sendLetterApiProxy;
 
     @Autowired
     private ObjectMapper mapper;
@@ -53,7 +56,7 @@ public class SendLetterApiTest {
     public void beforeEach() throws JsonProcessingException {
         sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         String responseJson = mapper.writeValueAsString(sendLetterResponse);
-        wireMockServer.stubFor(WireMock.post(WireMock.urlPathMatching("/letters"))
+        wireMockServer.stubFor(WireMock.post(WireMock.urlEqualTo("/letters?isAsync=yes"))
                 .willReturn(WireMock.aResponse().withStatus(200).withBody(responseJson)));
     }
 
@@ -63,15 +66,22 @@ public class SendLetterApiTest {
     }
 
     @Test
+    public void testSendLetter() {
+        SendLetterResponse response = sendLetterApiProxy.sendLetter("serviceAuthHeader", "yes",
+                new Letter(Collections.emptyList(), "test", Collections.emptyMap()));
+        assertThat(response.letterId).isEqualTo(sendLetterResponse.letterId);
+    }
+
+    @Test
     public void testSendLetter_v2() {
-        SendLetterResponse response = sendLetterApi.sendLetter("serviceAuthHeader",
+        SendLetterResponse response = sendLetterApiProxy.sendLetter("serviceAuthHeader", "yes",
                 new LetterWithPdfsRequest(Collections.emptyList(), "test", Collections.emptyMap()));
         assertThat(response.letterId).isEqualTo(sendLetterResponse.letterId);
     }
 
     @Test
     public void testSendLetter_v3() {
-        SendLetterResponse response = sendLetterApi.sendLetter("serviceAuthHeader",
+        SendLetterResponse response = sendLetterApiProxy.sendLetter("serviceAuthHeader", "yes",
                 new LetterV3("test", Collections.emptyList(), Collections.emptyMap()));
         assertThat(response.letterId).isEqualTo(sendLetterResponse.letterId);
     }
