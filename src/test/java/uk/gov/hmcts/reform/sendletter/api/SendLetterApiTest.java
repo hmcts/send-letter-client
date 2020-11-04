@@ -54,10 +54,10 @@ class SendLetterApiTest {
         when(sendLetterApiProxy.sendLetter(eq(authHeader), eq(SendLetterApi.isAsync),eq(letter)))
                 .thenReturn(sendLetterResponse);
         when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()),
-                eq(SendLetterApi.includeAddtionaInfo))).thenReturn(letterStatus);
+                eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate))).thenReturn(letterStatus);
         sendLetterApi.sendLetter(authHeader, letter);
         verify(sendLetterApiProxy).getLetterStatus(eq(sendLetterResponse.letterId.toString()),
-                eq(SendLetterApi.includeAddtionaInfo));
+                eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate));
     }
 
     @Test
@@ -66,7 +66,7 @@ class SendLetterApiTest {
         when(sendLetterApiProxy.sendLetter(eq(authHeader), eq(SendLetterApi.isAsync),eq(letter)))
                 .thenReturn(sendLetterResponse);
         when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()),
-                eq(SendLetterApi.includeAddtionaInfo)))
+                eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate)))
             .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
                     .getReasonPhrase(),null, null, null))
             .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
@@ -83,7 +83,26 @@ class SendLetterApiTest {
 
         sendLetterApi.sendLetter(authHeader, letter);
         verify(sendLetterApiProxy, times(7)).getLetterStatus(eq(sendLetterResponse.letterId.toString()),
-                eq(SendLetterApi.includeAddtionaInfo));
+                eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate));
+    }
+
+    @Test
+    void testSendTemplateLetterWithDuplicateRecord() {
+        Letter letter = new Letter(Collections.emptyList(), "html");
+        when(sendLetterApiProxy.sendLetter(eq(authHeader), eq(SendLetterApi.isAsync),eq(letter)))
+                .thenReturn(sendLetterResponse);
+        when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()),
+                eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
+                    .getReasonPhrase(),null, null, null))
+                .thenThrow(new HttpClientErrorException(HttpStatus.CONFLICT, HttpStatus.CONFLICT
+                        .getReasonPhrase(),null, null, null));
+
+
+        assertThrows(HttpClientErrorException.class, () -> sendLetterApi.sendLetter(authHeader, letter));
+        verify(sendLetterApiProxy, times(2))
+                .getLetterStatus(eq(sendLetterResponse.letterId.toString()),
+                        eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate));
     }
 
     @Test
@@ -92,13 +111,13 @@ class SendLetterApiTest {
         when(sendLetterApiProxy.sendLetter(eq(authHeader), eq(SendLetterApi.isAsync),eq(letter)))
                 .thenReturn(sendLetterResponse);
         when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()),
-                eq(SendLetterApi.includeAddtionaInfo)))
+                eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate)))
                 .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
                         .getReasonPhrase(),null, null, null));
         assertThrows(HttpServerErrorException.class, () ->
             sendLetterApi.sendLetter(authHeader, letter));
         verify(sendLetterApiProxy, times(240)).getLetterStatus(eq(sendLetterResponse.letterId.toString()),
-                eq(SendLetterApi.includeAddtionaInfo));
+                eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate));
     }
 
     @Test
@@ -108,11 +127,11 @@ class SendLetterApiTest {
         when(sendLetterApiProxy.sendLetter(eq(authHeader), eq(SendLetterApi.isAsync),eq(letter)))
                 .thenReturn(sendLetterResponse);
         when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()),
-                eq(SendLetterApi.includeAddtionaInfo)))
+                eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate)))
                 .thenReturn(letterStatus);
         sendLetterApi.sendLetter(authHeader, letter);
         verify(sendLetterApiProxy).getLetterStatus(eq(sendLetterResponse.letterId.toString()),
-                eq(SendLetterApi.includeAddtionaInfo));
+                eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate));
     }
 
     @Test
@@ -122,7 +141,7 @@ class SendLetterApiTest {
         when(sendLetterApiProxy.sendLetter(eq(authHeader), eq(SendLetterApi.isAsync),eq(letter)))
                 .thenReturn(sendLetterResponse);
         when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()),
-                eq(SendLetterApi.includeAddtionaInfo)))
+                eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate)))
                 .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
                         .getReasonPhrase(),null, null, null))
                 .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
@@ -139,7 +158,27 @@ class SendLetterApiTest {
 
         sendLetterApi.sendLetter(authHeader, letter);
         verify(sendLetterApiProxy, times(7)).getLetterStatus(eq(sendLetterResponse.letterId.toString()),
-                eq(SendLetterApi.includeAddtionaInfo));
+                eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate));
+    }
+
+    @Test
+    void testSendV2LetterWithDuplicateRecord() {
+        LetterWithPdfsRequest letter = new LetterWithPdfsRequest(Collections.emptyList(), "pdf",
+                Collections.emptyMap());
+        when(sendLetterApiProxy.sendLetter(eq(authHeader), eq(SendLetterApi.isAsync),eq(letter)))
+                .thenReturn(sendLetterResponse);
+        when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()),
+                eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate)))
+                .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
+                        .getReasonPhrase(),null, null, null))
+                .thenThrow(new HttpClientErrorException(HttpStatus.CONFLICT, HttpStatus.CONFLICT
+                        .getReasonPhrase(),null, null, null));
+
+
+        assertThrows(HttpClientErrorException.class, () -> sendLetterApi.sendLetter(authHeader, letter));
+        verify(sendLetterApiProxy, times(2))
+                .getLetterStatus(eq(sendLetterResponse.letterId.toString()),
+                        eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate));
     }
 
     @Test
@@ -148,11 +187,11 @@ class SendLetterApiTest {
         when(sendLetterApiProxy.sendLetter(eq(authHeader), eq(SendLetterApi.isAsync),eq(letter)))
                 .thenReturn(sendLetterResponse);
         when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()),
-                eq(SendLetterApi.includeAddtionaInfo)))
+                eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate)))
                 .thenReturn(letterStatus);
         sendLetterApi.sendLetter(authHeader, letter);
         verify(sendLetterApiProxy).getLetterStatus(eq(sendLetterResponse.letterId.toString()),
-                eq(SendLetterApi.includeAddtionaInfo));
+                eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate));
     }
 
     @Test
@@ -161,7 +200,7 @@ class SendLetterApiTest {
         when(sendLetterApiProxy.sendLetter(eq(authHeader), eq(SendLetterApi.isAsync),eq(letter)))
                 .thenReturn(sendLetterResponse);
         when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()),
-                eq(SendLetterApi.includeAddtionaInfo)))
+                eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate)))
                 .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
                         .getReasonPhrase(),null, null, null))
                 .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
@@ -179,6 +218,25 @@ class SendLetterApiTest {
         sendLetterApi.sendLetter(authHeader, letter);
         verify(sendLetterApiProxy, times(7))
                 .getLetterStatus(eq(sendLetterResponse.letterId.toString()),
-                        eq(SendLetterApi.includeAddtionaInfo));
+                        eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate));
+    }
+
+    @Test
+    void testSendV3LetterWithDuplicateRecord() {
+        LetterV3 letter = new LetterV3("pdf", Collections.emptyList(),  Collections.emptyMap());
+        when(sendLetterApiProxy.sendLetter(eq(authHeader), eq(SendLetterApi.isAsync),eq(letter)))
+                .thenReturn(sendLetterResponse);
+        when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()),
+                eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate)))
+                .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
+                        .getReasonPhrase(),null, null, null))
+                .thenThrow(new HttpClientErrorException(HttpStatus.CONFLICT, HttpStatus.CONFLICT
+                        .getReasonPhrase(),null, null, null));
+
+
+        assertThrows(HttpClientErrorException.class, () -> sendLetterApi.sendLetter(authHeader, letter));
+        verify(sendLetterApiProxy, times(2))
+                .getLetterStatus(eq(sendLetterResponse.letterId.toString()),
+                        eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate));
     }
 }

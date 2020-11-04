@@ -10,6 +10,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
 import uk.gov.hmcts.reform.sendletter.api.proxy.SendLetterApiProxy;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -18,6 +19,7 @@ public class SendLetterApi {
 
     public static final String isAsync = "true";
     public static final String includeAddtionaInfo = "false";
+    public static final String checkDuplicate = "true";
 
     private final SendLetterApiProxy sendLetterApiProxy;
 
@@ -51,11 +53,16 @@ public class SendLetterApi {
         try {
             LetterStatus letterStatus = retryTemplate.execute(arg0 -> {
                 logger.info("Retrying for letter id {}", letterId);
-                return sendLetterApiProxy.getLetterStatus(letterId.toString(), includeAddtionaInfo);
+                return sendLetterApiProxy.getLetterStatus(letterId.toString(), includeAddtionaInfo, checkDuplicate);
             });
             logger.info("Letter id {} has status {}", letterId, letterStatus.status);
         } catch (HttpClientErrorException httpClientErrorException) {
             logger.error(httpClientErrorException.getMessage(), httpClientErrorException);
+
+            Optional.ofNullable(httpClientErrorException.getMessage())
+                    .filter(value ->  value.contains("409"))
+                    .map(value -> {throw  httpClientErrorException;});
+
             throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR,
                    HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null, "letter not saved".getBytes(), null);
         }
