@@ -11,7 +11,7 @@ plugins {
     id 'com.github.ben-manes.versions' version '0.27.0'
 }
 
-def buildNumber = '3.0.1'
+def buildNumber = '3.0.2'
 
 group 'uk.gov.hmcts.reform'
 version buildNumber
