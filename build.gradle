@@ -149,23 +149,6 @@ publishing {
     }
 }
 
-bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
-    publications = ['Main']
-    publish = true
-    pkg {
-        repo = 'hmcts-maven'
-        name = 'send-letter-client'
-        userOrg = 'hmcts'
-        licenses = ['MIT']
-        vcsUrl = 'https://github.com/hmcts/send-letter-client'
-        version {
-            name = project.version
-        }
-    }
-}
-
 dependencyManagement {
     dependencies {
         dependencySet(group: 'com.google.guava', version: '30.1-jre') {
