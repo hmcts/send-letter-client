@@ -6,11 +6,14 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.printletter.api.model.PrintUploadInfo;
 
 @Component
-public class AzureBlobClient {
+public class BlobClientCreator {
 
-    public BlobClient getBlobClient(PrintUploadInfo printUploadInfo,
-                                     String blobName, String container) {
-        return   new BlobClientBuilder()
+    public BlobClient getBlobClient(
+            PrintUploadInfo printUploadInfo,
+            String blobName,
+            String container
+    ) {
+        return new BlobClientBuilder()
                 .endpoint(printUploadInfo.uploadToContainer)
                 .sasToken(printUploadInfo.sasToken)
                 .containerName(container)

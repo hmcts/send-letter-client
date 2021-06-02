@@ -35,7 +35,7 @@ class PrintLetterApiTest {
     @Mock
     private PrintLetterApiProxy printLetterApiProxy;
     @Mock
-    private AzureBlobClient azureBlobClient;
+    private BlobClientCreator blobClientCreator;
     @Mock
     private BlobClient blobClient;
 
@@ -48,7 +48,7 @@ class PrintLetterApiTest {
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        printLetterApi = new PrintLetterApi(printLetterApiProxy, azureBlobClient,objectMapper);
+        printLetterApi = new PrintLetterApi(printLetterApiProxy, blobClientCreator,objectMapper);
     }
 
     @Test
@@ -80,7 +80,7 @@ class PrintLetterApiTest {
 
         when(printLetterApiProxy.print(eq(authHeader), any(), eq(printRequest)))
                 .thenReturn(printResponse);
-        when(azureBlobClient.getBlobClient(any(), any(), any())).thenReturn(blobClient);
+        when(blobClientCreator.getBlobClient(any(), any(), any())).thenReturn(blobClient);
 
         PrintLetterResponse printLetterResponse = printLetterApi.printLetter(authHeader, printRequest);
         assertNotNull(printLetterResponse.letterId);

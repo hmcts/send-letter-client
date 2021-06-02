@@ -1,3 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   uk.gov.hmcts.reform.sendletter.SendLetterAutoConfiguration,\
-  uk.gov.hmcts.reform.sendletter.api.config.RetryConfig
+  uk.gov.hmcts.reform.sendletter.api.config.RetryConfig,\
+  uk.gov.hmcts.reform.printletter.PrintLetterApiConfig

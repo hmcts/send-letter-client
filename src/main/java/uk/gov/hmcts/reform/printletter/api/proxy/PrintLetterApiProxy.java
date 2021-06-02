@@ -16,7 +16,7 @@ import uk.gov.hmcts.reform.sendletter.CustomFeignErrorDecoder;
 
 import java.util.UUID;
 
-@FeignClient(name = "send-letter-api", url = "${send-letter.url}",
+@FeignClient(value = "print-letter-api", url = "${send-letter.url}",
         configuration = PrintLetterApiProxy.PrintLetterConfiguration.class)
 public interface PrintLetterApiProxy {
 
