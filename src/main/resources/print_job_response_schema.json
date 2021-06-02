@@ -1,0 +1,341 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "title": "The root schema",
+  "description": "The root schema comprises the entire JSON document.",
+  "default": {},
+  "examples": [
+    {
+      "print_job": {
+        "id": "33dffc2f-94e0-4584-a973-cc56849ecc0b",
+        "created_at": "2021-04-07T10:03:00.001Z",
+        "printed_at": "2021-04-08T11:03:00.002Z",
+        "sent_to_print_at": "2021-04-09T12:03:00.003Z",
+        "type": "SSC001",
+        "container_name": "new-sscs",
+        "service": "sscs",
+        "status": "PROCESSED",
+        "documents": [
+          {
+            "file_name": "mypdf.pdf",
+            "upload_to_path": "33dffc2f-94e0-4584-a973-cc56849ecc0b-sscs-SSC001-mypdf.pdf",
+            "copies_required": 2
+          },
+          {
+            "file_name": "1.pdf",
+            "upload_to_path": "33dffc2f-94e0-4584-a973-cc56849ecc0b-sscs-SSC001-1.pdf",
+            "copies_required": 1
+          }
+        ],
+        "case_id": "12345",
+        "case_ref": "162MC066",
+        "letter_type": "first-contact-pack"
+      },
+      "upload": {
+        "upload_to_container": "url",
+        "sas": "?sas=sadas56tfuvydasd",
+        "manifest_path": "manifest-/33dffc2f-94e0-4584-a973-cc56849ecc0b-sscs.json"
+      }
+    }
+  ],
+  "required": [
+    "print_job",
+    "upload"
+  ],
+  "properties": {
+    "print_job": {
+      "$id": "#/properties/print_job",
+      "type": "object",
+      "title": "The print_job schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": {},
+      "examples": [
+        {
+          "id": "33dffc2f-94e0-4584-a973-cc56849ecc0b",
+          "created_at": "2021-04-07T10:03:00.001Z",
+          "printed_at": "2021-04-08T11:03:00.002Z",
+          "sent_to_print_at": "2021-04-09T12:03:00.003Z",
+          "type": "SSC001",
+          "container_name": "new-sscs",
+          "service": "sscs",
+          "status": "PROCESSED",
+          "documents": [
+            {
+              "file_name": "mypdf.pdf",
+              "upload_to_path": "33dffc2f-94e0-4584-a973-cc56849ecc0b-sscs-SSC001-mypdf.pdf",
+              "copies_required": 2
+            },
+            {
+              "file_name": "1.pdf",
+              "upload_to_path": "33dffc2f-94e0-4584-a973-cc56849ecc0b-sscs-SSC001-1.pdf",
+              "copies_required": 1
+            }
+          ],
+          "case_id": "12345",
+          "case_ref": "162MC066",
+          "letter_type": "first-contact-pack"
+        }
+      ],
+      "required": [
+        "id",
+        "created_at",
+        "printed_at",
+        "sent_to_print_at",
+        "type",
+        "container_name",
+        "service",
+        "status",
+        "documents",
+        "case_id",
+        "case_ref",
+        "letter_type"
+      ],
+      "properties": {
+        "id": {
+          "$id": "#/properties/print_job/properties/id",
+          "type": "string",
+          "title": "The id schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "33dffc2f-94e0-4584-a973-cc56849ecc0b"
+          ]
+        },
+        "created_at": {
+          "$id": "#/properties/print_job/properties/created_at",
+          "type": "string",
+          "title": "The created_at schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "2021-04-07T10:03:00.001Z"
+          ]
+        },
+        "printed_at": {
+          "$id": "#/properties/print_job/properties/printed_at",
+          "type": "string",
+          "title": "The printed_at schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "2021-04-08T11:03:00.002Z"
+          ]
+        },
+        "sent_to_print_at": {
+          "$id": "#/properties/print_job/properties/sent_to_print_at",
+          "type": "string",
+          "title": "The sent_to_print_at schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "2021-04-09T12:03:00.003Z"
+          ]
+        },
+        "type": {
+          "$id": "#/properties/print_job/properties/type",
+          "type": "string",
+          "title": "The type schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "SSC001"
+          ]
+        },
+        "container_name": {
+          "$id": "#/properties/print_job/properties/container_name",
+          "type": "string",
+          "title": "The container_name schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "new-sscs"
+          ]
+        },
+        "service": {
+          "$id": "#/properties/print_job/properties/service",
+          "type": "string",
+          "title": "The service schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "sscs"
+          ]
+        },
+        "status": {
+          "$id": "#/properties/print_job/properties/status",
+          "type": "string",
+          "title": "The status schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "PROCESSED"
+          ]
+        },
+        "documents": {
+          "$id": "#/properties/print_job/properties/documents",
+          "type": "array",
+          "title": "The documents schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": [],
+          "examples": [
+            [
+              {
+                "file_name": "mypdf.pdf",
+                "upload_to_path": "33dffc2f-94e0-4584-a973-cc56849ecc0b-sscs-SSC001-mypdf.pdf",
+                "copies_required": 2
+              },
+              {
+                "file_name": "1.pdf",
+                "upload_to_path": "33dffc2f-94e0-4584-a973-cc56849ecc0b-sscs-SSC001-1.pdf",
+                "copies_required": 1
+              }
+            ]
+          ],
+          "additionalItems": true,
+          "items": {
+            "$id": "#/properties/print_job/properties/documents/items",
+            "anyOf": [
+              {
+                "$id": "#/properties/print_job/properties/documents/items/anyOf/0",
+                "type": "object",
+                "title": "The first anyOf schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": {},
+                "examples": [
+                  {
+                    "file_name": "mypdf.pdf",
+                    "upload_to_path": "33dffc2f-94e0-4584-a973-cc56849ecc0b-sscs-SSC001-mypdf.pdf",
+                    "copies_required": 2
+                  }
+                ],
+                "required": [
+                  "file_name",
+                  "upload_to_path",
+                  "copies_required"
+                ],
+                "properties": {
+                  "file_name": {
+                    "$id": "#/properties/print_job/properties/documents/items/anyOf/0/properties/file_name",
+                    "type": "string",
+                    "title": "The file_name schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "mypdf.pdf"
+                    ]
+                  },
+                  "upload_to_path": {
+                    "$id": "#/properties/print_job/properties/documents/items/anyOf/0/properties/upload_to_path",
+                    "type": "string",
+                    "title": "The upload_to_path schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "33dffc2f-94e0-4584-a973-cc56849ecc0b-sscs-SSC001-mypdf.pdf"
+                    ]
+                  },
+                  "copies_required": {
+                    "$id": "#/properties/print_job/properties/documents/items/anyOf/0/properties/copies_required",
+                    "type": "integer",
+                    "title": "The copies_required schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": 0,
+                    "examples": [
+                      2
+                    ]
+                  }
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        },
+        "case_id": {
+          "$id": "#/properties/print_job/properties/case_id",
+          "type": "string",
+          "title": "The case_id schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "12345"
+          ]
+        },
+        "case_ref": {
+          "$id": "#/properties/print_job/properties/case_ref",
+          "type": "string",
+          "title": "The case_ref schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "162MC066"
+          ]
+        },
+        "letter_type": {
+          "$id": "#/properties/print_job/properties/letter_type",
+          "type": "string",
+          "title": "The letter_type schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "first-contact-pack"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "upload": {
+      "$id": "#/properties/upload",
+      "type": "object",
+      "title": "The upload schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": {},
+      "examples": [
+        {
+          "upload_to_container": "url",
+          "sas": "?sas=sadas56tfuvydasd",
+          "manifest_path": "manifest-/33dffc2f-94e0-4584-a973-cc56849ecc0b-sscs.json"
+        }
+      ],
+      "required": [
+        "upload_to_container",
+        "sas",
+        "manifest_path"
+      ],
+      "properties": {
+        "upload_to_container": {
+          "$id": "#/properties/upload/properties/upload_to_container",
+          "type": "string",
+          "title": "The upload_to_container schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "url"
+          ]
+        },
+        "sas": {
+          "$id": "#/properties/upload/properties/sas",
+          "type": "string",
+          "title": "The sas schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "?sas=sadas56tfuvydasd"
+          ]
+        },
+        "manifest_path": {
+          "$id": "#/properties/upload/properties/manifest_path",
+          "type": "string",
+          "title": "The manifest_path schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "manifest-/33dffc2f-94e0-4584-a973-cc56849ecc0b-sscs.json"
+          ]
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}
