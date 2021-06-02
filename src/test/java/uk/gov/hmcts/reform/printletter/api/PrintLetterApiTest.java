@@ -83,6 +83,6 @@ class PrintLetterApiTest {
         when(azureBlobClient.getBlobClient(any(), any(), any())).thenReturn(blobClient);
 
         PrintLetterResponse printLetterResponse = printLetterApi.printLetter(authHeader, printRequest);
-        assertNotNull(printLetterResponse);
+        assertNotNull(printLetterResponse.letterId);
     }
 }
