@@ -73,6 +73,8 @@ jacocoTestReport {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude: [
                     'uk/gov/hmcts/reform/sendletter/api/model/v3/**',
+                    'uk/gov/hmcts/reform/printletter/api/model/**',
+                    'uk/gov/hmcts/reform/printletter/api/model/v1/**',
                     'uk/gov/hmcts/reform/sendletter/api/SendLetterResponse**',
                     'uk/gov/hmcts/reform/sendletter/api/LetterWithPdfsRequest**',
             ])
