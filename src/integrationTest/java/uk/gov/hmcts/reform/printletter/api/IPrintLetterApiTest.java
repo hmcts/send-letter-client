@@ -110,7 +110,7 @@ public class IPrintLetterApiTest {
         );
 
 
-        PrintLetterResponse response = printLetterApi.printLetter("serviceAuthHeader", printRequest);
+        var response = printLetterApi.printLetter("serviceAuthHeader", printRequest);
         assertNotNull(response.letterId);
         verifyInvocationCount(response.letterId);
     }
