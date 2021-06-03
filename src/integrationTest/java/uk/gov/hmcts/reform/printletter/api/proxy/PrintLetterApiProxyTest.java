@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import com.google.common.io.Resources;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +13,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.util.StreamUtils;
 import uk.gov.hmcts.reform.printletter.api.model.PrintResponse;
 import uk.gov.hmcts.reform.printletter.api.model.v1.Document;
 import uk.gov.hmcts.reform.printletter.api.model.v1.PrintLetterRequest;
@@ -25,8 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 
-import static com.google.common.base.Charsets.UTF_8;
-import static com.google.common.io.Resources.getResource;
+import static java.nio.charset.Charset.defaultCharset;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @EnableAutoConfiguration
@@ -60,7 +60,8 @@ public class PrintLetterApiProxyTest {
     @BeforeEach
     public void beforeEach() throws IOException {
         uuid = UUID.randomUUID();
-        var json = Resources.toString(getResource("print_job_response.json"), UTF_8);
+        var json = StreamUtils.copyToString(
+                new ClassPathResource("print_job_response.json").getInputStream(), defaultCharset());
         printResponse = mapper.readValue(json, PrintResponse.class);
         var responseJson = mapper.writeValueAsString(printResponse);
         wireMockServer.stubFor(WireMock.put(WireMock.urlEqualTo("/print-jobs/" + uuid))

@@ -25,8 +25,10 @@ public class PrintLetterApi {
     private final BlobClientCreator blobClientCreator;
     private final ObjectMapper objectMapper;
 
-    public PrintLetterApi(PrintLetterApiProxy printLetterApiProxy, BlobClientCreator blobClientCreator,
-                          ObjectMapper objectMapper) {
+    public PrintLetterApi(
+            PrintLetterApiProxy printLetterApiProxy,
+            BlobClientCreator blobClientCreator,
+            ObjectMapper objectMapper) {
         this.printLetterApiProxy = printLetterApiProxy;
         this.blobClientCreator = blobClientCreator;
         this.objectMapper = objectMapper;
@@ -39,17 +41,12 @@ public class PrintLetterApi {
 
         var id = UUID.randomUUID();
         PrintResponse response = printLetterApiProxy.print(serviceAuthHeader, id, printLetter);
-
         try {
-
             var rep = objectMapper.writeValueAsString(response);
-
             //validate print response
             ValidatePrintResponse.validateResponse(rep);
-
             //upload pdf files
             uploadPdfFiles(printLetter, response);
-
             //upload manifest file
             uploadManifestFile(response, rep);
         } catch (Exception e) {
@@ -61,27 +58,24 @@ public class PrintLetterApi {
 
     private void uploadManifestFile(PrintResponse response, String rep) {
         byte[] data = rep.getBytes(StandardCharsets.UTF_8);
-        var blobClient = blobClientCreator.getBlobClient(
-                response.printUploadInfo,
-                response.printUploadInfo.manifestPath,
-                response.printJob.containerName
-        );
+        var blob = response.printUploadInfo.manifestPath;
+        var blobClient = blobClientCreator
+                .getBlobClient(response, blob);
         blobClient.upload(new ByteArrayInputStream(data), data.length);
-        LOGGER.info("finished uploading manifest file.");
+        LOGGER.info("finished uploading manifest file {}", blob);
     }
 
     private void uploadPdfFiles(PrintLetterRequest printLetter, PrintResponse response) {
         uk.gov.hmcts.reform.printletter.api.model.v1.Document reqDoc;
         var documents = response.printJob.documents;
-        var container = response.printJob.containerName;
         for (Document document : documents) {
             reqDoc = getContent(printLetter, document.fileName);
-            LOGGER.info("uploading files {}", document.fileName);
+            LOGGER.info("uploading blob {}", document.fileName);
             var blobClient = blobClientCreator
-                    .getBlobClient(response.printUploadInfo, document.uploadToPath, container);
+                    .getBlobClient(response, document.uploadToPath);
             blobClient.upload(new ByteArrayInputStream(reqDoc.content), reqDoc.content.length);
         }
-        LOGGER.info("finished uploading files.");
+        LOGGER.info("finished uploading blobs.");
     }
 
     private uk.gov.hmcts.reform.printletter.api.model.v1.Document getContent(

@@ -4,12 +4,13 @@ import com.azure.storage.blob.BlobClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.google.common.io.Resources;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.StreamUtils;
 import uk.gov.hmcts.reform.printletter.api.exception.PrintResponseException;
 import uk.gov.hmcts.reform.printletter.api.model.PrintResponse;
 import uk.gov.hmcts.reform.printletter.api.model.v1.Document;
@@ -21,7 +22,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static com.google.common.base.Charsets.UTF_8;
-import static com.google.common.io.Resources.getResource;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -53,9 +53,9 @@ class PrintLetterApiTest {
 
     @Test
     void printLetterCreated() throws IOException, PrintResponseException {
-        String json = Resources.toString(getResource("print_job_response.json"), UTF_8);
-        PrintResponse printResponse = objectMapper.readValue(json, PrintResponse.class);
-
+        var json = StreamUtils.copyToString(
+                new ClassPathResource("print_job_response.json").getInputStream(), UTF_8);
+        var printResponse = objectMapper.readValue(json, PrintResponse.class);
         List<Document> documents = List.of(
                 new Document(
                         "mypdf.pdf",
@@ -80,7 +80,7 @@ class PrintLetterApiTest {
 
         when(printLetterApiProxy.print(eq(authHeader), any(), eq(printRequest)))
                 .thenReturn(printResponse);
-        when(blobClientCreator.getBlobClient(any(), any(), any())).thenReturn(blobClient);
+        when(blobClientCreator.getBlobClient(any(), any())).thenReturn(blobClient);
 
         PrintLetterResponse printLetterResponse = printLetterApi.printLetter(authHeader, printRequest);
         assertNotNull(printLetterResponse.letterId);

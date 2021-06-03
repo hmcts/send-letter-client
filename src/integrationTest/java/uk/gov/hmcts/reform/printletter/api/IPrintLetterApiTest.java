@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import com.google.common.io.Resources;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.util.StreamUtils;
 import uk.gov.hmcts.reform.printletter.api.exception.PrintResponseException;
 import uk.gov.hmcts.reform.printletter.api.model.PrintResponse;
 import uk.gov.hmcts.reform.printletter.api.model.v1.Document;
@@ -33,8 +34,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static com.google.common.base.Charsets.UTF_8;
-import static com.google.common.io.Resources.getResource;
+import static java.nio.charset.Charset.defaultCharset;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -70,12 +70,12 @@ public class IPrintLetterApiTest {
     @BeforeEach
     public void beforeEach() throws IOException {
         wireMockServer.resetAll();
-
-        var json = Resources.toString(getResource("print_job_response.json"), UTF_8);
+        var json = StreamUtils.copyToString(
+                new ClassPathResource("print_job_response.json").getInputStream(), defaultCharset());
         var printResponse = mapper.readValue(json, PrintResponse.class);
         var printResponseJson = mapper.writeValueAsString(printResponse);
 
-        when(blobClientCreator.getBlobClient(any(), any(), any())).thenReturn(blobClient);
+        when(blobClientCreator.getBlobClient(any(), any())).thenReturn(blobClient);
 
         wireMockServer.stubFor(put(WireMock.anyUrl())
                 .willReturn(aResponse().withStatus(200).withBody(printResponseJson)));
@@ -110,7 +110,8 @@ public class IPrintLetterApiTest {
         );
 
 
-        var response = printLetterApi.printLetter("serviceAuthHeader", printRequest);
+        var response = printLetterApi.printLetter(
+                "serviceAuthHeader", printRequest);
         assertNotNull(response.letterId);
         verifyInvocationCount(response.letterId);
     }

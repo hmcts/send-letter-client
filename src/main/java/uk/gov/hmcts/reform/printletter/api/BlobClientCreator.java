@@ -3,20 +3,19 @@ package uk.gov.hmcts.reform.printletter.api;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.reform.printletter.api.model.PrintUploadInfo;
+import uk.gov.hmcts.reform.printletter.api.model.PrintResponse;
 
 @Component
 public class BlobClientCreator {
 
     public BlobClient getBlobClient(
-            PrintUploadInfo printUploadInfo,
-            String blobName,
-            String container
+            final PrintResponse response,
+            final String blobName
     ) {
         return new BlobClientBuilder()
-                .endpoint(printUploadInfo.uploadToContainer)
-                .sasToken(printUploadInfo.sasToken)
-                .containerName(container)
+                .endpoint(response.printUploadInfo.uploadToContainer)
+                .sasToken(response.printUploadInfo.sasToken)
+                .containerName(response.printJob.containerName)
                 .blobName(blobName)
                 .buildClient();
     }
