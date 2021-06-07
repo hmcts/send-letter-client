@@ -182,7 +182,7 @@ dependencies {
     testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.19.0'
 
     testImplementation group: 'org.mockito', name: 'junit-jupiter', version: '2.20.0'
-    testImplementation group: 'com.github.tomakehurst', name: 'wiremock', version: '2.27.1'
+    testImplementation group: 'com.github.tomakehurst', name: 'wiremock', version: '2.27.2'
 
     integrationTestImplementation sourceSets.main.runtimeClasspath
     integrationTestImplementation sourceSets.test.runtimeClasspath
