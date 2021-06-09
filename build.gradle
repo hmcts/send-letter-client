@@ -166,6 +166,16 @@ dependencyManagement {
             entry 'log4j-to-slf4j'
             entry 'log4j-api'
         }
+        // CVE-2021-22118
+        dependencySet(group: 'org.springframework', version: '5.3.4') {
+            entry 'spring-aop'
+            entry 'spring-beans'
+            entry 'spring-context'
+            entry 'spring-core'
+            entry 'spring-expression'
+            entry 'spring-jcl'
+            entry 'spring-web'
+        }
     }
 }
 
