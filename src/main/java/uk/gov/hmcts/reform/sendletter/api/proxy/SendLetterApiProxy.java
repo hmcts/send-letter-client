@@ -23,6 +23,18 @@ import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
         configuration = SendLetterApiProxy.SendLetterConfiguration.class)
 public interface SendLetterApiProxy {
 
+    /**
+     * Please upgrade your code.
+     * @deprecated
+     * This method will be removed in future versions.
+     * <p>Use @{@link LetterV3 } or @{@link LetterWithPdfsRequest} instead.</p>
+     *
+     * @param serviceAuthHeader serviceAuthHeader
+     * @param isAsync flag to set sync and or async
+     * @param letter actual request object
+     * @return sendLetterResponse response to be return
+     */
+    @Deprecated(since = "15-June-2021", forRemoval = true)
     @PostMapping(
             path = "/letters",
             consumes = MediaType.APPLICATION_JSON_VALUE,
