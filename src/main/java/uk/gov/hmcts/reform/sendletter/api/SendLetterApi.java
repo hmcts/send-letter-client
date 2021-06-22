@@ -30,6 +30,17 @@ public class SendLetterApi {
         this.retryTemplate = retryTemplate;
     }
 
+    /**
+     * Please upgrade your code.
+     * @deprecated
+     * This method will be removed in future versions.
+     * <p>Use @{@link LetterV3 } or @{@link LetterWithPdfsRequest} instead.</p>
+     *
+     * @param serviceAuthHeader serviceAuthHeader
+     * @param letter actual request object
+     * @return sendLetterResponse response to be return
+     */
+    @Deprecated(since = "15-June-2021", forRemoval = true)
     public SendLetterResponse sendLetter(String serviceAuthHeader, Letter letter) {
         SendLetterResponse sendLetterResponse = sendLetterApiProxy.sendLetter(serviceAuthHeader, isAsync, letter);
         confirmRequestIsCreated(sendLetterResponse.letterId);
