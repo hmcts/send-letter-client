@@ -1,7 +1,4 @@
-[![Build Status](https://travis-ci.org/hmcts/send-letter-client.svg?branch=master)](https://travis-ci.org/hmcts/send-letter-client)
-[![codecov](https://codecov.io/gh/hmcts/send-letter-client/branch/master/graph/badge.svg)](https://codecov.io/gh/hmcts/send-letter-client)
-[![Download](https://api.bintray.com/packages/hmcts/hmcts-maven/send-letter-client/images/download.svg) ](https://bintray.com/hmcts/hmcts-maven/send-letter-client/_latestVersion)
-
+[![](https://jitpack.io/v/hmcts/send-letter-client.svg)](https://jitpack.io/#hmcts/send-letter-client)
 # Send Letter Client
 
 This is the client library for the [send-letter-service](https://github.com/hmcts/send-letter-service) aka Bulk Printing microservice.
