@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.printletter.api.exception.PrintResponseException;
 import uk.gov.hmcts.reform.printletter.api.model.Document;
 import uk.gov.hmcts.reform.printletter.api.model.PrintResponse;
+import uk.gov.hmcts.reform.printletter.api.model.v1.PrintDocument;
 import uk.gov.hmcts.reform.printletter.api.model.v1.PrintLetterRequest;
 import uk.gov.hmcts.reform.printletter.api.proxy.PrintLetterApiProxy;
 import uk.gov.hmcts.reform.printletter.api.validation.ValidatePrintResponse;
@@ -66,7 +67,7 @@ public class PrintLetterApi {
     }
 
     private void uploadPdfFiles(PrintLetterRequest printLetter, PrintResponse response) {
-        uk.gov.hmcts.reform.printletter.api.model.v1.Document reqDoc;
+        PrintDocument reqDoc;
         var documents = response.printJob.documents;
         for (Document document : documents) {
             reqDoc = getContent(printLetter, document.fileName);
@@ -78,7 +79,7 @@ public class PrintLetterApi {
         LOGGER.info("finished uploading blobs.");
     }
 
-    private uk.gov.hmcts.reform.printletter.api.model.v1.Document getContent(
+    private PrintDocument getContent(
             PrintLetterRequest printLetter,
             String filename
     ) {

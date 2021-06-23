@@ -7,13 +7,13 @@ import javax.validation.constraints.NotEmpty;
 public class PrintLetterRequest {
 
     @NotEmpty
-    public final List<Document> documents;
+    public final List<PrintDocument> documents;
     @NotEmpty
-    public final String         type;
+    public final String type;
     @NotEmpty
-    public final String         caseId;
+    public final String caseId;
     @NotEmpty
-    public final String         caseRef;
+    public final String caseRef;
     @NotEmpty
     public final String letterType;
 
@@ -28,7 +28,7 @@ public class PrintLetterRequest {
 
     public PrintLetterRequest(
             String type,
-            List<Document> documents,
+            List<PrintDocument> documents,
             String caseId,
             String caseRef,
             String letterType

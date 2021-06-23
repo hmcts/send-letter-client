@@ -13,7 +13,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.StreamUtils;
 import uk.gov.hmcts.reform.printletter.api.exception.PrintResponseException;
 import uk.gov.hmcts.reform.printletter.api.model.PrintResponse;
-import uk.gov.hmcts.reform.printletter.api.model.v1.Document;
+import uk.gov.hmcts.reform.printletter.api.model.v1.PrintDocument;
 import uk.gov.hmcts.reform.printletter.api.model.v1.PrintLetterRequest;
 import uk.gov.hmcts.reform.printletter.api.proxy.PrintLetterApiProxy;
 
@@ -56,13 +56,13 @@ class PrintLetterApiTest {
         var json = StreamUtils.copyToString(
                 new ClassPathResource("print_job_response.json").getInputStream(), UTF_8);
         var printResponse = objectMapper.readValue(json, PrintResponse.class);
-        List<Document> documents = List.of(
-                new Document(
+        List<PrintDocument> documents = List.of(
+                new PrintDocument(
                         "mypdf.pdf",
                         "sscs-SSC001-mypdf.pdf".getBytes(StandardCharsets.UTF_8),
                         2
                 ),
-                new Document(
+                new PrintDocument(
                         "1.pdf",
                         "sscs-SSC001-2.pdf".getBytes(StandardCharsets.UTF_8),
                         1
