@@ -203,9 +203,11 @@ tasks.withType(Test) {
 }
 
 bootJar {
+    archiveClassifier = 'boot'
     enabled = false
 }
 
 jar {
-   enabled = true
+    archiveClassifier = ''
+    enabled = true
 }
