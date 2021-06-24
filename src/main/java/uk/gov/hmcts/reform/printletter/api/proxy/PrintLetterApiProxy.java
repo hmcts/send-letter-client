@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import uk.gov.hmcts.reform.printletter.api.model.PrintResponse;
-import uk.gov.hmcts.reform.printletter.api.model.v1.PrintLetterRequest;
+import uk.gov.hmcts.reform.printletter.api.model.v1.PrintRequest;
 import uk.gov.hmcts.reform.sendletter.CustomFeignErrorDecoder;
 
 import java.util.UUID;
@@ -27,7 +27,7 @@ public interface PrintLetterApiProxy {
     PrintResponse print(
             @RequestHeader(name = "ServiceAuthorization", required = false) String serviceAuthHeader,
             @PathVariable("id") UUID id,
-            @RequestBody PrintLetterRequest printLetter
+            @RequestBody PrintRequest printRequest
     );
 
     class PrintLetterConfiguration {

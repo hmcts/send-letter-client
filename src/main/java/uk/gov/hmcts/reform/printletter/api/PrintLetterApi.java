@@ -8,15 +8,18 @@ import uk.gov.hmcts.reform.printletter.api.model.Document;
 import uk.gov.hmcts.reform.printletter.api.model.PrintResponse;
 import uk.gov.hmcts.reform.printletter.api.model.v1.PrintDocument;
 import uk.gov.hmcts.reform.printletter.api.model.v1.PrintLetterRequest;
+import uk.gov.hmcts.reform.printletter.api.model.v1.PrintRequest;
 import uk.gov.hmcts.reform.printletter.api.proxy.PrintLetterApiProxy;
 import uk.gov.hmcts.reform.printletter.api.validation.ValidatePrintResponse;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class PrintLetterApi {
 
@@ -41,7 +44,9 @@ public class PrintLetterApi {
     ) throws PrintResponseException {
 
         var id = UUID.randomUUID();
-        PrintResponse response = printLetterApiProxy.print(serviceAuthHeader, id, printLetter);
+
+        var printRequest = getProxyRequest(printLetter);
+        PrintResponse response = printLetterApiProxy.print(serviceAuthHeader, id, printRequest);
         try {
             var rep = objectMapper.writeValueAsString(response);
             //validate print response
@@ -55,6 +60,19 @@ public class PrintLetterApi {
         }
 
         return new PrintLetterResponse(id);
+    }
+
+    private PrintRequest getProxyRequest(PrintLetterRequest printLetter) {
+        List<uk.gov.hmcts.reform.printletter.api.model.v1.Document> listDoc = printLetter.documents.stream()
+                .map(pd -> new uk.gov.hmcts.reform.printletter.api.model.v1.Document(pd.fileName, pd.copies))
+                .collect(Collectors.toList());
+
+        return new PrintRequest(
+                printLetter.type,
+                listDoc,
+                printLetter.caseId,
+                printLetter.caseRef,
+                printLetter.letterType);
     }
 
     private void uploadManifestFile(PrintResponse response, String rep) {

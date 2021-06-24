@@ -17,12 +17,11 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.StreamUtils;
 import uk.gov.hmcts.reform.printletter.api.model.PrintResponse;
-import uk.gov.hmcts.reform.printletter.api.model.v1.PrintDocument;
-import uk.gov.hmcts.reform.printletter.api.model.v1.PrintLetterRequest;
+import uk.gov.hmcts.reform.printletter.api.model.v1.Document;
+import uk.gov.hmcts.reform.printletter.api.model.v1.PrintRequest;
 import uk.gov.hmcts.reform.sendletter.SendLetterAutoConfiguration;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 
@@ -75,26 +74,24 @@ public class PrintLetterApiProxyTest {
 
     @Test
     public void testPrintLetter() {
-        List<PrintDocument> documents = List.of(
-                new PrintDocument(
+        List<Document> documentList = List.of(
+                new Document(
                         "mypdf.pdf",
-                        "sscs-SSC001-mypdf.pdf".getBytes(StandardCharsets.UTF_8),
                         2
                 ),
-                new PrintDocument(
+                new Document(
                         "1.pdf",
-                        "sscs-SSC001-2.pdf".getBytes(StandardCharsets.UTF_8),
                         1
                 )
         );
-
-        var printRequest = new PrintLetterRequest(
+        PrintRequest printRequest = new PrintRequest(
                 "SSC001",
-                documents,
+                documentList,
                 "12345",
                 "162MC066",
                 "first-contact-pack"
         );
+
         var response = printLetterApiProxy.print(
                 "serviceAuthHeader",
                 uuid,

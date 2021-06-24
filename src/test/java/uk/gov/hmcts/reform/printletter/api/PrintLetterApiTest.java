@@ -78,7 +78,7 @@ class PrintLetterApiTest {
         );
 
 
-        when(printLetterApiProxy.print(eq(authHeader), any(), eq(printRequest)))
+        when(printLetterApiProxy.print(eq(authHeader), any(), any()))
                 .thenReturn(printResponse);
         when(blobClientCreator.getBlobClient(any(), any())).thenReturn(blobClient);
 
