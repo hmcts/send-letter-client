@@ -9,7 +9,7 @@ import uk.gov.hmcts.reform.sendletter.healthcheck.SendLetterHealthIndicator;
 
 @Configuration
 @ConditionalOnProperty(prefix = "send-letter", name = "url")
-@EnableFeignClients(basePackages = "uk.gov.hmcts.reform.sendletter")
+@EnableFeignClients(basePackages = "uk.gov.hmcts.reform")
 public class SendLetterAutoConfiguration {
 
     @Bean

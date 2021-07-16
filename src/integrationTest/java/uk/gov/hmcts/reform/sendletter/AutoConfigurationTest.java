@@ -9,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.gov.hmcts.reform.printletter.api.PrintLetterApi;
+import uk.gov.hmcts.reform.printletter.api.proxy.PrintLetterApiProxy;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
 import uk.gov.hmcts.reform.sendletter.api.proxy.SendLetterApiProxy;
 import uk.gov.hmcts.reform.sendletter.healthcheck.SendLetterHealthApi;
@@ -43,5 +45,7 @@ public class AutoConfigurationTest {
         assertThat(context.getBeanNamesForType(SendLetterAutoConfiguration.class)).hasSize(1);
         assertThat(context.getBeanNamesForType(RetryTemplate.class)).hasSize(1);
         assertThat(context.getBeanNamesForType(SendLetterApi.class)).hasSize(1);
+        assertThat(context.getBeanNamesForType(PrintLetterApi.class)).hasSize(1);
+        assertThat(context.getBeanNamesForType(PrintLetterApiProxy.class)).hasSize(1);
     }
 }
