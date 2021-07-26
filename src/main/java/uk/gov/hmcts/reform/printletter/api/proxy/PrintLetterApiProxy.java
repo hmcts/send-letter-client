@@ -21,8 +21,9 @@ import java.util.UUID;
 public interface PrintLetterApiProxy {
 
     @PutMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            path = {"/print-jobs/{id}"}
+            path = {"/print-jobs/{id}"},
+            consumes = "application/vnd.uk.gov.hmcts.letter-service.in.print-job.v1+json",
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     PrintResponse print(
             @RequestHeader(name = "ServiceAuthorization", required = false) String serviceAuthHeader,
