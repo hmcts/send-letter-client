@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.printletter.api.model.v1;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 import java.util.Objects;
 import javax.validation.constraints.NotEmpty;
@@ -8,13 +10,20 @@ public class PrintLetterRequest {
 
     @NotEmpty
     public final List<PrintDocument> documents;
+
     @NotEmpty
     public final String type;
+
     @NotEmpty
+    @JsonProperty("case_id")
     public final String caseId;
+
     @NotEmpty
+    @JsonProperty("case_ref")
     public final String caseRef;
+
     @NotEmpty
+    @JsonProperty("letter_type")
     public final String letterType;
 
 
