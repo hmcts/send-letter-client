@@ -21,6 +21,10 @@ public final class ValidatePrintResponse {
         var jsonSchema = new JSONObject(
                 new JSONTokener(PrintLetterApi.class.getResourceAsStream("/print_job_response_schema.json")));
         var jsonObj = new JSONObject(printResponseJson);
+        //not validating these. these values get updated by task
+        jsonObj.getJSONObject("print_job").remove("printed_at");
+        jsonObj.getJSONObject("print_job").remove("sent_to_print_at");
+
         var schema = SchemaLoader.load(jsonSchema);
         try {
             schema.validate(jsonObj);
