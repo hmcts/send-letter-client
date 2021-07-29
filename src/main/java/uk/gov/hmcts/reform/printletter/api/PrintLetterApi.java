@@ -57,6 +57,7 @@ public class PrintLetterApi {
             //upload manifest file
             uploadManifestFile(response, rep);
         } catch (Exception e) {
+            LOGGER.info("PrintLetterResponse Error occurred", e);
             throw new PrintResponseException("unable to process print request", e);
         }
 
