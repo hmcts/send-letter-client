@@ -44,7 +44,7 @@ public class PrintLetterApi {
     ) throws PrintResponseException {
 
         var id = UUID.randomUUID();
-        LOGGER.info("PrintResponse: {}", id);
+        LOGGER.info("PrintResponse: letter id {}", id);
         var printRequest = getProxyRequest(printLetter);
         PrintResponse response = printLetterApiProxy.print(serviceAuthHeader, id, printRequest);
         try {
@@ -93,12 +93,10 @@ public class PrintLetterApi {
             reqDoc = getContent(printLetter, document.fileName);
             LOGGER.info("uploading blob {}", document.fileName);
             LOGGER.info("uploading reqDoc fileName {}", reqDoc.fileName);
-            LOGGER.info("uploading reqDoc content{} \n", reqDoc.content);
             LOGGER.info("uploading reqDoc copies {}", reqDoc.copies);
-            LOGGER.info("uploading reqDoc content length{}", reqDoc.content.length);
+            LOGGER.info("uploading reqDoc content length{} in KB", reqDoc.content.length / 1024);
             var blobClient = blobClientCreator
                     .getBlobClient(response, document.uploadToPath);
-            LOGGER.info("uploading blobClient {}", blobClient);
             blobClient.upload(new ByteArrayInputStream(reqDoc.content), reqDoc.content.length);
             LOGGER.info("uploaded blob {}", reqDoc.fileName);
         }
