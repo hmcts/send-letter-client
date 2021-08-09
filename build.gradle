@@ -2,7 +2,7 @@ plugins {
     id 'checkstyle'
     id 'jacoco'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'org.springframework.boot' version '2.5.2'
+    id 'org.springframework.boot' version '2.5.3'
     id 'org.owasp.dependencycheck' version '6.2.2'
     id 'java-library'
     id 'maven'
@@ -173,7 +173,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.0.3'
 
-    implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '11.2'
+    implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '11.6'
 
     implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
     implementation group: 'org.springframework.retry', name: 'spring-retry', version: '1.3.1'
