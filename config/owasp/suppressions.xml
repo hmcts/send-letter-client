@@ -42,4 +42,7 @@
         <packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
         <cve>CVE-2020-11023</cve>
     </suppress>
+    <suppress until="2022-07-05">
+        <cve>CVE-2022-22965</cve>
+    </suppress>
 </suppressions>
