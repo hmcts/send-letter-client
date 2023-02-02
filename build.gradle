@@ -17,7 +17,7 @@ version buildNumber
 
 checkstyle {
     maxWarnings = 0
-    toolVersion = '8.29'
+    toolVersion = '9.2.1'
 }
 
 dependencyUpdates.resolutionStrategy {
@@ -44,8 +44,11 @@ dependencyCheck {
     suppressionFile = 'config/owasp/suppressions.xml'
 }
 
-sourceCompatibility = 11
-targetCompatibility = 11
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 
 sourceSets {
     integrationTest {
@@ -60,6 +63,10 @@ sourceSets {
 
 tasks.withType(JavaCompile) {
     options.compilerArgs << '-parameters' << '-Xlint:deprecation'
+}
+
+tasks.withType(JavaExec).configureEach {
+    javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
 }
 
 task integration(type: Test, description: 'Runs the integration tests.', group: 'Verification') {
