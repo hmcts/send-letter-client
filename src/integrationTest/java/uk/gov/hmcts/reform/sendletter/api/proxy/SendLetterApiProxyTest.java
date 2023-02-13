@@ -31,7 +31,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 @SpringBootTest(
         classes = SendLetterAutoConfiguration.class,
         properties = {
-                "send-letter.url=localhost:6400"
+            "send-letter.url=localhost:6400"
         }
 )
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
