@@ -43,7 +43,7 @@ import static org.springframework.http.HttpStatus.OK;
 @SpringBootTest(
         classes = {SendLetterAutoConfiguration.class},
         properties = {
-                "send-letter.url=localhost:6401"
+            "send-letter.url=localhost:6401"
         }
 )
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

@@ -2,12 +2,11 @@ plugins {
     id 'checkstyle'
     id 'jacoco'
     id 'io.spring.dependency-management' version '1.1.0'
-    id 'org.springframework.boot' version '2.7.5'
-    id 'org.owasp.dependencycheck' version '8.0.2'
+    id 'org.springframework.boot' version '3.0.2'
+    id 'org.owasp.dependencycheck' version '8.1.0'
     id 'java-library'
-    id 'maven'
     id 'maven-publish'
-    id 'com.github.ben-manes.versions' version '0.44.0'
+    id 'com.github.ben-manes.versions' version '0.45.0'
 }
 
 def buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?: "DEV-SNAPSHOT"
@@ -17,7 +16,7 @@ version buildNumber
 
 checkstyle {
     maxWarnings = 0
-    toolVersion = '8.29'
+    toolVersion = '9.2.1'
 }
 
 dependencyUpdates.resolutionStrategy {
@@ -44,8 +43,11 @@ dependencyCheck {
     suppressionFile = 'config/owasp/suppressions.xml'
 }
 
-sourceCompatibility = 11
-targetCompatibility = 11
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 
 sourceSets {
     integrationTest {
@@ -60,6 +62,10 @@ sourceSets {
 
 tasks.withType(JavaCompile) {
     options.compilerArgs << '-parameters' << '-Xlint:deprecation'
+}
+
+tasks.withType(JavaExec).configureEach {
+    javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
 }
 
 task integration(type: Test, description: 'Runs the integration tests.', group: 'Verification') {
@@ -78,18 +84,15 @@ jacocoTestReport {
             ])
         }))}
     reports {
-        xml.enabled = true
-        csv.enabled = false
+        xml.required = true
+        csv.required = false
         xml.destination = file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
     }
 }
 
 repositories {
-    jcenter()
-    maven {
-        url 'https://repo.spring.io/libs-milestone'
-    }
     mavenLocal()
+    mavenCentral()
 }
 
 jar {
@@ -171,7 +174,7 @@ dependencyManagement {
 
 dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.1.5'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '4.0.1'
 
     implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '12.1'
 
