@@ -88,37 +88,6 @@ public class ISendLetterApiTest {
     }
 
     @Test
-    public void testV1LetterFound() {
-        stubSingleCallWithStatus(OK);
-
-        SendLetterResponse sendLetterResponse = sendLetterApi.sendLetter("serviceAuthHeader",
-                new Letter(Collections.emptyList(), "test", Collections.emptyMap()));
-        assertThat(sendLetterResponse.letterId).isEqualTo(expectedSendLetterResponse.letterId);
-
-        verifyInvocationCount(1);
-    }
-
-    @Test
-    public void testV1LetterNotFound() {
-        stubSingleCallWithStatus(NOT_FOUND);
-
-        assertThrows(HttpServerErrorException.class, () -> sendLetterApi.sendLetter("serviceAuthHeader",
-                new Letter(Collections.emptyList(), "test", Collections.emptyMap())));
-        verifyInvocationCount(240);
-    }
-
-    @Test
-    public void testV1LetterFoundInSecondAttempt() {
-        stubScenarios();
-
-        SendLetterResponse sendLetterResponse = sendLetterApi.sendLetter("serviceAuthHeader",
-                new Letter(Collections.emptyList(), "test", Collections.emptyMap()));
-        assertThat(sendLetterResponse.letterId).isEqualTo(expectedSendLetterResponse.letterId);
-        verifyInvocationCount(2);
-    }
-
-
-    @Test
     public void testV2LetterFound() {
         stubSingleCallWithStatus(OK);
 
