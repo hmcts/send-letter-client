@@ -21,6 +21,5 @@ jobs:
         with:
           java-version: 11
           distribution: 'temurin'
-          cache: gradle
       - name: Build
         run: ./gradlew check
