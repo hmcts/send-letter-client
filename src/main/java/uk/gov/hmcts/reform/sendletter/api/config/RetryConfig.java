@@ -21,7 +21,7 @@ public class RetryConfig {
         retryTemplate.setThrowLastExceptionOnExhausted(false);
 
         ExponentialBackOffPolicy exponentialBackOffPolicy = new ExponentialBackOffPolicy();
-        exponentialBackOffPolicy.setMaxInterval(1000);
+        exponentialBackOffPolicy.setMaxInterval(3000);
         retryTemplate.setBackOffPolicy(exponentialBackOffPolicy);
 
         retryTemplate.setRetryPolicy(new RetryPolicy(10, Collections.singletonList(HttpStatus.NOT_FOUND)));
