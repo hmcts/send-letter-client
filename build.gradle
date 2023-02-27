@@ -153,7 +153,7 @@ dependencyManagement {
         dependencySet(group: 'commons-beanutils', version: '1.9.4') {
             entry 'commons-beanutils'
         }
-        dependencySet(group: 'io.github.openfeign', version: '12.1') {
+        dependencySet(group: 'io.github.openfeign', version: '12.2') {
             entry 'feign-hystrix'
             entry 'feign-slf4j'
         }
