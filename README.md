@@ -11,7 +11,7 @@ This is the client library for the [send-letter-service](https://github.com/hmct
 - Project requires Spring Boot v2.2 to be present
 
 ## Usage
-
+Use JIT Pack.
 Just include the library as your dependency and you will be to use the client class. Health check for send-letter-producer is provided as well.
 
 Components provided by this library will get automatically configured in a Spring context if `send-letter.url` configuration property is defined and does not equal `false`.
