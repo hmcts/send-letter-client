@@ -78,7 +78,7 @@ public class ISendLetterApiTest {
 
         LetterStatus letterStatus = new LetterStatus(uuid, "Created", "checksum",
                 ZonedDateTime.now(), ZonedDateTime.now().plusHours(1),
-                ZonedDateTime.now().plusHours(2), Collections.emptyMap(), 1);
+                ZonedDateTime.now().plusHours(2), Collections.emptyMap(), Collections.emptyMap());
         this.letterStatus = mapper.writeValueAsString(letterStatus);
     }
 
@@ -103,7 +103,7 @@ public class ISendLetterApiTest {
 
         assertThrows(HttpServerErrorException.class, () -> sendLetterApi.sendLetter("serviceAuthHeader",
                 new LetterWithPdfsRequest(Collections.emptyList(), "test", Collections.emptyMap())));
-        verifyInvocationCount(240);
+        verifyInvocationCount(10);
     }
 
     @Test
@@ -130,7 +130,7 @@ public class ISendLetterApiTest {
 
         assertThrows(HttpServerErrorException.class, () -> sendLetterApi.sendLetter("serviceAuthHeader",
                 new LetterV3("test", Collections.emptyList(), Collections.emptyMap())));
-        verifyInvocationCount(240);
+        verifyInvocationCount(10);
     }
 
     @Test
@@ -161,13 +161,13 @@ public class ISendLetterApiTest {
 
     private void stubScenarios() {
         wireMockServer.stubFor(get(urlMatching(
-                "/letters/" + expectedSendLetterResponse.letterId + "\\" + getRequestParameters()))
+                "/letters/v2/" + expectedSendLetterResponse.letterId + "\\" + getRequestParameters()))
                 .inScenario("Letter search")
                 .whenScenarioStateIs(STARTED).willReturn(WireMock.aResponse().withStatus(404))
                 .willSetStateTo("Letter found"));
 
         wireMockServer.stubFor(get(urlMatching(
-                "/letters/" + expectedSendLetterResponse.letterId + "\\" + getRequestParameters()))
+                "/letters/v2/" + expectedSendLetterResponse.letterId + "\\" + getRequestParameters()))
                 .inScenario("Letter search")
                 .whenScenarioStateIs("Letter found")
                 .willReturn(WireMock.aResponse().withStatus(200).withBody(letterStatus)));
@@ -176,7 +176,7 @@ public class ISendLetterApiTest {
 
     private void stubSingleCallWithStatus(HttpStatus status) {
         wireMockServer.stubFor(get(urlMatching(
-                "/letters/" + expectedSendLetterResponse.letterId + "\\" + getRequestParameters()))
+                "/letters/v2/" + expectedSendLetterResponse.letterId + "\\" + getRequestParameters()))
                 .willReturn(WireMock.aResponse().withStatus(status.value()).withBody(letterStatus)));
     }
 
@@ -184,7 +184,7 @@ public class ISendLetterApiTest {
         wireMockServer.verify(1, postRequestedFor(urlEqualTo(
                 "/letters?isAsync=true")));
         wireMockServer.verify(count, getRequestedFor(urlEqualTo(
-                "/letters/" + expectedSendLetterResponse.letterId + getRequestParameters())));
+                "/letters/v2/" + expectedSendLetterResponse.letterId + getRequestParameters())));
     }
 
     private String getRequestParameters() {
