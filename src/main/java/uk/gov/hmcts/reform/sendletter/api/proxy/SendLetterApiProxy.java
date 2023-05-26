@@ -55,7 +55,7 @@ public interface SendLetterApiProxy {
         @RequestBody LetterV3 letter
     );
 
-    @GetMapping(path = "/letters/v2/{uuid}",
+    @GetMapping(path = "/letters/{uuid}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     LetterStatus getLetterStatus(@PathVariable String uuid,

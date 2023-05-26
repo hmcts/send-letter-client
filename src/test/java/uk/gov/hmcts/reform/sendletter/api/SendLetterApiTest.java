@@ -44,7 +44,7 @@ class SendLetterApiTest {
         sendLetterResponse = new SendLetterResponse(uuid);
         letterStatus = new LetterStatus(uuid, "Created", "checksum",
                 ZonedDateTime.now(), ZonedDateTime.now().plusHours(1),
-                ZonedDateTime.now().plusHours(2), Collections.emptyMap(), Collections.emptyMap());
+                ZonedDateTime.now().plusHours(2), Collections.emptyMap(), 2);
     }
 
     @Test

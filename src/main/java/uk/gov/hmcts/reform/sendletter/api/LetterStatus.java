@@ -32,7 +32,7 @@ public class LetterStatus {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public Map<String, Object> additionalData;
 
-    public Map<String, Object> copies;
+    public Integer copies;
 
     public LetterStatus() {
 
@@ -46,7 +46,7 @@ public class LetterStatus {
             final ZonedDateTime sentToPrintAt,
             final ZonedDateTime printedAt,
             final Map<String, Object> additionalData,
-            final Map<String, Object> copies
+            final Integer copies
     ) {
         this.id = id;
         this.status = status;
