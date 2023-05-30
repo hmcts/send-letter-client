@@ -103,7 +103,7 @@ public class ISendLetterApiTest {
 
         assertThrows(HttpServerErrorException.class, () -> sendLetterApi.sendLetter("serviceAuthHeader",
                 new LetterWithPdfsRequest(Collections.emptyList(), "test", Collections.emptyMap())));
-        verifyInvocationCount(240);
+        verifyInvocationCount(10);
     }
 
     @Test
@@ -130,7 +130,7 @@ public class ISendLetterApiTest {
 
         assertThrows(HttpServerErrorException.class, () -> sendLetterApi.sendLetter("serviceAuthHeader",
                 new LetterV3("test", Collections.emptyList(), Collections.emptyMap())));
-        verifyInvocationCount(240);
+        verifyInvocationCount(10);
     }
 
     @Test
