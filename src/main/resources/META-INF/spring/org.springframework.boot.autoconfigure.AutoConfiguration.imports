@@ -1,0 +1,2 @@
+uk.gov.hmcts.reform.sendletter.SendLetterAutoConfiguration
+uk.gov.hmcts.reform.sendletter.api.config.RetryConfig
