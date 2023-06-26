@@ -20,9 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableAutoConfiguration
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class)
 @SpringBootTest(
-    classes = DummyApplication.class,
+    classes = SendLetterAutoConfiguration.class,
     properties = {
         "send-letter.url=localhost"
     }
