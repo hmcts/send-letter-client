@@ -15,9 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+import uk.gov.hmcts.reform.sendletter.DummyApplication;
 import uk.gov.hmcts.reform.sendletter.SendLetterAutoConfiguration;
 import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
 
@@ -40,8 +43,9 @@ import static org.springframework.http.HttpStatus.OK;
 
 @EnableAutoConfiguration
 @ExtendWith(SpringExtension.class)
+@ContextConfiguration(loader=AnnotationConfigContextLoader.class)
 @SpringBootTest(
-        classes = {SendLetterAutoConfiguration.class},
+        classes = DummyApplication.class,
         properties = {
             "send-letter.url=localhost:6401"
         }
