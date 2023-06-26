@@ -41,7 +41,7 @@ import static org.springframework.http.HttpStatus.OK;
 @EnableAutoConfiguration
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
-        classes = SendLetterAutoConfiguration.class,
+        classes = {SendLetterAutoConfiguration.class},
         properties = {
             "send-letter.url=localhost:6401"
         }
