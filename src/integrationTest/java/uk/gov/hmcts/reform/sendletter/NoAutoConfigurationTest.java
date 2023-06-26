@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
@@ -21,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableAutoConfiguration
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(loader=AnnotationConfigContextLoader.class)
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class)
 @SpringBootTest(
     classes = SendLetterAutoConfiguration.class,
     properties = {

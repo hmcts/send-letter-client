@@ -21,7 +21,6 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import uk.gov.hmcts.reform.sendletter.DummyApplication;
-import uk.gov.hmcts.reform.sendletter.SendLetterAutoConfiguration;
 import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
 
 import java.time.ZonedDateTime;
@@ -43,7 +42,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @EnableAutoConfiguration
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(loader=AnnotationConfigContextLoader.class)
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class)
 @SpringBootTest(
         classes = DummyApplication.class,
         properties = {

@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableAutoConfiguration
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(loader=AnnotationConfigContextLoader.class)
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class)
 @SpringBootTest(
     classes = DummyApplication.class,
     properties = {

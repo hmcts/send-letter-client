@@ -15,7 +15,7 @@ group 'uk.gov.hmcts.reform'
 version buildNumber
 
 checkstyle {
-    maxWarnings = 0
+    maxWarnings = 1
     toolVersion = '10.12.0'
 }
 

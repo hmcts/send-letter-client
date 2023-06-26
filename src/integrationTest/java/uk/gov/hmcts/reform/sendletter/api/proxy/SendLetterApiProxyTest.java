@@ -18,7 +18,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import uk.gov.hmcts.reform.sendletter.DummyApplication;
-import uk.gov.hmcts.reform.sendletter.SendLetterAutoConfiguration;
 import uk.gov.hmcts.reform.sendletter.api.Letter;
 import uk.gov.hmcts.reform.sendletter.api.LetterWithPdfsRequest;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
@@ -31,7 +30,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @EnableAutoConfiguration
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(loader=AnnotationConfigContextLoader.class)
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class)
 @SpringBootTest(
         classes = DummyApplication.class,
         properties = {
