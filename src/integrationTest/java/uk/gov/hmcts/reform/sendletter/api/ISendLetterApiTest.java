@@ -16,9 +16,9 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 import uk.gov.hmcts.reform.sendletter.SendLetterAutoConfiguration;
+import uk.gov.hmcts.reform.sendletter.api.exception.ClientHttpErrorException;
+import uk.gov.hmcts.reform.sendletter.api.exception.ServerHttpErrorException;
 import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
 
 import java.time.ZonedDateTime;
@@ -41,10 +41,10 @@ import static org.springframework.http.HttpStatus.OK;
 @EnableAutoConfiguration
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
-        classes = {SendLetterAutoConfiguration.class},
-        properties = {
-            "send-letter.url=localhost:6401"
-        }
+    classes = {SendLetterAutoConfiguration.class},
+    properties = {
+        "send-letter.url=localhost:6401"
+    }
 )
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ISendLetterApiTest {
@@ -74,11 +74,12 @@ public class ISendLetterApiTest {
 
         String responseJson = mapper.writeValueAsString(expectedSendLetterResponse);
         wireMockServer.stubFor(WireMock.post(urlEqualTo("/letters?isAsync=true"))
-                .willReturn(WireMock.aResponse().withStatus(200).withBody(responseJson)));
+                                   .willReturn(WireMock.aResponse().withStatus(200).withBody(responseJson)));
 
         LetterStatus letterStatus = new LetterStatus(uuid, "Created", "checksum",
-                ZonedDateTime.now(), ZonedDateTime.now().plusHours(1),
-                ZonedDateTime.now().plusHours(2), Collections.emptyMap(), 1);
+                                                     ZonedDateTime.now(), ZonedDateTime.now().plusHours(1),
+                                                     ZonedDateTime.now().plusHours(2), Collections.emptyMap(), 1
+        );
         this.letterStatus = mapper.writeValueAsString(letterStatus);
     }
 
@@ -91,8 +92,10 @@ public class ISendLetterApiTest {
     public void testV2LetterFound() {
         stubSingleCallWithStatus(OK);
 
-        SendLetterResponse sendLetterResponse = sendLetterApi.sendLetter("serviceAuthHeader",
-                new LetterWithPdfsRequest(Collections.emptyList(), "test", Collections.emptyMap()));
+        SendLetterResponse sendLetterResponse = sendLetterApi.sendLetter(
+            "serviceAuthHeader",
+            new LetterWithPdfsRequest(Collections.emptyList(), "test", Collections.emptyMap())
+        );
         assertThat(sendLetterResponse.letterId).isEqualTo(expectedSendLetterResponse.letterId);
         verifyInvocationCount(1);
     }
@@ -101,16 +104,20 @@ public class ISendLetterApiTest {
     public void testV2LetterNotFound() {
         stubSingleCallWithStatus(NOT_FOUND);
 
-        assertThrows(HttpServerErrorException.class, () -> sendLetterApi.sendLetter("serviceAuthHeader",
-                new LetterWithPdfsRequest(Collections.emptyList(), "test", Collections.emptyMap())));
+        assertThrows(ClientHttpErrorException.class, () -> sendLetterApi.sendLetter(
+            "serviceAuthHeader",
+            new LetterWithPdfsRequest(Collections.emptyList(), "test", Collections.emptyMap())
+        ));
         verifyInvocationCount(10);
     }
 
     @Test
     public void testV2LetterFoundInSecondAttempt() {
         stubScenarios();
-        SendLetterResponse sendLetterResponse = sendLetterApi.sendLetter("serviceAuthHeader",
-                new LetterWithPdfsRequest(Collections.emptyList(), "test", Collections.emptyMap()));
+        SendLetterResponse sendLetterResponse = sendLetterApi.sendLetter(
+            "serviceAuthHeader",
+            new LetterWithPdfsRequest(Collections.emptyList(), "test", Collections.emptyMap())
+        );
         assertThat(sendLetterResponse.letterId).isEqualTo(expectedSendLetterResponse.letterId);
         verifyInvocationCount(2);
     }
@@ -118,8 +125,10 @@ public class ISendLetterApiTest {
     @Test
     public void testV3LetterFound() {
         stubSingleCallWithStatus(OK);
-        SendLetterResponse sendLetterResponse = sendLetterApi.sendLetter("serviceAuthHeader",
-                new LetterV3("test", Collections.emptyList(), Collections.emptyMap()));
+        SendLetterResponse sendLetterResponse = sendLetterApi.sendLetter(
+            "serviceAuthHeader",
+            new LetterV3("test", Collections.emptyList(), Collections.emptyMap())
+        );
         assertThat(sendLetterResponse.letterId).isEqualTo(expectedSendLetterResponse.letterId);
         verifyInvocationCount(1);
     }
@@ -128,16 +137,25 @@ public class ISendLetterApiTest {
     public void testV3LetterNotFound() {
         stubSingleCallWithStatus(NOT_FOUND);
 
-        assertThrows(HttpServerErrorException.class, () -> sendLetterApi.sendLetter("serviceAuthHeader",
-                new LetterV3("test", Collections.emptyList(), Collections.emptyMap())));
+        assertThrows(
+            ClientHttpErrorException.class,
+            () -> sendLetterApi.sendLetter(
+                "serviceAuthHeader",
+                new LetterV3("test", Collections.emptyList(),
+                             Collections.emptyMap()
+                )
+            )
+        );
         verifyInvocationCount(10);
     }
 
     @Test
     public void testV3LetterFoundInSecondAttempt() {
         stubScenarios();
-        SendLetterResponse sendLetterResponse = sendLetterApi.sendLetter("serviceAuthHeader",
-                new LetterV3("test", Collections.emptyList(), Collections.emptyMap()));
+        SendLetterResponse sendLetterResponse = sendLetterApi.sendLetter(
+            "serviceAuthHeader",
+            new LetterV3("test", Collections.emptyList(), Collections.emptyMap())
+        );
         assertThat(sendLetterResponse.letterId).isEqualTo(expectedSendLetterResponse.letterId);
         verifyInvocationCount(2);
     }
@@ -145,46 +163,50 @@ public class ISendLetterApiTest {
     @Test
     public void testInternalServerError() {
         stubSingleCallWithStatus(INTERNAL_SERVER_ERROR);
-        assertThrows(HttpServerErrorException.class, () -> sendLetterApi.sendLetter("serviceAuthHeader",
-                new LetterV3("test", Collections.emptyList(), Collections.emptyMap())));
+        assertThrows(ServerHttpErrorException.class, () -> sendLetterApi.sendLetter(
+            "serviceAuthHeader",
+            new LetterV3("test", Collections.emptyList(), Collections.emptyMap())
+        ));
         verifyInvocationCount(1);
     }
 
     @Test
     public void testDuplicateLetterRequestError() {
         stubSingleCallWithStatus(CONFLICT);
-        assertThrows(HttpClientErrorException.class, () -> sendLetterApi.sendLetter("serviceAuthHeader",
-                new LetterV3("test", Collections.emptyList(), Collections.emptyMap())));
+        assertThrows(ClientHttpErrorException.class, () -> sendLetterApi.sendLetter(
+            "serviceAuthHeader",
+            new LetterV3("test", Collections.emptyList(), Collections.emptyMap())
+        ));
         verifyInvocationCount(1);
     }
 
 
     private void stubScenarios() {
         wireMockServer.stubFor(get(urlMatching(
-                "/letters/" + expectedSendLetterResponse.letterId + "\\" + getRequestParameters()))
-                .inScenario("Letter search")
-                .whenScenarioStateIs(STARTED).willReturn(WireMock.aResponse().withStatus(404))
-                .willSetStateTo("Letter found"));
+            "/letters/" + expectedSendLetterResponse.letterId + "\\" + getRequestParameters()))
+                                   .inScenario("Letter search")
+                                   .whenScenarioStateIs(STARTED).willReturn(WireMock.aResponse().withStatus(404))
+                                   .willSetStateTo("Letter found"));
 
         wireMockServer.stubFor(get(urlMatching(
-                "/letters/" + expectedSendLetterResponse.letterId + "\\" + getRequestParameters()))
-                .inScenario("Letter search")
-                .whenScenarioStateIs("Letter found")
-                .willReturn(WireMock.aResponse().withStatus(200).withBody(letterStatus)));
+            "/letters/" + expectedSendLetterResponse.letterId + "\\" + getRequestParameters()))
+                                   .inScenario("Letter search")
+                                   .whenScenarioStateIs("Letter found")
+                                   .willReturn(WireMock.aResponse().withStatus(200).withBody(letterStatus)));
 
     }
 
     private void stubSingleCallWithStatus(HttpStatus status) {
         wireMockServer.stubFor(get(urlMatching(
-                "/letters/" + expectedSendLetterResponse.letterId + "\\" + getRequestParameters()))
-                .willReturn(WireMock.aResponse().withStatus(status.value()).withBody(letterStatus)));
+            "/letters/" + expectedSendLetterResponse.letterId + "\\" + getRequestParameters()))
+                                   .willReturn(WireMock.aResponse().withStatus(status.value()).withBody(letterStatus)));
     }
 
     private void verifyInvocationCount(int count) {
         wireMockServer.verify(1, postRequestedFor(urlEqualTo(
-                "/letters?isAsync=true")));
+            "/letters?isAsync=true")));
         wireMockServer.verify(count, getRequestedFor(urlEqualTo(
-                "/letters/" + expectedSendLetterResponse.letterId + getRequestParameters())));
+            "/letters/" + expectedSendLetterResponse.letterId + getRequestParameters())));
     }
 
     private String getRequestParameters() {

@@ -6,8 +6,8 @@ import feign.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
+import uk.gov.hmcts.reform.sendletter.api.exception.ClientHttpErrorException;
+import uk.gov.hmcts.reform.sendletter.api.exception.ServerHttpErrorException;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -42,8 +42,8 @@ public class CustomFeignErrorDecoderTest {
                 .build();
 
         assertThat(decode(response))
-                .isInstanceOf(HttpClientErrorException.class)
-                .hasMessage(HttpStatus.NOT_FOUND.value() + " Could not find");
+                .isInstanceOf(ClientHttpErrorException.class)
+                .hasMessage(HttpStatus.NOT_FOUND.value() + " Could not find: some body");
     }
 
     @DisplayName("Should parse response and return Server specific exception")
@@ -57,7 +57,7 @@ public class CustomFeignErrorDecoderTest {
                 .build();
 
         assertThat(decode(response))
-                .isInstanceOf(HttpServerErrorException.class)
+                .isInstanceOf(ServerHttpErrorException.class)
                 .hasMessage(INTERNAL_SERVER_ERROR.value() + " " + INTERNAL_SERVER_ERROR.getReasonPhrase());
     }
 
