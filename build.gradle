@@ -168,7 +168,7 @@ dependencies {
     testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.24.2'
 
     testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.4.0'
-    testImplementation group: 'com.github.tomakehurst', name: 'wiremock-jre8-standalone', version: '2.35.0'
+    testImplementation group: 'com.github.tomakehurst', name: 'wiremock-jre8-standalone', version: '3.0.0'
 
     integrationTestImplementation sourceSets.main.runtimeClasspath
     integrationTestImplementation sourceSets.test.runtimeClasspath
