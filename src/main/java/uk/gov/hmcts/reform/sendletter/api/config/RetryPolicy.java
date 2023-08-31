@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.retry.policy.ExceptionClassifierRetryPolicy;
 import org.springframework.retry.policy.NeverRetryPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
-import org.springframework.web.client.HttpClientErrorException;
+import uk.gov.hmcts.reform.sendletter.api.exception.ClientHttpErrorException;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,9 +18,10 @@ public class RetryPolicy extends ExceptionClassifierRetryPolicy {
         simpleRetryPolicy.setMaxAttempts(maxAttempts);
 
         this.setExceptionClassifier(classifiable -> {
-            if (classifiable instanceof HttpClientErrorException) {
+
+            if (classifiable instanceof ClientHttpErrorException) {
                 Optional<HttpStatus> retryStatus = retryStatuses.stream()
-                        .filter(value -> value == ((HttpClientErrorException) classifiable).getStatusCode()).findAny();
+                        .filter(value -> value == ((ClientHttpErrorException) classifiable).getStatusCode()).findAny();
                 if (retryStatus.isPresent()) {
                     return simpleRetryPolicy;
                 }

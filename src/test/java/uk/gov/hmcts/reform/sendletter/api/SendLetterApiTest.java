@@ -7,8 +7,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.retry.support.RetryTemplate;
-import org.springframework.web.client.HttpClientErrorException;
 import uk.gov.hmcts.reform.sendletter.api.config.RetryConfig;
+import uk.gov.hmcts.reform.sendletter.api.exception.ClientHttpErrorException;
 import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
 import uk.gov.hmcts.reform.sendletter.api.proxy.SendLetterApiProxy;
 
@@ -68,20 +68,15 @@ class SendLetterApiTest {
         when(sendLetterApiProxy.sendLetter(eq(authHeader), eq(SendLetterApi.isAsync),eq(letter)))
                 .thenReturn(sendLetterResponse);
         when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()),
-                eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate)))
-                .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
-                        .getReasonPhrase(),null, null, null))
-                .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
-                        .getReasonPhrase(),null, null, null))
-                .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
-                        .getReasonPhrase(),null, null, null))
-                .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
-                        .getReasonPhrase(),null, null, null))
-                .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
-                        .getReasonPhrase(),null, null, null))
-                .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
-                        .getReasonPhrase(),null, null, null))
-                .thenReturn(letterStatus);
+                                                eq(SendLetterApi.includeAddtionaInfo),
+                                                eq(SendLetterApi.checkDuplicate)))
+            .thenThrow(new ClientHttpErrorException(HttpStatus.NOT_FOUND, null))
+            .thenThrow(new ClientHttpErrorException(HttpStatus.NOT_FOUND, null))
+            .thenThrow(new ClientHttpErrorException(HttpStatus.NOT_FOUND, null))
+            .thenThrow(new ClientHttpErrorException(HttpStatus.NOT_FOUND, null))
+            .thenThrow(new ClientHttpErrorException(HttpStatus.NOT_FOUND, null))
+            .thenThrow(new ClientHttpErrorException(HttpStatus.NOT_FOUND, null))
+            .thenReturn(letterStatus);
 
         sendLetterApi.sendLetter(authHeader, letter);
         verify(sendLetterApiProxy, times(7)).getLetterStatus(eq(sendLetterResponse.letterId.toString()),
@@ -96,13 +91,10 @@ class SendLetterApiTest {
                 .thenReturn(sendLetterResponse);
         when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()),
                 eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate)))
-                .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
-                        .getReasonPhrase(),null, null, null))
-                .thenThrow(new HttpClientErrorException(HttpStatus.CONFLICT, HttpStatus.CONFLICT
-                        .getReasonPhrase(),null, null, null));
+                .thenThrow(new ClientHttpErrorException(HttpStatus.NOT_FOUND, null))
+                .thenThrow(new ClientHttpErrorException(HttpStatus.CONFLICT, null));
 
-
-        assertThrows(HttpClientErrorException.class, () -> sendLetterApi.sendLetter(authHeader, letter));
+        assertThrows(ClientHttpErrorException.class, () -> sendLetterApi.sendLetter(authHeader, letter));
         verify(sendLetterApiProxy, times(2))
                 .getLetterStatus(eq(sendLetterResponse.letterId.toString()),
                         eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate));
@@ -127,20 +119,15 @@ class SendLetterApiTest {
         when(sendLetterApiProxy.sendLetter(eq(authHeader), eq(SendLetterApi.isAsync),eq(letter)))
                 .thenReturn(sendLetterResponse);
         when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()),
-                eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate)))
-                .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
-                        .getReasonPhrase(),null, null, null))
-                .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
-                        .getReasonPhrase(),null, null, null))
-                .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
-                        .getReasonPhrase(),null, null, null))
-                .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
-                        .getReasonPhrase(),null, null, null))
-                .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
-                        .getReasonPhrase(),null, null, null))
-                .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
-                        .getReasonPhrase(),null, null, null))
-                .thenReturn(letterStatus);
+                                                eq(SendLetterApi.includeAddtionaInfo),
+                                                eq(SendLetterApi.checkDuplicate)))
+            .thenThrow(new ClientHttpErrorException(HttpStatus.NOT_FOUND, null))
+            .thenThrow(new ClientHttpErrorException(HttpStatus.NOT_FOUND, null))
+            .thenThrow(new ClientHttpErrorException(HttpStatus.NOT_FOUND, null))
+            .thenThrow(new ClientHttpErrorException(HttpStatus.NOT_FOUND, null))
+            .thenThrow(new ClientHttpErrorException(HttpStatus.NOT_FOUND, null))
+            .thenThrow(new ClientHttpErrorException(HttpStatus.NOT_FOUND, null))
+            .thenReturn(letterStatus);
 
         sendLetterApi.sendLetter(authHeader, letter);
         verify(sendLetterApiProxy, times(7))
@@ -152,16 +139,14 @@ class SendLetterApiTest {
     void testSendV3LetterWithDuplicateRecord() {
         LetterV3 letter = new LetterV3("pdf", Collections.emptyList(),  Collections.emptyMap());
         when(sendLetterApiProxy.sendLetter(eq(authHeader), eq(SendLetterApi.isAsync),eq(letter)))
-                .thenReturn(sendLetterResponse);
+            .thenReturn(sendLetterResponse);
         when(sendLetterApiProxy.getLetterStatus(eq(sendLetterResponse.letterId.toString()),
-                eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate)))
-                .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND
-                        .getReasonPhrase(),null, null, null))
-                .thenThrow(new HttpClientErrorException(HttpStatus.CONFLICT, HttpStatus.CONFLICT
-                        .getReasonPhrase(),null, null, null));
+                                                eq(SendLetterApi.includeAddtionaInfo),
+                                                eq(SendLetterApi.checkDuplicate)))
+            .thenThrow(new ClientHttpErrorException(HttpStatus.NOT_FOUND, null))
+            .thenThrow(new ClientHttpErrorException(HttpStatus.CONFLICT, null));
 
-
-        assertThrows(HttpClientErrorException.class, () -> sendLetterApi.sendLetter(authHeader, letter));
+        assertThrows(ClientHttpErrorException.class, () -> sendLetterApi.sendLetter(authHeader, letter));
         verify(sendLetterApiProxy, times(2))
                 .getLetterStatus(eq(sendLetterResponse.letterId.toString()),
                         eq(SendLetterApi.includeAddtionaInfo), eq(SendLetterApi.checkDuplicate));

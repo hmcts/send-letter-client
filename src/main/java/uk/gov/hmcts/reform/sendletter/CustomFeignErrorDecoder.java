@@ -3,32 +3,30 @@ package uk.gov.hmcts.reform.sendletter;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
+import uk.gov.hmcts.reform.sendletter.api.exception.ClientHttpErrorException;
+import uk.gov.hmcts.reform.sendletter.api.exception.ServerHttpErrorException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Optional;
 
 public class CustomFeignErrorDecoder implements ErrorDecoder {
-    private static final Logger logger = LoggerFactory.getLogger(CustomFeignErrorDecoder.class);
     private ErrorDecoder delegate = new ErrorDecoder.Default();
 
     @Override
     public Exception decode(String methodKey, Response response) {
         HttpHeaders responseHeaders = new HttpHeaders();
         response.headers()
-                .forEach((key, value) -> responseHeaders.put(key, new ArrayList<>(value)));
+            .forEach((key, value) -> responseHeaders.put(key, new ArrayList<>(value)));
 
         HttpStatus statusCode = HttpStatus.valueOf(response.status());
         String statusText = Optional.ofNullable(response.reason()).orElse(statusCode.getReasonPhrase());
 
-        byte[] responseBody = null;
+        byte[] responseBody;
 
         if (response.body() != null && response.body().length() != null) {
             try (InputStream body = response.body().asInputStream()) {
@@ -36,14 +34,21 @@ public class CustomFeignErrorDecoder implements ErrorDecoder {
             } catch (IOException e) {
                 throw new RuntimeException("Failed to process response body.", e);
             }
+        } else {
+            responseBody = new byte[0]; // Initialize an empty byte array if response body is null
         }
 
         if (statusCode.is4xxClientError()) {
-            return new HttpClientErrorException(statusCode, statusText, responseHeaders, responseBody, null);
+            return new ClientHttpErrorException(
+                statusCode,
+                String.format("%s %s: %s", statusCode.value(), statusText,
+                              new String(responseBody, StandardCharsets.UTF_8)
+                )
+            );
         }
 
         if (statusCode.is5xxServerError()) {
-            return new HttpServerErrorException(statusCode, statusText, responseHeaders, responseBody, null);
+            return new ServerHttpErrorException(statusCode, String.format("%s %s", statusCode.value(), statusText));
         }
 
         return delegate.decode(methodKey, response);
