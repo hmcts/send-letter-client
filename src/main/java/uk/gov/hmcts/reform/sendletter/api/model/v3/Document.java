@@ -2,6 +2,9 @@ package uk.gov.hmcts.reform.sendletter.api.model.v3;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Document.
+ */
 public class Document {
 
     @JsonProperty("content")
@@ -10,6 +13,11 @@ public class Document {
     @JsonProperty("copies")
     public final int copies;
 
+    /**
+     * Constructor.
+     * @param content The content
+     * @param copies The copies
+     */
     public Document(String content, int copies) {
         this.content = content;
         this.copies = copies;

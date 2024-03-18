@@ -11,10 +11,17 @@ import uk.gov.hmcts.reform.sendletter.api.proxy.SendLetterApiProxy;
 
 import java.util.Collections;
 
+/**
+ * Retry configuration.
+ */
 @Configuration
 @ConditionalOnProperty(prefix = "send-letter", name = "url")
 public class RetryConfig {
 
+    /**
+     * Retry template.
+     * @return The RetryTemplate
+     */
     @Bean
     public RetryTemplate retryTemplate() {
         RetryTemplate retryTemplate = new RetryTemplate();
@@ -29,6 +36,12 @@ public class RetryConfig {
         return retryTemplate;
     }
 
+    /**
+     * Send letter API.
+     * @param sendLetterApiProxy The SendLetterApiProxy
+     * @param retryTemplate The RetryTemplate
+     * @return The SendLetterApi
+     */
     @Bean
     public SendLetterApi sendLetterApi(SendLetterApiProxy sendLetterApiProxy, RetryTemplate retryTemplate) {
         return new SendLetterApi(sendLetterApiProxy, retryTemplate);
