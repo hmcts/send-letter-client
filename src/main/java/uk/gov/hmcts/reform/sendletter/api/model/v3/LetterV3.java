@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Letter V3.
+ */
 public class LetterV3 {
 
     @JsonProperty("documents")
@@ -16,6 +19,12 @@ public class LetterV3 {
     @JsonProperty("additional_data")
     public final Map<String, Object> additionalData;
 
+    /**
+     * Constructor.
+     * @param type The type
+     * @param documents The documents
+     * @param additionalData The additional data
+     */
     public LetterV3(
         String type,
         List<Document> documents,

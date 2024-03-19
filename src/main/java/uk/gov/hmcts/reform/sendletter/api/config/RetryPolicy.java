@@ -10,8 +10,16 @@ import uk.gov.hmcts.reform.sendletter.api.exception.ClientHttpErrorException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Retry policy.
+ */
 public class RetryPolicy extends ExceptionClassifierRetryPolicy {
 
+    /**
+     * Constructor.
+     * @param maxAttempts The max attempts
+     * @param retryStatuses The retry statuses
+     */
     public RetryPolicy(int maxAttempts, List<HttpStatus> retryStatuses) {
         final NeverRetryPolicy neverRetryPolicy = new NeverRetryPolicy();
         final SimpleRetryPolicy simpleRetryPolicy = new SimpleRetryPolicy();

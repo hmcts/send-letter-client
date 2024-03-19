@@ -14,9 +14,19 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * Custom error decoder for Feign client.
+ */
 public class CustomFeignErrorDecoder implements ErrorDecoder {
     private ErrorDecoder delegate = new ErrorDecoder.Default();
 
+    /**
+     * Decodes the response and returns an exception.
+     *
+     * @param methodKey The method key
+     * @param response The response
+     * @return The exception
+     */
     @Override
     public Exception decode(String methodKey, Response response) {
         HttpHeaders responseHeaders = new HttpHeaders();

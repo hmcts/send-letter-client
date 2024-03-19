@@ -14,6 +14,9 @@ import uk.gov.hmcts.reform.sendletter.api.proxy.SendLetterApiProxy;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Send letter API.
+ */
 @Service
 @Component("sendLetterApiClient")
 public class SendLetterApi {
@@ -27,6 +30,11 @@ public class SendLetterApi {
 
     private final RetryTemplate retryTemplate;
 
+    /**
+     * Constructor.
+     * @param sendLetterApiProxy The SendLetterApiProxy
+     * @param retryTemplate The RetryTemplate
+     */
     public SendLetterApi(SendLetterApiProxy sendLetterApiProxy, RetryTemplate retryTemplate) {
         this.sendLetterApiProxy = sendLetterApiProxy;
         this.retryTemplate = retryTemplate;
@@ -49,6 +57,12 @@ public class SendLetterApi {
         return sendLetterResponse;
     }
 
+    /**
+     * Send letter.
+     * @param serviceAuthHeader serviceAuthHeader
+     * @param letter actual request object (LetterWithPdfsRequest)
+     * @return sendLetterResponse response to be return
+     */
     public SendLetterResponse sendLetter(String serviceAuthHeader, LetterWithPdfsRequest letter) {
         SendLetterResponse sendLetterResponse = sendLetterApiProxy.sendLetter(serviceAuthHeader, isAsync, letter);
         confirmRequestIsCreated(sendLetterResponse.letterId);
@@ -56,12 +70,22 @@ public class SendLetterApi {
 
     }
 
+    /**
+     * Send letter.
+     * @param serviceAuthHeader serviceAuthHeader
+     * @param letter actual request object (LetterV3)
+     * @return sendLetterResponse response to be return
+     */
     public SendLetterResponse sendLetter(String serviceAuthHeader, LetterV3 letter) {
         SendLetterResponse sendLetterResponse = sendLetterApiProxy.sendLetter(serviceAuthHeader, isAsync, letter);
         confirmRequestIsCreated(sendLetterResponse.letterId);
         return sendLetterResponse;
     }
 
+    /**
+     * Confirm request is created.
+     * @param letterId The letter ID
+     */
     private void confirmRequestIsCreated(UUID letterId) {
         try {
             LetterStatus letterStatus = retryTemplate.execute(arg0 -> {
