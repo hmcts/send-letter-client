@@ -7,6 +7,9 @@ import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Letter status.
+ */
 public class LetterStatus {
 
     public UUID id;
@@ -34,10 +37,24 @@ public class LetterStatus {
 
     public Integer copies;
 
+    /**
+     * Constructor.
+     */
     public LetterStatus() {
 
     }
 
+    /**
+     * Constructor.
+     * @param id The ID
+     * @param status The status
+     * @param checksum The checksum
+     * @param createdAt The created at
+     * @param sentToPrintAt The sent to print at
+     * @param printedAt The printed at
+     * @param additionalData The additional data
+     * @param copies The copies
+     */
     public LetterStatus(
             final UUID id,
             final String status,
