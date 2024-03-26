@@ -1,7 +1,7 @@
 [![](https://jitpack.io/v/hmcts/send-letter-client.svg)](https://jitpack.io/#hmcts/send-letter-client)
 # Send Letter Client
 
-This is the client library for the [send-letter-service](https://github.com/hmcts/send-letter-service) aka Bulk Printing microservice.
+This is the client library for the [send-letter-service](https://github.com/hmcts/send-letter-service) aka Bulk Print.
 
 ## Getting started
 
@@ -28,6 +28,43 @@ To build project execute the following command:
     ./gradlew build
 ```
 
+## Models
+This library includes the following API models:
+
+- Document: Represents a document with a template and associated values.
+- LetterStatus: Represents the status of a letter.
+- LetterWithPdfsRequest: Represents a letter with PDFs request.
+- LetterV3: Represents a letter with the LetterV3 request.
+- Letter: Represents a letter with PDFs requests (deprecated)
+
+## Requests
+
+This library provides methods to make the following API requests to the send-letter-service:
+
+Sending a Letter
+
+Deprecated Method (Not Recommended): This method is deprecated and will be removed in future versions. Use the updated methods with specific request objects instead.
+
+```@Deprecated(since = "15-June-2021", forRemoval = true)
+SendLetterResponse sendLetter(String serviceAuthHeader, Letter letter)
+```
+Sending a Letter with LetterV3 Request:
+```
+SendLetterResponse sendLetter(String serviceAuthHeader, LetterV3 letter)
+```
+
+Sending a Letter with PDFs Request:
+```
+SendLetterResponse sendLetter(String serviceAuthHeader, LetterWithPdfsRequest letter)
+```
+
+Confirming Request Creation:
+```
+void confirmRequestIsCreated(UUID letterId)
+```
+This method confirms that the request is created successfully.
+
+
 ## Developing
 
 ### Coding style tests
@@ -35,8 +72,23 @@ To build project execute the following command:
 To run all checks (including unit tests) execute the following command:
 
 ```bash
-    ./gradlew check
+./gradlew check
 ```
+
+## Installation
+
+Add the following dependency to your `build.gradle` file:
+
+```gradle
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.hmcts:send-letter-client:1.0.0' // Replace with the latest version
+}
+```
+
 
 ## Versioning
 
