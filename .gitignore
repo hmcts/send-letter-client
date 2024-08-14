@@ -11,4 +11,7 @@ out
 *.iws
 
 .classpath
-.project
+.project/bin/setup-env.sh
+/bin/create-env-file.sh
+/bin/substitutions.json
+.env
