@@ -7,7 +7,7 @@ This is the client library for the [send-letter-service](https://github.com/hmct
 
 ### Prerequisites
 
-- [JDK 17](https://www.oracle.com/java)
+- [JDK 21](https://www.oracle.com/java)
 - Project requires Spring Boot v3.x to be present
 
 ## Usage
@@ -98,3 +98,4 @@ For the versions available, see the tags on this repository.
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details.
+
