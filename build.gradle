@@ -16,7 +16,7 @@ version buildNumber
 
 checkstyle {
     maxWarnings = 0
-    toolVersion = '10.15.0'
+    toolVersion = '10.18.1'
 }
 
 dependencyUpdates.resolutionStrategy {
@@ -149,7 +149,7 @@ publishing {
 
 dependencyManagement {
     dependencies {
-        dependencySet(group: 'com.google.guava', version: '33.1.0-jre') {
+        dependencySet(group: 'com.google.guava', version: '33.3.0-jre') {
             entry 'guava'
         }
     }
