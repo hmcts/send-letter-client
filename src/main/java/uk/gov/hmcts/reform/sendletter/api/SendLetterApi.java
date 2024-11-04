@@ -43,8 +43,8 @@ public class SendLetterApi {
     /**
      * Please upgrade your code.
      * This method will be removed in future versions.
-     * <p>Use @{@link LetterV3 } or @{@link LetterWithPdfsRequest} instead.</p>
      *
+     * <p>Use @{@link LetterV3 } or @{@link LetterWithPdfsRequest} instead.</p>
      * @param serviceAuthHeader serviceAuthHeader
      * @param letter actual request object
      * @return sendLetterResponse response to be return
