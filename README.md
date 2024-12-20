@@ -1,6 +1,5 @@
 [![](https://jitpack.io/v/hmcts/send-letter-client.svg)](https://jitpack.io/#hmcts/send-letter-client)
 # Send Letter Client
-
 This is the client library for the [send-letter-service](https://github.com/hmcts/send-letter-service) aka Bulk Print.
 
 ## Getting started
