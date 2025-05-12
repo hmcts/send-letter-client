@@ -65,6 +65,8 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 tasks.register('integration', Test) {
+    description = 'Runs the integration tests.'
+    group = 'Verification'
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
 }
