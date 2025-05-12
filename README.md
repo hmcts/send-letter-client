@@ -1,4 +1,3 @@
-[![](https://jitpack.io/v/hmcts/send-letter-client.svg)](https://jitpack.io/#hmcts/send-letter-client)
 # Send Letter Client
 
 This is the client library for the [send-letter-service](https://github.com/hmcts/send-letter-service) aka Bulk Print.
@@ -12,17 +11,17 @@ This is the client library for the [send-letter-service](https://github.com/hmct
 
 ## Usage
 
-Just include the library as your dependency and you will be to use the client class. Health check for send-letter-producer is provided as well.
+Include the library as your dependency, and you will be to use the client class. Health check for send-letter-producer is provided as well.
 
 Components provided by this library will get automatically configured in a Spring context if `send-letter.url` configuration property is defined and does not equal `false`.
-False would disable the auto configuration of the API.
+False would disable the autoconfiguration of the API.
 
 ### Building
 
-The project uses [Gradle](https://gradle.org) as a build tool but you don't have install it locally since there is a
+The project uses [Gradle](https://gradle.org) as a build tool, but you don't have to install it locally since there is a
 `./gradlew` wrapper script.
 
-To build project execute the following command:
+To build the project, execute the following command:
 
 ```bash
     ./gradlew build
@@ -77,18 +76,18 @@ To run all checks (including unit tests) execute the following command:
 
 ## Installation
 
-Add the following dependency to your `build.gradle` file:
+This library is hosted on Azure DevOps Artifacts and can be used in your project by adding the following to your `build.gradle` file:
 
 ```gradle
 repositories {
-    maven { url 'https://jitpack.io' }
+  maven {
+    url = uri('https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1')
+  }
 }
-
 dependencies {
-    implementation 'com.github.hmcts:send-letter-client:1.0.0' // Replace with the latest version
+  implementation 'com.github.hmcts:send-letter-client:LATEST_TAG'
 }
 ```
-
 
 ## Versioning
 
@@ -97,5 +96,5 @@ For the versions available, see the tags on this repository.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details.
+This project is licensed under the MIT License—see the [LICENSE](LICENSE.md) file for details.
 
