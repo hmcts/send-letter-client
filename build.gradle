@@ -9,9 +9,9 @@ plugins {
     id 'com.github.ben-manes.versions' version '0.51.0'
 }
 
-def buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?: "DEV-SNAPSHOT"
+def buildNumber = System.getenv("RELEASE_VERSION")?: "DEV-SNAPSHOT"
 
-group 'uk.gov.hmcts.reform'
+group 'com.github.hmcts'
 version buildNumber
 
 checkstyle {
@@ -60,11 +60,11 @@ sourceSets {
     }
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.compilerArgs << '-parameters' << '-Xlint:deprecation'
 }
 
-task integration(type: Test, description: 'Runs the integration tests.', group: 'Verification') {
+tasks.register('integration', Test) {
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
 }
@@ -80,9 +80,10 @@ jacocoTestReport {
             ])
         }))}
     reports {
-        xml.required = true
-        csv.required = false
-        xml.destination = file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+        xml.getRequired().set(true)
+        csv.getRequired().set(false)
+        xml.outputLocation.set(
+                file("${project.getLayout().getBuildDirectory()}/reports/jacoco/test/jacocoTestReport.xml"))
     }
 }
 
@@ -111,12 +112,14 @@ def pomConfig = {
     }
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
+tasks.register('sourcesJar', Jar) {
+    dependsOn classes
     archiveClassifier.set('sources')
     from sourceSets.main.allSource
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
+tasks.register('javadocJar', Jar) {
+    dependsOn javadoc
     archiveClassifier.set('javadoc')
     from javadoc.destinationDir
 }
@@ -145,6 +148,16 @@ publishing {
             }
         }
     }
+    repositories {
+        maven {
+            name = "AzureArtifacts"
+            url = uri("https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1")
+            credentials {
+                username = System.getenv("AZURE_DEVOPS_ARTIFACT_USERNAME")
+                password = System.getenv("AZURE_DEVOPS_ARTIFACT_TOKEN")
+            }
+        }
+    }
 }
 
 dependencyManagement {
@@ -158,27 +171,18 @@ dependencyManagement {
 dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '3.3.3'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '4.1.3'
-
     implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '13.5'
-
     implementation group: 'commons-io', name: 'commons-io', version: '2.17.0'
     implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.10'
 
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.11.3'
-    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.26.3'
-
-    testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.14.2'
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     testImplementation group: 'com.github.tomakehurst', name: 'wiremock-jre8-standalone', version: '3.0.1'
 
     integrationTestImplementation sourceSets.main.runtimeClasspath
     integrationTestImplementation sourceSets.test.runtimeClasspath
-    integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
-        exclude group: 'junit', module: 'junit'
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
 }
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
     useJUnitPlatform()
     failFast = true
 
