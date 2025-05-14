@@ -2,7 +2,7 @@ plugins {
     id 'checkstyle'
     id 'jacoco'
     id 'io.spring.dependency-management' version '1.1.6'
-    id 'org.springframework.boot' version '3.3.5'
+    id 'org.springframework.boot' version '3.4.5'
     id 'org.owasp.dependencycheck' version '12.1.1'
     id 'java-library'
     id 'maven-publish'
@@ -171,7 +171,7 @@ dependencyManagement {
 }
 
 dependencies {
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '3.3.3'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '3.4.5'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '4.1.3'
     implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '13.6'
     implementation group: 'commons-io', name: 'commons-io', version: '2.17.0'
