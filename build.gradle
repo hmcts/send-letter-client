@@ -11,7 +11,7 @@ plugins {
 
 def buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?: "DEV-SNAPSHOT"
 
-group 'uk.gov.hmcts.reform'
+group 'com.github.hmcts'
 version buildNumber
 
 checkstyle {
@@ -139,6 +139,16 @@ publishing {
                 root.appendNode('name', 'Send letter client')
                 root.appendNode('url', 'https://github.com/hmcts/send-letter-client')
                 root.children().last() + pomConfig
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "AzureArtifacts"
+            url = uri("https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1")
+            credentials {
+                username = System.getenv("AZURE_DEVOPS_ARTIFACT_USERNAME")
+                password = System.getenv("AZURE_DEVOPS_ARTIFACT_TOKEN")
             }
         }
     }
