@@ -16,7 +16,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.sendletter.SendLetterAutoConfiguration;
-import uk.gov.hmcts.reform.sendletter.api.Letter;
 import uk.gov.hmcts.reform.sendletter.api.LetterWithPdfsRequest;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
@@ -63,13 +62,6 @@ public class SendLetterApiProxyTest {
     @AfterAll
     public void shutDown() {
         wireMockServer.stop();
-    }
-
-    @Test
-    public void testSendLetter() {
-        SendLetterResponse response = sendLetterApiProxy.sendLetter("serviceAuthHeader", "yes",
-                new Letter(Collections.emptyList(), "test", Collections.emptyMap()));
-        assertThat(response.letterId).isEqualTo(sendLetterResponse.letterId);
     }
 
     @Test

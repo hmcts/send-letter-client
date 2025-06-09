@@ -41,23 +41,6 @@ public class SendLetterApi {
     }
 
     /**
-     * Please upgrade your code.
-     * This method will be removed in future versions.
-     *
-     * <p>Use @{@link LetterV3 } or @{@link LetterWithPdfsRequest} instead.</p>
-     * @param serviceAuthHeader serviceAuthHeader
-     * @param letter actual request object
-     * @return sendLetterResponse response to be return
-     * @deprecated deprecated since 15-June-2021
-     */
-    @Deprecated(since = "15-June-2021", forRemoval = true)
-    public SendLetterResponse sendLetter(String serviceAuthHeader, Letter letter) {
-        SendLetterResponse sendLetterResponse = sendLetterApiProxy.sendLetter(serviceAuthHeader, isAsync, letter);
-        confirmRequestIsCreated(sendLetterResponse.letterId);
-        return sendLetterResponse;
-    }
-
-    /**
      * Send letter.
      * @param serviceAuthHeader serviceAuthHeader
      * @param letter actual request object (LetterWithPdfsRequest)
