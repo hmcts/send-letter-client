@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import uk.gov.hmcts.reform.sendletter.CustomFeignErrorDecoder;
-import uk.gov.hmcts.reform.sendletter.api.Letter;
 import uk.gov.hmcts.reform.sendletter.api.LetterStatus;
 import uk.gov.hmcts.reform.sendletter.api.LetterWithPdfsRequest;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
@@ -25,24 +24,6 @@ import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
 @FeignClient(name = "send-letter-api", url = "${send-letter.url}",
         configuration = SendLetterApiProxy.SendLetterConfiguration.class)
 public interface SendLetterApiProxy {
-
-    /**
-     * Send letter.
-     * @param serviceAuthHeader The service auth header
-     * @param isAsync The is async
-     * @param letter The letter
-     * @return The send letter response
-     */
-    @PostMapping(
-            path = "/letters",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    SendLetterResponse sendLetter(
-            @RequestHeader(name = "ServiceAuthorization", required = false) String serviceAuthHeader,
-            @RequestParam (name = "isAsync") String isAsync,
-            @RequestBody Letter letter
-    );
 
     /**
      * Send letter.
