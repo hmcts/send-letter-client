@@ -164,7 +164,7 @@ publishing {
 
 dependencyManagement {
     dependencies {
-        dependencySet(group: 'com.google.guava', version: '33.4.8-jre') {
+        dependencySet(group: 'com.google.guava', version: '33.5.0-jre') {
             entry 'guava'
         }
     }
