@@ -16,7 +16,7 @@ version buildNumber
 
 checkstyle {
     maxWarnings = 0
-    toolVersion = '13.4.0'
+    toolVersion = '13.4.2'
 }
 
 dependencyUpdates.resolutionStrategy {
