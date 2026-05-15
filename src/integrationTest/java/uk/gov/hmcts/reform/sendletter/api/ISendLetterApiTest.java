@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.sendletter.SendLetterAutoConfiguration;
+import uk.gov.hmcts.reform.sendletter.config.TestObjectMapperConfig;
 import uk.gov.hmcts.reform.sendletter.api.exception.ClientHttpErrorException;
 import uk.gov.hmcts.reform.sendletter.api.exception.ServerHttpErrorException;
 import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
@@ -25,11 +26,13 @@ import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.UUID;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.stubbing.Scenario.STARTED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -41,7 +44,7 @@ import static org.springframework.http.HttpStatus.OK;
 @EnableAutoConfiguration
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
-    classes = {SendLetterAutoConfiguration.class},
+    classes = {SendLetterAutoConfiguration.class, TestObjectMapperConfig.class},
     properties = {
         "send-letter.url=localhost:6401"
     }
@@ -182,24 +185,27 @@ public class ISendLetterApiTest {
 
 
     private void stubScenarios() {
-        wireMockServer.stubFor(get(urlMatching(
-            "/letters/" + expectedSendLetterResponse.letterId + "\\" + getRequestParameters()))
-                                   .inScenario("Letter search")
-                                   .whenScenarioStateIs(STARTED).willReturn(WireMock.aResponse().withStatus(404))
-                                   .willSetStateTo("Letter found"));
+        wireMockServer.stubFor(get(urlPathEqualTo("/letters/" + expectedSendLetterResponse.letterId))
+            .withQueryParam("include-additional-info", equalTo("false"))
+            .withQueryParam("check-duplicate", equalTo("true"))
+            .inScenario("Letter search")
+            .whenScenarioStateIs(STARTED)
+            .willReturn(WireMock.aResponse().withStatus(404))
+            .willSetStateTo("Letter found"));
 
-        wireMockServer.stubFor(get(urlMatching(
-            "/letters/" + expectedSendLetterResponse.letterId + "\\" + getRequestParameters()))
-                                   .inScenario("Letter search")
-                                   .whenScenarioStateIs("Letter found")
-                                   .willReturn(WireMock.aResponse().withStatus(200).withBody(letterStatus)));
-
+        wireMockServer.stubFor(get(urlPathEqualTo("/letters/" + expectedSendLetterResponse.letterId))
+            .withQueryParam("include-additional-info", equalTo("false"))
+            .withQueryParam("check-duplicate", equalTo("true"))
+            .inScenario("Letter search")
+            .whenScenarioStateIs("Letter found")
+            .willReturn(WireMock.aResponse().withStatus(200).withBody(letterStatus)));
     }
 
     private void stubSingleCallWithStatus(HttpStatus status) {
-        wireMockServer.stubFor(get(urlMatching(
-            "/letters/" + expectedSendLetterResponse.letterId + "\\" + getRequestParameters()))
-                                   .willReturn(WireMock.aResponse().withStatus(status.value()).withBody(letterStatus)));
+        wireMockServer.stubFor(get(urlPathEqualTo("/letters/" + expectedSendLetterResponse.letterId))
+            .withQueryParam("include-additional-info", equalTo("false"))
+            .withQueryParam("check-duplicate", equalTo("true"))
+            .willReturn(WireMock.aResponse().withStatus(status.value()).withBody(letterStatus)));
     }
 
     private void verifyInvocationCount(int count) {

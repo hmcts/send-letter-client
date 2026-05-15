@@ -16,6 +16,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.sendletter.SendLetterAutoConfiguration;
+import uk.gov.hmcts.reform.sendletter.config.TestObjectMapperConfig;
 import uk.gov.hmcts.reform.sendletter.api.LetterWithPdfsRequest;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
@@ -28,7 +29,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 @EnableAutoConfiguration
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
-        classes = SendLetterAutoConfiguration.class,
+        classes = {SendLetterAutoConfiguration.class, TestObjectMapperConfig.class},
         properties = {
             "send-letter.url=localhost:6400"
         }

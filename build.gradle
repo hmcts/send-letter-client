@@ -172,10 +172,13 @@ dependencyManagement {
 
 dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '5.0.1'
     implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '13.12'
     implementation group: 'commons-io', name: 'commons-io', version: '2.22.0'
     implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.12'
+
+    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.17.1'
 
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     testImplementation group: 'com.github.tomakehurst', name: 'wiremock-jre8-standalone', version: '3.0.1'
