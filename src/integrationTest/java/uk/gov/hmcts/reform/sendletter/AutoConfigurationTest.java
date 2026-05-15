@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.sendletter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,15 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
 import uk.gov.hmcts.reform.sendletter.api.proxy.SendLetterApiProxy;
+import uk.gov.hmcts.reform.sendletter.config.TestObjectMapperConfig;
 import uk.gov.hmcts.reform.sendletter.healthcheck.SendLetterHealthApi;
 import uk.gov.hmcts.reform.sendletter.healthcheck.SendLetterHealthIndicator;
-import uk.gov.hmcts.reform.sendletter.config.TestObjectMapperConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

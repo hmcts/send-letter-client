@@ -16,10 +16,10 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.sendletter.SendLetterAutoConfiguration;
-import uk.gov.hmcts.reform.sendletter.config.TestObjectMapperConfig;
 import uk.gov.hmcts.reform.sendletter.api.LetterWithPdfsRequest;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
+import uk.gov.hmcts.reform.sendletter.config.TestObjectMapperConfig;
 
 import java.util.Collections;
 import java.util.UUID;
