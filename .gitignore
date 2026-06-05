@@ -15,3 +15,6 @@ out
 /bin/create-env-file.sh
 /bin/substitutions.json
 .env
+/bin/setup-env.sh
+/bin/setup-azurite.sh
+/bin/setup-sftp.sh

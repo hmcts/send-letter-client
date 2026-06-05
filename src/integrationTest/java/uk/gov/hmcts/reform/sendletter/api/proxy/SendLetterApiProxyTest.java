@@ -19,6 +19,7 @@ import uk.gov.hmcts.reform.sendletter.SendLetterAutoConfiguration;
 import uk.gov.hmcts.reform.sendletter.api.LetterWithPdfsRequest;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
+import uk.gov.hmcts.reform.sendletter.config.TestObjectMapperConfig;
 
 import java.util.Collections;
 import java.util.UUID;
@@ -28,7 +29,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 @EnableAutoConfiguration
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
-        classes = SendLetterAutoConfiguration.class,
+        classes = {SendLetterAutoConfiguration.class, TestObjectMapperConfig.class},
         properties = {
             "send-letter.url=localhost:6400"
         }

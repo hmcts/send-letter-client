@@ -11,6 +11,7 @@ import org.springframework.retry.support.RetryTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
 import uk.gov.hmcts.reform.sendletter.api.proxy.SendLetterApiProxy;
+import uk.gov.hmcts.reform.sendletter.config.TestObjectMapperConfig;
 import uk.gov.hmcts.reform.sendletter.healthcheck.SendLetterHealthApi;
 import uk.gov.hmcts.reform.sendletter.healthcheck.SendLetterHealthIndicator;
 
@@ -19,7 +20,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @EnableAutoConfiguration
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
-    classes = SendLetterAutoConfiguration.class,
+    classes = {
+        SendLetterAutoConfiguration.class,
+        TestObjectMapperConfig.class
+    },
     properties = {
         "send-letter.url=localhost"
     }
@@ -44,4 +48,6 @@ public class AutoConfigurationTest {
         assertThat(context.getBeanNamesForType(RetryTemplate.class)).hasSize(1);
         assertThat(context.getBeanNamesForType(SendLetterApi.class)).hasSize(1);
     }
+
+    // ObjectMapper bean now provided by shared TestObjectMapperConfig
 }
