@@ -2,13 +2,11 @@ package uk.gov.hmcts.reform.sendletter;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.retry.support.RetryTemplate;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
 import uk.gov.hmcts.reform.sendletter.api.proxy.SendLetterApiProxy;
 import uk.gov.hmcts.reform.sendletter.healthcheck.SendLetterHealthApi;
@@ -17,7 +15,6 @@ import uk.gov.hmcts.reform.sendletter.healthcheck.SendLetterHealthIndicator;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableAutoConfiguration
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(
     classes = SendLetterAutoConfiguration.class,
     properties = {

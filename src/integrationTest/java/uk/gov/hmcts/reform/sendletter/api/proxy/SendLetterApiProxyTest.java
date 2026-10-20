@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.sendletter.api.proxy;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -15,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import uk.gov.hmcts.reform.sendletter.SendLetterAutoConfiguration;
 import uk.gov.hmcts.reform.sendletter.api.LetterWithPdfsRequest;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
@@ -52,11 +52,13 @@ public class SendLetterApiProxyTest {
     }
 
     @BeforeEach
-    public void beforeEach() throws JsonProcessingException {
+    public void beforeEach() throws JacksonException {
         sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         String responseJson = mapper.writeValueAsString(sendLetterResponse);
         wireMockServer.stubFor(WireMock.post(WireMock.urlEqualTo("/letters?isAsync=yes"))
-                .willReturn(WireMock.aResponse().withStatus(200).withBody(responseJson)));
+                .willReturn(WireMock.aResponse().withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(responseJson)));
     }
 
     @AfterAll

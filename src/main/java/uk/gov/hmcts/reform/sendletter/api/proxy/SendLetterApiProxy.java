@@ -1,8 +1,5 @@
 package uk.gov.hmcts.reform.sendletter.api.proxy;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import feign.codec.Decoder;
-import feign.jackson.JacksonDecoder;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
@@ -78,16 +75,6 @@ public interface SendLetterApiProxy {
      * Send letter configuration.
      */
     class SendLetterConfiguration {
-        /**
-         * Feign decoder.
-         * @param objectMapper The object mapper
-         * @return The decoder
-         */
-        @Bean
-        Decoder feignDecoder(ObjectMapper objectMapper) {
-            return new JacksonDecoder(objectMapper);
-        }
-
         /**
          * Custom feign error decoder.
          * @return The custom feign error decoder
