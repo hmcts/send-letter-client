@@ -6,12 +6,12 @@ This is the client library for the [send-letter-service](https://github.com/hmct
 
 ### Prerequisites
 
-- [JDK 21](https://www.oracle.com/java)
-- Project requires Spring Boot v3.x to be present
+- [JDK 25](https://www.oracle.com/java)
+- Project requires Spring Boot v4.x to be present
 
 ## Usage
 
-Include the library as your dependency, and you will be to use the client class. Health check for send-letter-producer is provided as well.
+Include the library as your dependency, and you will be able to use the client class. Health check for send-letter-producer is provided as well.
 
 Components provided by this library will get automatically configured in a Spring context if `send-letter.url` configuration property is defined and does not equal `false`.
 False would disable the autoconfiguration of the API.

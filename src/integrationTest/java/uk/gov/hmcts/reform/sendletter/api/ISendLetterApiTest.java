@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.sendletter.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -16,6 +14,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import uk.gov.hmcts.reform.sendletter.SendLetterAutoConfiguration;
 import uk.gov.hmcts.reform.sendletter.api.exception.ClientHttpErrorException;
 import uk.gov.hmcts.reform.sendletter.api.exception.ServerHttpErrorException;
@@ -67,14 +67,16 @@ public class ISendLetterApiTest {
     }
 
     @BeforeEach
-    public void beforeEach() throws JsonProcessingException {
+    public void beforeEach() throws JacksonException {
         wireMockServer.resetAll();
         UUID uuid = UUID.randomUUID();
         expectedSendLetterResponse = new SendLetterResponse(uuid);
 
         String responseJson = mapper.writeValueAsString(expectedSendLetterResponse);
         wireMockServer.stubFor(WireMock.post(urlEqualTo("/letters?isAsync=true"))
-                                   .willReturn(WireMock.aResponse().withStatus(200).withBody(responseJson)));
+                                   .willReturn(WireMock.aResponse().withStatus(200)
+                                       .withHeader("Content-Type", "application/json")
+                                       .withBody(responseJson)));
 
         LetterStatus letterStatus = new LetterStatus(uuid, "Created", "checksum",
                                                      ZonedDateTime.now(), ZonedDateTime.now().plusHours(1),
@@ -192,14 +194,18 @@ public class ISendLetterApiTest {
             "/letters/" + expectedSendLetterResponse.letterId + "\\" + getRequestParameters()))
                                    .inScenario("Letter search")
                                    .whenScenarioStateIs("Letter found")
-                                   .willReturn(WireMock.aResponse().withStatus(200).withBody(letterStatus)));
+                                   .willReturn(WireMock.aResponse().withStatus(200)
+                                       .withHeader("Content-Type", "application/json")
+                                       .withBody(letterStatus)));
 
     }
 
     private void stubSingleCallWithStatus(HttpStatus status) {
         wireMockServer.stubFor(get(urlMatching(
             "/letters/" + expectedSendLetterResponse.letterId + "\\" + getRequestParameters()))
-                                   .willReturn(WireMock.aResponse().withStatus(status.value()).withBody(letterStatus)));
+                                   .willReturn(WireMock.aResponse().withStatus(status.value())
+                                       .withHeader("Content-Type", "application/json")
+                                       .withBody(letterStatus)));
     }
 
     private void verifyInvocationCount(int count) {
